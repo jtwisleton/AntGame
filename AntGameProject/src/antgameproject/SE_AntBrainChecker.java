@@ -16,7 +16,7 @@ public class SE_AntBrainChecker {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         /*
-         Read the brain from file into a String.
+         Read the brain from a file into a String.
          */
         String fn = "src//testBrain.txt";
         String brainString = "";
