@@ -26,8 +26,6 @@ public class AntBrainChecker {
             String line;
             while ((line = br.readLine()) != null) {
                 brainString += line;
-                brainString += '\n';
-                System.out.println(brainString);
             }
         } finally {
             br.close();

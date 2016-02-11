@@ -23,19 +23,38 @@ public class AntWorldChecker {
          Read the world from a file into a String.
          */
         String fn = "src//antgameproject//testWorld.txt";
-        String brainString = "";
+        String worldString = "";
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fn)));
         try {
             String line;
             while ((line = br.readLine()) != null) {
-                brainString += line;
-                brainString += '\n';
-                System.out.println(brainString);
+                worldString += line;
             }
         } finally {
             br.close();
         }
+        
+        
+        /*
+        Check that the given dimension values match the world
+        */
+        
+        
+        /*
+        Iterate through worldString, delimiting by line break, analysing
+        each line to make sure it is valid.
+        */
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            
+        }
 
+        
+        
+        
+        
+        
+        
     }
 }
