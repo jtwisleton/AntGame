@@ -18,7 +18,7 @@ public class SE_AntBrainChecker {
         /*
          Read the brain from a file into a String.
          */
-        String fn = "src//testBrain.txt";
+        String fn = "src//antgameproject//testBrain.txt";
         String brainString = "";
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fn)));
