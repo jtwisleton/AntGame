@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  *
  * @author James Twisleton
  */
-public class SE_AntBrainChecker {
+public class AntBrainChecker {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         /*
