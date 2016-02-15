@@ -9,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author James Twisleton
  */
 public class AntBrainChecker {
@@ -43,29 +42,24 @@ public class AntBrainChecker {
         Boolean finished = false;
         while (!finished) {
             if (brainPatternMatcher.find()) {
-                String brainPatternMatchedString = brainPatternMatcher.group();
                 brainString = brainString.replaceFirst(brainPattern.pattern(), "");
             } else {
                 finished = true;
             }
-
             if ("".equals(brainString)) {
-
                 finished = true;
             }
         }
 
         /*
-         Remove whitespace and new lines from string. If the remaining string is not
+         Remove whitespace from string. If the remaining string is not
          "", return that brain is invalid. Else return that brain is valid.
          */
-        brainString = brainString.replaceAll("\\n|\\s", "");
+        brainString = brainString.replaceAll("\\s", "");
         if (!"".equals(brainString)) {
-            System.out.println("final brainString: " + brainString);
             System.out.println("Invalid brain!");
         } else {
             System.out.println("Valid brain!");
         }
-
     }
 }
