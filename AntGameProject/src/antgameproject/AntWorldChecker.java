@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package antgameproject;
 
 import java.io.BufferedReader;
@@ -13,7 +8,7 @@ import java.io.InputStreamReader;
 
 /**
  *
- * @author jamestwisleton
+ * @author James Twisleton
  */
 public class AntWorldChecker {
 
@@ -39,7 +34,22 @@ public class AntWorldChecker {
         /*
         Check that the given dimension values match the world
         */
+        String[] lineArray = worldString.split("\\n");
+        String firstLine = lineArray[0];
+        String secondLine = lineArray[1];
         
+        Boolean isFirstLineNumber = firstLine.matches("\\d+");
+        Boolean isSecondLineNumber = secondLine.matches("\\d+");
+        
+        if(!isFirstLineNumber || !isSecondLineNumber){
+            System.out.println("Invalid world: first and/or second lines are not digits");            
+        }
+        
+        int xDimension = Integer.parseInt(lineArray[0]);
+        int yDimension = Integer.parseInt(lineArray[1]);
+        
+        
+               
         
         /*
         Iterate through worldString, delimiting by line break, analysing
