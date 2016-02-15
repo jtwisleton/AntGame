@@ -29,42 +29,35 @@ public class AntWorldChecker {
         } finally {
             br.close();
         }
-        
-        
+
         /*
-        Check that the given dimension values match the world
-        */
+         Check that first and second lines are digits
+         */
         String[] lineArray = worldString.split("\\n");
         String firstLine = lineArray[0];
         String secondLine = lineArray[1];
-        
+
         Boolean isFirstLineNumber = firstLine.matches("\\d+");
         Boolean isSecondLineNumber = secondLine.matches("\\d+");
-        
-        if(!isFirstLineNumber || !isSecondLineNumber){
-            System.out.println("Invalid world: first and/or second lines are not digits");            
-        }
-        
-        int xDimension = Integer.parseInt(lineArray[0]);
-        int yDimension = Integer.parseInt(lineArray[1]);
-        
-        
-               
-        
-        /*
-        Iterate through worldString, delimiting by line break, analysing
-        each line to make sure it is valid.
-        */
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            
+
+        if (!isFirstLineNumber || !isSecondLineNumber) {
+            System.out.println("Invalid world: first and/or second lines are not digits");
         }
 
-        
-        
-        
-        
-        
-        
+        /*
+         Check that the given dimension values match the world
+         */
+        int xDimension = Integer.parseInt(lineArray[0]);
+        int yDimension = Integer.parseInt(lineArray[1]);
+
+        /*
+         Iterate through worldString, delimiting by line break, analysing
+         each line to make sure it is valid.
+         */
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+
+        }
+
     }
 }
