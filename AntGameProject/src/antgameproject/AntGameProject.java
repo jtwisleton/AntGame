@@ -2,7 +2,7 @@ package antgameproject;
 
 /**
  *
- * @author James Twisleotn
+ * @author Team_Name
  */
 public class AntGameProject {
 
