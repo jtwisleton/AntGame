@@ -17,6 +17,7 @@ public class Ant {
     private Direction facingDirection;
     private boolean hasFood;
     private Pos boardPosition;
+    private boolean isAlive;
     
     public Ant(Color antColor, int id, Pos boardPosition){
         this.antColor = antColor;
@@ -26,5 +27,6 @@ public class Ant {
         // facing direction 0?
         hasFood = false;
         this.boardPosition = boardPosition;
+        isAlive = true;
     }
 }
