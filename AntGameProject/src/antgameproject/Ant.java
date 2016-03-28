@@ -10,16 +10,16 @@ package antgameproject;
  * @author wilki
  */
 public class Ant {
-    private final Color antColor;
+    private final Colour antColor;
     private int currentBrainState;
     private final int id;
     private int resting;
     private Direction facingDirection;
     private boolean hasFood;
     private Pos boardPosition;
-    private boolean isAlive;
+    private boolean antIsAlive;
     
-    public Ant(Color antColor, int id, Pos boardPosition){
+    public Ant(Colour antColor, int id, Pos boardPosition){
         this.antColor = antColor;
         currentBrainState = 0;
         this.id = id;
@@ -27,6 +27,22 @@ public class Ant {
         // facing direction 0?
         hasFood = false;
         this.boardPosition = boardPosition;
-        isAlive = true;
+        antIsAlive = true;
+    }
+    
+    public boolean getAntIsAlive(){
+        return antIsAlive;
+    }
+    
+    public void killAnt(){
+        antIsAlive = false;
+    }
+    
+    public Pos getBoardPosition(){
+        return boardPosition;
+    }
+    
+    public void setBoardPosition(Pos newPosition){
+        this.boardPosition = newPosition;
     }
 }
