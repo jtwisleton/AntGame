@@ -10,10 +10,10 @@ package antgameproject;
  * @author wilki
  */
 public class Sense implements Instruction {
-    private Direction senseDirection;
-    private Condition condition; 
-    private int nextStateIfConditionTrue;
-    private int nextStateIfConditionFalse;
+    private final Direction senseDirection;
+    private final Condition condition; 
+    private final int nextStateIfConditionTrue;
+    private final int nextStateIfConditionFalse;
     
     public Sense(Direction senseDirection, Condition condition, 
             int nextStateIfConditionTrue, int nextStateIfConditionFalse){
@@ -23,19 +23,10 @@ public class Sense implements Instruction {
         this.nextStateIfConditionFalse = nextStateIfConditionFalse;
     }
     
-    public Direction getSenseDirection(){
-        return senseDirection;
-    }
-    
-    public Condition getCondition(){
-        return condition;
-    }
-    
-    public int getNextStateIfConditionTrue(){
-        return nextStateIfConditionTrue;
-    }
-    
-    public int getNextStateIfConditionFalse(){
-        return nextStateIfConditionFalse;
+    @Override
+    public void execute(Board gameBoard, Ant currentAnt) {
+        // let p' = sensed_cell(p, direction(a), sensedir) in
+        // let st = if cell_matches(p', cond, color(a)) then st1 else st2 in
+        // set_state(a, st)            
     }
 }

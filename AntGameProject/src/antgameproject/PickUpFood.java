@@ -10,19 +10,25 @@ package antgameproject;
  * @author wilki
  */
 public class PickUpFood implements Instruction{
-    private int nextStateIfFoodFound;
-    private int nextStateIfNoFoodFound;
+    private final int nextStateIfFoodFound;
+    private final int nextStateIfNoFoodFound;
     
     public PickUpFood(int nextStateIfFoodFound, int nextStateIfNoFoodFound){
         this.nextStateIfFoodFound = nextStateIfFoodFound;
         this.nextStateIfNoFoodFound = nextStateIfNoFoodFound;
     }
-    
-    public int getNextStateIfFoodFound(){
-        return nextStateIfFoodFound;
+
+    @Override
+    public void execute(Board gameBoard, Ant currentAnt) {
+        Pos antPosition = currentAnt.getBoardPosition();
+        int noFoodAtAntsPosition = gameBoard.numberOfFoodAt(antPosition);
+        if(currentAnt.getCarryingFood() || noFoodAtAntsPosition == 0){
+            currentAnt.setBrainState(nextStateIfNoFoodFound);
+        } else {
+            gameBoard.setFoodAt(antPosition, noFoodAtAntsPosition - 1);
+            currentAnt.setCarryingFood(true);
+            currentAnt.setBrainState(nextStateIfFoodFound);
+        }
     }
-    
-    public int getNextStateIfNoFoodFound(){
-        return nextStateIfNoFoodFound;
-    }
+   
 }

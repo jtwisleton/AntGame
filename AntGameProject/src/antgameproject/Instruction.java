@@ -10,5 +10,5 @@ package antgameproject;
  * @author wilki
  */
 public interface Instruction {
-    
+    public void execute(Board gameBoard, Ant currentAnt);
 }

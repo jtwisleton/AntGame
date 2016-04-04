@@ -10,20 +10,19 @@ package antgameproject;
  * @author wilki
  */
 public class Mark implements Instruction {
-    private int nextState;
-    private Marker markToSet;
+    private final int nextState;
+    private final Marker markToSet;
     
     public Mark(Marker markToSet, int nextState){
         this.nextState = nextState;
         this.markToSet = markToSet;
     }
-    
-    public int getNextState(){
-        return nextState;
-    }
-    
-    public Marker getMarkToSet(){
-        return markToSet;
+
+    @Override
+    public void execute(Board gameBoard, Ant currentAnt) {
+        Pos antPosition = currentAnt.getBoardPosition();
+        gameBoard.setMarker(antPosition, currentAnt.getAntColour(), markToSet);
+        currentAnt.setBrainState(nextState);
     }
     
 }

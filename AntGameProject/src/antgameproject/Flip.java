@@ -10,19 +10,20 @@ package antgameproject;
  * @author wilki
  */
 public class Flip implements Instruction {
-    private int nextStateIfZero;
-    private int nextStateElse;
+    private final int nextStateIfZero;
+    private final int nextStateElse;
     
     public Flip(int nextStateIfZero, int nextStateElse){
         this.nextStateIfZero = nextStateIfZero;
         this.nextStateElse = nextStateElse;
     }
     
-    public int getNextStateIfZero(){
-        return nextStateIfZero;
-    }
-    
-    public int getNestStateElse(){
-        return nextStateElse;
+    @Override
+    public void execute(Board gameBoard, Ant currentAnt) {
+        if(RandomNumber.generate() == 0){
+            currentAnt.setBrainState(nextStateIfZero);
+        } else {
+            currentAnt.setBrainState(nextStateElse);
+        }
     }
 }

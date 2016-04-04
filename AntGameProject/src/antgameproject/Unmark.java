@@ -10,19 +10,18 @@ package antgameproject;
  * @author wilki
  */
 public class Unmark implements Instruction{
-    private Marker markToClear;
-    private int nextState;
+    private final Marker markToClear;
+    private final int nextState;
     
     public Unmark(Marker markToClear, int nextState){
         this.markToClear = markToClear;
         this.nextState = nextState;
     }
     
-    public Marker getMarkToClear(){
-        return markToClear;
-    }
-    
-    public int getNextState(){
-        return nextState;
+    @Override
+    public void execute(Board gameBoard, Ant currentAnt) {
+        Pos antPosition = currentAnt.getBoardPosition();
+        gameBoard.clearMarker(antPosition, currentAnt.getAntColour(), markToClear);
+        currentAnt.setBrainState(nextState);
     }
 }

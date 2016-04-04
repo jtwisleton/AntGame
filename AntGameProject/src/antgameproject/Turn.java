@@ -10,19 +10,18 @@ package antgameproject;
  * @author wilki
  */
 public class Turn implements Instruction{
-    private TurnDirection directionToTurn;
-    private int nextState;
+    private final TurnDirection directionToTurn;
+    private final int nextState;
     
     public Turn(TurnDirection directionToTurn, int nextState){
         this.directionToTurn = directionToTurn;
         this.nextState = nextState;
     }
-    
-    public TurnDirection getDirectionToTurn(){
-        return directionToTurn;
+
+    @Override
+    public void execute(Board gameBoard, Ant currentAnt) {
+        currentAnt.setTurnDirection(directionToTurn);
+        currentAnt.setBrainState(nextState);
     }
     
-    public int getNextState(){
-        return nextState;
-    }
 }
