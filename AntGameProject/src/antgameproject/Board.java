@@ -112,4 +112,17 @@ public class Board {
         }
         return false;
     }
+    
+    public int getNumberOfAnts(){
+        return antsOnBoard.length;
+    }
+    
+    public Terrain getTerrainAtPosition(Pos positionOfTerrain){
+        return board[positionOfTerrain.getPosY()][positionOfTerrain.getPosX()].getCellTerrain();
+    }
+    
+    public int getFoodAtint(Pos tilePosition){
+        return board[tilePosition.getPosY()][tilePosition.getPosX()].getFoodInTile();
+    }
+    
 }
