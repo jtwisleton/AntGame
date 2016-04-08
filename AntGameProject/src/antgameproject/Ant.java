@@ -75,13 +75,8 @@ public class Ant {
         this.carryingFood = carryingFood;
     }
     
-    // double check directions
-    public void setTurnDirection(TurnDirection directionToTurn){
-        if(directionToTurn == TurnDirection.RIGHT){
-            facingDirection = (facingDirection + 1) % 6;
-        } else {
-            facingDirection = (facingDirection - 1) % 6;
-        } 
+    public void setFacingDirection(int facingDirection){
+        this.facingDirection = facingDirection;
     }
     
     public int getFacingDirection(){
