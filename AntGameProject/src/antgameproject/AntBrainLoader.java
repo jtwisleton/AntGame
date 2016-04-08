@@ -15,36 +15,45 @@ import java.util.regex.Pattern;
  */
 public class AntBrainLoader {
 
-    
-    public static void main (String args[]) throws FileNotFoundException, IOException {
-       
+    public static void main(String args[]) throws FileNotFoundException, IOException {
+
+        /*
+         Just a quick test to see that AntBrainLoader's loadBrain method performs
+         as expected.
+         */
+        String fn = "src//antgameproject//testBrain.txt";
+        AntBrain ab = loadBrain(fn);
+        for (int i = 0; i < 16; i++) {
+            System.out.println(ab.getInstruction(i).toString());
+        }
+
+    }
+
+    public static AntBrain loadBrain(String fileName) throws FileNotFoundException, IOException {
+
         /*
          Read the brain from a file into a String.
          */
-        String fn = "src//antgameproject//testBrain.txt";
         String brainString = "";
         List<String> instructionStrings = new ArrayList<>();
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader(new FileInputStream(fn)));
-        
-        try {
+        List<Instruction> instructions = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(new FileInputStream(fileName)))) {
             String line;
             while ((line = br.readLine()) != null) {
                 brainString += line;
             }
-        } finally {
-            br.close();
         }
 
         /*
          Declare pattern that describe the entire brain.
-         */        
+         */
         Pattern brainPattern = Pattern.compile("(Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Marker|Rock))|((Mark|Unmark|Pickup)\\s+\\d+\\s+\\d+)|(Move\\s+\\d+\\s+\\d+)|(Turn\\s+(Left|Right)\\s+\\d+)|(Drop\\s+\\d+)|(Flip\\s+\\d+\\s+\\d+\\s+\\d+)");
         Matcher brainPatternMatcher = brainPattern.matcher(brainString);
 
         /*
-         Iterate over the string, "eating off" brain instruction matches and adding
-        them to an arrayList of Strings. 
+         Iterate over the brain string, removing brain instruction matches and adding
+         them to an arrayList of Strings. 
          */
         Boolean finished = false;
         while (!finished) {
@@ -61,39 +70,185 @@ public class AntBrainLoader {
 
         /*
          Remove whitespace from string. If the remaining string is not
-         "", return that brain is invalid. Else return that brain is valid.
+         "", return that brain is invalid.
          */
         brainString = brainString.replaceAll("\\s", "");
         if (!"".equals(brainString)) {
             System.out.println("Invalid brain!");
-            //return null;
-        } else {            
+            return null;
+        } else {
+
+            /*
+             If the brain is valid, parse the instructions and add to an instruction
+             list.
+             */
             System.out.println("Valid brain!");
             Pattern sensePattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Marker|Rock)");
             Pattern markPattern = Pattern.compile("(Mark|Unmark|Pickup)\\s+\\d+\\s+\\d+");
-            Pattern movePattern = Pattern.compile("Move\\\\s+\\\\d+\\\\s+\\\\d+");
-            Pattern turnPattern = Pattern.compile("Turn\\\\s+(Left|Right)\\\\s+\\\\d+");
-            Pattern dropPattern = Pattern.compile("Drop\\\\s+\\\\d+");
-            Pattern flipPattern = Pattern.compile("Flip\\\\s+\\\\d+\\\\s+\\\\d+\\\\s+\\\\d+");
-            
+            Pattern movePattern = Pattern.compile("Move\\s+\\d+\\s+\\d+");
+            Pattern turnPattern = Pattern.compile("Turn\\s+(Left|Right)\\s+\\d+");
+            Pattern dropPattern = Pattern.compile("Drop\\s+\\d+");
+            Pattern flipPattern = Pattern.compile("Flip\\s+\\d+\\s+\\d+\\s+\\d+");
+
+            /*
+             Iterate over the instruction strings, matching them to particular
+             instructions. Then create Instruction objects using the parameters
+             extracted from the instruction strings, and add these objects to a
+             list.
+             */
+            String[] splitInstruction;
             for (String instructionString : instructionStrings) {
-                if (instructionString.matches(sensePattern.pattern())){
-                    String[] splitInstruction = instructionString.split("\\s+");                    
-                    
-                }else if(instructionString.matches(markPattern.pattern())){
-                    String[] splitInstruction = instructionString.split("\\s+");                    
-                }else if(instructionString.matches(movePattern.pattern())){
-                    String[] splitInstruction = instructionString.split("\\s+");                    
-                }else if(instructionString.matches(turnPattern.pattern())){
-                    String[] splitInstruction = instructionString.split("\\s+");                    
-                }else if(instructionString.matches(dropPattern.pattern())){
-                    String[] splitInstruction = instructionString.split("\\s+");                    
-                }else if(instructionString.matches(flipPattern.pattern())){
-                    String[] splitInstruction = instructionString.split("\\s+");                    
+
+                /*
+                 if the instructionString selected by the iterator is a Sense
+                 instruction, create a new Sense instruction with the parsed
+                 parameters and add it to instructions.
+                 */
+                if (instructionString.matches(sensePattern.pattern())) {
+                    splitInstruction = instructionString.split("\\s+");
+                    String direction = splitInstruction[1].trim();
+                    int nextStateIfConditionTrue = Integer.parseInt(splitInstruction[2].trim());
+                    int nextStateIfConditionFalse = Integer.parseInt(splitInstruction[3].trim());
+                    String condition = splitInstruction[4].trim();
+                    Condition c = null;
+                    Direction d = null;
+
+                    switch (direction) {
+                        case "Ahead":
+                            d = Direction.AHEAD;
+                            break;
+                        case "Here":
+                            d = Direction.HERE;
+                            break;
+                        case "LeftAhead":
+                            d = Direction.LEFTAHEAD;
+                            break;
+                        case "RightAhead":
+                            d = Direction.RIGHTAHEAD;
+                            break;
+                    }
+
+                    switch (condition) {
+                        case "FoeMarker":
+                            c = new FoeMarker();
+                            break;
+                        case "FoeWithFood":
+                            c = new FoeWithFood();
+                            break;
+                        case "FoeHome":
+                            c = new FoeHome();
+                            break;
+                        case "Foe":
+                            c = new Foe();
+                            break;
+                        case "Food":
+                            c = new Food();
+                            break;
+                        case "FriendWithFood":
+                            c = new FriendWithFood();
+                            break;
+                        case "Friend":
+                            c = new Friend();
+                            break;
+                        case "Home":
+                            c = new Home();
+                            break;
+                        case "Marker":
+                            c = new Marker(0);
+                            break;
+                        case "Rock":
+                            c = new Rock();
+                            break;
+                    }
+
+                    instructions.add(new Sense(d, c, nextStateIfConditionTrue, nextStateIfConditionFalse));
+
+                } /*
+                 if the instructionString selected by the iterator is a Mark
+                 instruction, create a new Mark instruction with the parsed
+                 parameters and add it to instructions.
+                 */ else if (instructionString.matches(markPattern.pattern())) {
+                    splitInstruction = instructionString.split("\\s+");
+                    String markUnmarkorPickup = splitInstruction[0].trim();
+                    int markToSet = Integer.parseInt(splitInstruction[1].trim());
+                    int nextState = Integer.parseInt(splitInstruction[2].trim());
+                    Instruction i = null;
+
+                    switch (markUnmarkorPickup) {
+                        case "Mark":
+                            i = new Mark(markToSet, nextState);
+                            break;
+                        case "Unmark":
+                            i = new Unmark(markToSet, nextState);
+                            break;
+                        case "Pickup":
+                            i = new PickUpFood(markToSet, nextState);
+                            break;
+                    }
+
+                    instructions.add(i);
+
+                } /*
+                 if the instructionString selected by the iterator is a Move
+                 instruction, create a new Move instruction with the parsed
+                 parameters and add it to instructions.
+                 */ else if (instructionString.matches(movePattern.pattern())) {
+                    splitInstruction = instructionString.split("\\s+");
+                    int nextStateIfAheadIsClear = Integer.parseInt(splitInstruction[1].trim());
+                    int nextStateIfAheadIsBlocked = Integer.parseInt(splitInstruction[2].trim());
+
+                    instructions.add(new Move(nextStateIfAheadIsClear, nextStateIfAheadIsBlocked));
+
+                } /*
+                 if the instructionString selected by the iterator is a Turn
+                 instruction, create a new Turn instruction with the parsed
+                 parameters and add it to instructions.
+                 */ else if (instructionString.matches(turnPattern.pattern())) {
+                    splitInstruction = instructionString.split("\\s+");
+                    String turnDirection = splitInstruction[1].trim();
+                    int nextState = Integer.parseInt(splitInstruction[2].trim());
+                    TurnDirection d = null;
+
+                    switch (turnDirection) {
+                        case "Left":
+                            d = TurnDirection.LEFT;
+                            break;
+                        case "Right":
+                            d = TurnDirection.RIGHT;
+                            break;
+                    }
+
+                    instructions.add(new Turn(d, nextState));
+
+                } /*
+                 if the instructionString selected by the iterator is a Drop
+                 instruction, create a new Drop instruction with the parsed
+                 parameters and add it to instructions.
+                 */ else if (instructionString.matches(dropPattern.pattern())) {
+                    splitInstruction = instructionString.split("\\s+");
+                    int nextState = Integer.parseInt(splitInstruction[1].trim());
+
+                    instructions.add(new DropFood(nextState));
+
+                } /*
+                 if the instructionString selected by the iterator is a Flip
+                 instruction, create a new Flip instruction with the parsed
+                 parameters and add it to instructions.
+                 */ else if (instructionString.matches(flipPattern.pattern())) {
+                    splitInstruction = instructionString.split("\\s+");
+                    int nextStateIfZero = Integer.parseInt(splitInstruction[2].trim());
+                    int nextStateElse = Integer.parseInt(splitInstruction[3].trim());
+
+                    instructions.add(new Flip(nextStateIfZero, nextStateElse));
                 }
             }
-            
+
+            /*
+             Once the instructions list has been populated with parsed instructions,
+             create a new AntBrain object with instructions as its parameter, and
+             return this AntBrain.
+             */
+            return new AntBrain(instructions);
         }
-    
     }
 }
