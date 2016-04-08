@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package antgameproject;
 
 /**
  *
  * @author wilki
  */
-public class Move implements Instruction {
+public class Move extends DirectionalInstruction implements Instruction {
     private final int nextStateIfAheadIsClear;
     private final int nextStateIfAheadIsBlocked;
     private final int restDuration;
@@ -33,38 +29,6 @@ public class Move implements Instruction {
             currentAnt.setResting(restDuration);
             checkForSurroundedAnts(newPosition, gameBoard);    
         }    
-    }
-    
-    private Pos getAdjacentCell(Pos cellPosition, int adjacentDirection){
-        if(adjacentDirection == 0){
-            return new Pos(cellPosition.getPosX()+1, cellPosition.getPosY());
-        } else if(adjacentDirection == 3){
-            return new Pos(cellPosition.getPosX()-1, cellPosition.getPosY());
-        } else if(adjacentDirection == 1){
-            if(cellPosition.getPosY() % 2 == 0){
-                return new Pos(cellPosition.getPosX(), cellPosition.getPosY()+1);
-            } else {
-                return new Pos(cellPosition.getPosX()-1, cellPosition.getPosY()+1);
-            }   
-        } else if(adjacentDirection == 2){
-            if(cellPosition.getPosY() % 2 == 0){
-                return new Pos(cellPosition.getPosX(), cellPosition.getPosY()+1);
-            } else {
-                return new Pos(cellPosition.getPosX()-1, cellPosition.getPosY()+1);
-            }
-        } else if(adjacentDirection == 4){
-            if(cellPosition.getPosY() % 2 == 0){
-                return new Pos(cellPosition.getPosX()-1, cellPosition.getPosY()-1);
-            } else {
-                return new Pos(cellPosition.getPosX(), cellPosition.getPosY()-1);
-            }
-        } else {
-            if(cellPosition.getPosY() % 2 == 0){
-                return new Pos(cellPosition.getPosX(), cellPosition.getPosY()-1);
-            } else {
-                return new Pos(cellPosition.getPosX()-1, cellPosition.getPosY()-1);
-            }
-        }
     }
     
     private int numAdjacentEnemyAnts(Pos position, Colour antColour, Board gameBoard){
