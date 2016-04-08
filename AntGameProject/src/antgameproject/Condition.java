@@ -10,7 +10,9 @@ package antgameproject;
  *
  * @author wilki
  */
-public enum Condition {
-    FRIEND, FOE, FRIENDWITHFOOD, FOEWITHFOOD, FOOD, ROCK, MARKER, FOEMARKER,
-    HOME, FOEHOME;
+public interface Condition {
+    
+    public boolean testCondition(Pos sensePosition, Colour antColour, Board gameBoard);
+    //FRIEND, FOE, FRIENDWITHFOOD, FOEWITHFOOD, FOOD, ROCK, MARKER, FOEMARKER,
+    //HOME, FOEHOME;
 }
