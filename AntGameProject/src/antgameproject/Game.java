@@ -22,7 +22,7 @@ public class Game {
     
     public void runGame(){
         while(step < 300000){
-            for(int i = 0; i < gameBoard.numberOfAnts(); i++){
+            for(int i = 0; i < gameBoard.getNumberOfAnts(); i++){
                 takeAntWithIdMove(i);
             }
             step++;
@@ -45,7 +45,12 @@ public class Game {
     
             
     private Instruction getInstruction(Colour antColour, int brainState){
-
+        // player one is red and player two black (only works for two players)
+        if(antColour == Colour.RED){
+            return playerOne.getState(brainState);
+        } else {
+            return playerTwo.getState(brainState);
+        }
     }
 
 }
