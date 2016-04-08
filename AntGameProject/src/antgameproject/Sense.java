@@ -9,7 +9,7 @@ package antgameproject;
  *
  * @author wilki
  */
-public class Sense implements Instruction {
+public class Sense extends DirectionalInstruction implements Instruction {
     private final Direction senseDirection;
     private final Condition condition; 
     private final int nextStateIfConditionTrue;
@@ -25,8 +25,40 @@ public class Sense implements Instruction {
     
     @Override
     public void execute(Board gameBoard, Ant currentAnt) {
-        // let p' = sensed_cell(p, direction(a), sensedir) in
-        // let st = if cell_matches(p', cond, color(a)) then st1 else st2 in
-        // set_state(a, st)            
+        Pos cellToSense;
+        Pos currentAntPosition = currentAnt.getBoardPosition();
+        int currentAntFacingDirection = currentAnt.getFacingDirection();
+        switch(senseDirection){
+            case HERE: 
+                cellToSense = currentAnt.getBoardPosition();
+                break;  
+            case AHEAD:
+                cellToSense = getAdjacentCell(currentAntPosition, currentAntFacingDirection);
+                break;
+            case LEFTAHEAD:
+                int facingL = turn(TurnDirection.LEFT, currentAntFacingDirection);
+                cellToSense = getAdjacentCell(currentAntPosition, facingL);
+                break;
+            case RIGHTAHEAD:
+                int facingR = turn(TurnDirection.RIGHT, currentAntFacingDirection);
+                cellToSense = getAdjacentCell(currentAntPosition, facingR);
+                break;
+            default:
+                // add default
+                cellToSense = null;
+                break;
+        }
+        
+        boolean cellMatchesCondition = condition.testCondition(cellToSense, 
+                currentAnt.getAntColour(), gameBoard);
+        
+        if(cellMatchesCondition){
+            currentAnt.setBrainState(nextStateIfConditionTrue);
+        } else {
+            currentAnt.setBrainState(nextStateIfConditionFalse);
+        }
+         
     }
+
+
 }
