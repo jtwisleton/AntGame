@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * @author James Twisleton
  */
-public class AntBrainChecker {
+public class AntBrainLoader {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         /*
