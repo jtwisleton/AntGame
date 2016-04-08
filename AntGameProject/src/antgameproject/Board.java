@@ -67,16 +67,11 @@ public class Board {
     }
     
     public boolean anthillAt(Pos anthillPos, Colour anthillColour){
-        for(Colour col: Colour.values()){
-            if(col == anthillColour){
-                return board[anthillPos.getPosY()][anthillPos.getPosX()].getCellTerrain() 
-                    == colourToBaseMatch.get(anthillColour);
-            }
-        }
-        return false;
+        return board[anthillPos.getPosY()][anthillPos.getPosX()].getCellTerrain()
+                == colourToBaseMatch.get(anthillColour);
     }
     
-    public void setMarker(Pos markerPos, Colour markerCol, Marker mark){
+    public void setMarker(Pos markerPos, Colour markerCol, int mark){
         for(Colour col: Colour.values()){
             if(markerCol == col){
                 board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, mark);
@@ -84,18 +79,18 @@ public class Board {
         }
     }
     
-    public void clearMarker(Pos markerPos, Colour markerCol, Marker mark){
+    public void clearMarker(Pos markerPos, Colour markerCol, int mark){
         for(Colour col: Colour.values()){
             if(markerCol == col){
-                Marker markInTile = board[markerPos.getPosY()][markerPos.getPosX()].getMarker(col);
+                int markInTile = board[markerPos.getPosY()][markerPos.getPosX()].getMarker(col);
                 if(markInTile == mark){
-                    board[markerPos.getPosY()][markerPos.getPosX()].setMarker(col, Marker.EMPTY);
+                    board[markerPos.getPosY()][markerPos.getPosX()].setMarker(col, null);
                 }
             }
         }
     }
     
-    public boolean checkMarker(Pos markerPos, Colour markerCol, Marker mark){
+    public boolean checkMarker(Pos markerPos, Colour markerCol, int mark){
         for(Colour col: Colour.values()){
             if(markerCol == col){
                 return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(col) == mark;
@@ -107,7 +102,7 @@ public class Board {
     public boolean checkAnyMarker(Pos markerPos, Colour markerCol){
         for(Colour col: Colour.values()){
             if(markerCol == col){
-                return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(col) != Marker.EMPTY;
+                return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(col) != null;
             }
         }
         return false;

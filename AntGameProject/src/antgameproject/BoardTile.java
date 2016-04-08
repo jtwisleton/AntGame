@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public class BoardTile {
     private int foodInTile;
-    private HashMap<Colour, Marker> markers; 
+    private HashMap<Colour, Integer> markers; 
     private final Terrain cellTerrain;
     private Ant antOnTile;
     
@@ -23,7 +23,7 @@ public class BoardTile {
         
         markers = new HashMap<>();
         for(Colour col: Colour.values()){
-            markers.put(col, Marker.EMPTY);
+            markers.put(col, null);
         }
     }
     
@@ -35,11 +35,11 @@ public class BoardTile {
         return antOnTile;
     }
     
-    public void setMarker(Colour  colourOfMarker, Marker markerToSet){
+    public void setMarker(Colour  colourOfMarker, Integer markerToSet){
         markers.put(colourOfMarker, markerToSet);
     }
     
-    public Marker getMarker(Colour colourOfMarkerToGet){
+    public Integer getMarker(Colour colourOfMarkerToGet){
         return markers.get(colourOfMarkerToGet);
     }
     

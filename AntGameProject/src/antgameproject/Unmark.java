@@ -10,10 +10,10 @@ package antgameproject;
  * @author wilki
  */
 public class Unmark implements Instruction{
-    private final Marker markToClear;
+    private final Integer markToClear;
     private final int nextState;
     
-    public Unmark(Marker markToClear, int nextState){
+    public Unmark(Integer markToClear, int nextState){
         this.markToClear = markToClear;
         this.nextState = nextState;
     }

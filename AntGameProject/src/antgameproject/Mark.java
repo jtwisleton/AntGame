@@ -11,9 +11,9 @@ package antgameproject;
  */
 public class Mark implements Instruction {
     private final int nextState;
-    private final Marker markToSet;
+    private final Integer markToSet;
     
-    public Mark(Marker markToSet, int nextState){
+    public Mark(Integer markToSet, int nextState){
         this.nextState = nextState;
         this.markToSet = markToSet;
     }
