@@ -15,7 +15,14 @@ import java.util.regex.Pattern;
  */
 public class AntBrainLoader {
 
-    public static void main(String args[]) throws FileNotFoundException, IOException {
+    public static class AntBrainLoaderException extends Exception {
+
+        public AntBrainLoaderException(String message) {
+            super(message);
+        }
+    }
+
+    public static void main(String args[]) throws FileNotFoundException, IOException, AntBrainLoaderException {
 
         /*
          Just a quick test to see that AntBrainLoader's loadBrain method performs
@@ -29,7 +36,7 @@ public class AntBrainLoader {
 
     }
 
-    public static AntBrain loadBrain(String fileName) throws FileNotFoundException, IOException {
+    public static AntBrain loadBrain(String fileName) throws FileNotFoundException, IOException, AntBrainLoaderException {
 
         /*
          Read the brain from a file into a String.
@@ -73,16 +80,14 @@ public class AntBrainLoader {
          "", return that brain is invalid.
          */
         brainString = brainString.replaceAll("\\s", "");
-        if (!"".equals(brainString)) {
-            System.out.println("Invalid brain!");
-            return null;
+        if (!"".equals(brainString)) {            
+            throw new AntBrainLoaderException("Invalid brain!");
         } else {
 
             /*
              If the brain is valid, parse the instructions and add to an instruction
              list.
              */
-            System.out.println("Valid brain!");
             Pattern sensePattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Marker|Rock)");
             Pattern markPattern = Pattern.compile("(Mark|Unmark|Pickup)\\s+\\d+\\s+\\d+");
             Pattern movePattern = Pattern.compile("Move\\s+\\d+\\s+\\d+");
