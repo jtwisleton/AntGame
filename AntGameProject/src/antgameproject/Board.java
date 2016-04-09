@@ -94,40 +94,26 @@ public class Board {
     }
     
     public void setMarker(Pos markerPos, Colour markerCol, int mark){
-        for(Colour col: Colour.values()){
-            if(markerCol == col){
-                board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, mark);
-            }
-        }
+        board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, mark); 
     }
     
-    public void clearMarker(Pos markerPos, Colour markerCol, int mark){
-        for(Colour col: Colour.values()){
-            if(markerCol == col){
-                int markInTile = board[markerPos.getPosY()][markerPos.getPosX()].getMarker(col);
-                if(markInTile == mark){
-                    board[markerPos.getPosY()][markerPos.getPosX()].setMarker(col, null);
-                }
-            }
+    public void clearMarker(Pos markerPos, Colour markerCol, int mark){ 
+        int markInTile = board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol);
+        if(markInTile == mark){
+            board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, null);
         }
     }
     
     public boolean checkMarker(Pos markerPos, Colour markerCol, int mark){
-        for(Colour col: Colour.values()){
-            if(markerCol == col){
-                return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(col) == mark;
-            }
+        if(board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) == null){
+            return false;
         }
-        return false;
+        return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) == mark;
     }
     
     public boolean checkAnyMarker(Pos markerPos, Colour markerCol){
-        for(Colour col: Colour.values()){
-            if(markerCol == col){
-                return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(col) != null;
-            }
-        }
-        return false;
+        return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) != null;
+
     }
     
     public int getNumberOfAnts(){
