@@ -20,7 +20,7 @@ public class Flip implements Instruction {
     
     @Override
     public void execute(Board gameBoard, Ant currentAnt) {
-        if(RandomNumber.generate() == 0){
+        if(RandomNumber.generateNumber() == 0){
             currentAnt.setBrainState(nextStateIfZero);
         } else {
             currentAnt.setBrainState(nextStateElse);
