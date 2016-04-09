@@ -5,7 +5,9 @@
  */
 package antgameproject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -13,16 +15,36 @@ import java.util.HashMap;
  */
 public class Board {
     private BoardTile[][] board;
-    private Ant[] antsOnBoard; 
+    private List<Ant> antsOnBoard; 
     private HashMap<Colour, Terrain> colourToBaseMatch;
     
     public Board(BoardTile[][] board){
         this.board = board;
-        // add ants?
-        
+        antsOnBoard = new ArrayList<>();
+        addAnts();
         colourToBaseMatch = new HashMap<>();
         colourToBaseMatch.put(Colour.BLACK, Terrain.BLACKBASE);
         colourToBaseMatch.put(Colour.RED, Terrain.REDBASE);
+    }
+    
+    private void addAnts(){
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[i].length; j++){
+                if(board[i][j].getCellTerrain() != Terrain.ROCK && 
+                        board[i][j].getCellTerrain() != Terrain.GRASS){
+                    Colour antColour = null;
+                    for(Colour key: colourToBaseMatch.keySet()){
+                        if(colourToBaseMatch.get(key) == board[i][j].getCellTerrain()){
+                            antColour = key;
+                        }
+                    }
+                    int antId = antsOnBoard.size();
+                    Pos antPosition = new Pos(i, j);
+                    Ant antToAdd = new Ant(antColour, antId, antPosition);
+                    antsOnBoard.add(antToAdd);
+                }
+            }
+        }
     }
     
     public boolean antInPosition(Pos posToCheck){
@@ -45,11 +67,11 @@ public class Board {
     }
     
     public boolean antIsAlive(int id){
-        return antsOnBoard[id].getAntIsAlive();
+        return antsOnBoard.get(id).getAntIsAlive();
     }
     
     public Pos getAntPosition(int id){
-        return antsOnBoard[id].getBoardPosition(); 
+        return antsOnBoard.get(id).getBoardPosition(); 
     }
     
     public void killAntAt(Pos positionToKillAnt){
@@ -109,7 +131,7 @@ public class Board {
     }
     
     public int getNumberOfAnts(){
-        return antsOnBoard.length;
+        return antsOnBoard.size();
     }
     
     public Terrain getTerrainAtPosition(Pos positionOfTerrain){
