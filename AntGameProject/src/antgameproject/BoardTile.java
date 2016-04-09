@@ -18,6 +18,11 @@ public class BoardTile {
     private Ant antOnTile;
     
     public BoardTile(int foodInTile, Terrain cellTerrain){
+        assert foodInTile < 10;
+        if(cellTerrain == Terrain.ROCK){
+            assert foodInTile == 0;
+        }
+        
         this.foodInTile = foodInTile;
         this.cellTerrain = cellTerrain;
         

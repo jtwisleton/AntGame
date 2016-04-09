@@ -14,6 +14,8 @@ public class Mark implements Instruction {
     private final Integer markToSet;
     
     public Mark(Integer markToSet, int nextState){
+        assert markToSet >= 0 && markToSet < 6;
+        assert nextState >= 0 && nextState < 10000;
         this.nextState = nextState;
         this.markToSet = markToSet;
     }
