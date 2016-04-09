@@ -6,18 +6,16 @@ package antgameproject;
  * @author wilki
  */
 public class Game {
-    private AntBrain playerOne;
-    private AntBrain playerTwo;
-    private Board gameBoard;
+    private final AntBrain playerOne;
+    private final AntBrain playerTwo;
+    private final Board gameBoard;
     private int step;
-    private int restDuration;
     
     public Game(AntBrain playerOne, AntBrain playerTwo, Board gameBoard){
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.gameBoard = gameBoard;
         step = 0;
-        restDuration = 14;
     }
     
     public void runGame(){
@@ -47,9 +45,9 @@ public class Game {
     private Instruction getInstruction(Colour antColour, int brainState){
         // player one is red and player two black (only works for two players)
         if(antColour == Colour.RED){
-            return playerOne.getState(brainState);
+            return playerOne.getInstruction(brainState);
         } else {
-            return playerTwo.getState(brainState);
+            return playerTwo.getInstruction(brainState);
         }
     }
 
