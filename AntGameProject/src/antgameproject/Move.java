@@ -25,6 +25,7 @@ public class Move extends DirectionalInstruction implements Instruction {
         } else {
             gameBoard.clearAntAt(antPosition);
             gameBoard.setAntAt(newPosition, currentAnt);
+            currentAnt.setBoardPosition(newPosition);
             currentAnt.setBrainState(nextStateIfAheadIsClear);
             currentAnt.setResting(restDuration);
             checkForSurroundedAnts(newPosition, gameBoard);    
