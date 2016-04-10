@@ -14,6 +14,7 @@ public class Turn extends DirectionalInstruction implements Instruction{
     private final int nextState;
     
     public Turn(TurnDirection directionToTurn, int nextState){
+        assert nextState >= 0 && nextState < 10000;
         this.directionToTurn = directionToTurn;
         this.nextState = nextState;
     }
