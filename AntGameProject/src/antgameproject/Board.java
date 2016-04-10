@@ -124,6 +124,7 @@ public class Board {
         return board[positionOfTerrain.getPosY()][positionOfTerrain.getPosX()].getCellTerrain();
     }
     
+    // Possibly duplicate class of numberOfFoodAt?
     public int getFoodAtint(Pos tilePosition){
         return board[tilePosition.getPosY()][tilePosition.getPosX()].getFoodInTile();
     }
