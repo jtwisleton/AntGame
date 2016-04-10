@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  *
  * @author James Twisleton
  */
-public class AntWorldChecker {
+public class AntWorldLoader {
 
     public static class AntWorldCheckerException extends Exception {
 
