@@ -10,6 +10,8 @@ public class Game {
     private final AntBrain playerTwo;
     private final Board gameBoard;
     private int step;
+    private int playerOneScore;
+    private int playerTwoScore;
     
     public Game(AntBrain playerOne, AntBrain playerTwo, Board gameBoard){
         this.playerOne = playerOne;
@@ -25,6 +27,7 @@ public class Game {
             }
             step++;
         }
+        getScores();
     }
     
     private void takeAntWithIdMove(int antId){
@@ -49,6 +52,30 @@ public class Game {
         } else {
             return playerTwo.getInstruction(brainState);
         }
+    }
+    
+    private void getScores() {
+        playerOneScore = 0;
+        playerTwoScore = 0;
+        
+        for (int i = 0; i < 150; i++) {
+            for (int j = 0; j < 150; j++) {
+                Pos pos = new Pos(i, j);
+                if (gameBoard.anthillAt(pos, Colour.RED)) {
+                    playerOneScore += gameBoard.getFoodAtint(pos);
+                } else if (gameBoard.anthillAt(pos, Colour.BLACK)) {
+                    playerTwoScore += gameBoard.getFoodAtint(pos);
+                }
+            }
+        }
+    }
+    
+    public int getPlayerOneScore() {
+        return playerOneScore;
+    }
+    
+    public int getPlayerTwoScore() {
+        return playerTwoScore;
     }
 
 }
