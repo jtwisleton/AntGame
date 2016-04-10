@@ -51,7 +51,7 @@ public class AntWorldLoader {
              spaces between the elements and a line might be offset, horizontal
              size is given by the length of each line divided by 2, plus one.
              */
-            int ySize = lines.size();
+            int ySize = lines.size()-2;
             int xSize = (lines.get(2).length() / 2) + 1;
             BoardTile[][] board = new BoardTile[ySize][xSize];
             Boolean offset = false;
@@ -60,7 +60,7 @@ public class AntWorldLoader {
              Iterate over each line in the line ArrayList except the first 2
              (which declare the world size).
              */
-            for (int i = 2; i < ySize; i++) {
+            for (int i = 0; i < ySize; i++) {
 
                 /*
                  Remove all the whitespace in iterator selected line and put the
@@ -70,8 +70,7 @@ public class AntWorldLoader {
                  true, then the x coordinate that a BoardTile is placed into will 
                  be increased by one.
                  */
-                String currentLine = lines.get(i).replaceAll("\\s", "");
-
+                String currentLine = lines.get(i+2).replaceAll("\\s", "");                
                 if (i % 2 != 0) {
                     offset = true;
                 } else {
@@ -83,7 +82,7 @@ public class AntWorldLoader {
                 offset.
                 */
                 if (offset) {
-                    board[i][0] = new BoardTile(0, Terrain.ROCK);
+                    board[i][0] = new BoardTile(0, Terrain.ROCK);                    
                 }else{
                     board[i][xSize-1] = new BoardTile(0, Terrain.ROCK);
                 }
@@ -99,7 +98,7 @@ public class AntWorldLoader {
                             board[i][j + 1] = new BoardTile(0, Terrain.ROCK);
                         } else {
                             board[i][j] = new BoardTile(0, Terrain.ROCK);
-                        }
+                        }                        
                     } else if (currentLine.charAt(j) == '.') {
                         if (offset) {
                             board[i][j + 1] = new BoardTile(0, Terrain.GRASS);
@@ -127,7 +126,7 @@ public class AntWorldLoader {
                          */
                         String s = Character.toString(currentLine.charAt(j));
                         if (s.matches("\\d")) {
-
+                            
                             /*
                              If character is a digit, place a new GRASS BoardTile
                              on the board with food value set to the digit.
@@ -135,20 +134,20 @@ public class AntWorldLoader {
                             if (offset) {
                                 board[i][j + 1] = new BoardTile(Integer.parseInt(s), Terrain.GRASS);
                             } else {
-                                board[i][j] = new BoardTile(Integer.parseInt(s), Terrain.GRASS);
+                                board[i][j] = new BoardTile(Integer.parseInt(s), Terrain.GRASS);                            
                             }
-                        } else {
-                            throw new AntWorldLoaderException("Unknown character found in world String ArrayList: " + s);
-                        }
-                    }
-                }
-            }
-            //return new Board(board);
+                        } else {                            
+                            throw new AntWorldLoaderException("Unknown character found in world String ArrayList: " + s);                        
+                        }                    
+                    }                
+                }                                        
+            }                                     
+            return new Board(board);
         } else {
             throw new AntWorldLoaderException("checkWorldSyntax failed when called by loadWorld");
-        }
-    return null;
+        }    
     }
+    
     /*
      Returns true is a world is syntactically correct, or throws an exception.
      Also loads given world into lines ArrayList.
@@ -245,3 +244,4 @@ public class AntWorldLoader {
         return true;
     }
 }
+
