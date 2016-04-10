@@ -1,7 +1,7 @@
 package antgameproject;
 
 import antgameproject.AntBrainLoader.AntBrainLoaderException;
-import antgameproject.AntWorldChecker.AntWorldCheckerException;
+import antgameproject.AntWorldLoader.AntWorldCheckerException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -188,7 +188,7 @@ public class AntGameTournament {
         // For each file, try to load the ant world and catch any exceptions
         for (String antWorldFile : antWorldFiles) {
             try {
-                AntWorldChecker.loadWorld(antWorldFile);
+                AntWorldLoader.loadWorld(antWorldFile);
             } catch (IOException | AntWorldCheckerException e) {
                 System.out.println(e);
             }
