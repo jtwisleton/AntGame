@@ -20,7 +20,7 @@ public class DropFood implements Instruction{
     public void execute(Board gameBoard, Ant currentAnt) {
         if(currentAnt.getCarryingFood()){
             Pos antPosition = currentAnt.getBoardPosition();
-            gameBoard.setFoodAt(antPosition, gameBoard.numberOfFoodAt(antPosition) - 1);
+            gameBoard.setFoodAt(antPosition, gameBoard.numberOfFoodAt(antPosition) + 1);
             currentAnt.setCarryingFood(false);
         }
         currentAnt.setBrainState(nextState);
