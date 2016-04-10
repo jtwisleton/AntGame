@@ -27,9 +27,9 @@ public class Board {
         colourToBaseMatch.put(Colour.RED, Terrain.REDBASE);
     }
     
-    private void addAnts(){
+    private void addAnts(){        
         for(int i = 0; i < board.length; i++){
-            for(int j = 0; j < board[i].length; j++){
+            for(int j = 0; j < board[i].length; j++){                
                 if(board[i][j].getCellTerrain() != Terrain.ROCK && 
                         board[i][j].getCellTerrain() != Terrain.GRASS){
                     Colour antColour = null;

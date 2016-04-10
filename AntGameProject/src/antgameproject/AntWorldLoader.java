@@ -28,7 +28,7 @@ public class AntWorldLoader {
     public static void main(String[] args) throws FileNotFoundException, IOException, AntWorldLoaderException {
         String fn = "src//antgameproject//testWorld.txt";
         Board b = loadWorld(fn);
-        Pos p = new Pos(0,0);
+        //Pos p = new Pos(0,0);
     }
 
     public static Boolean tournamentReady(Board b) {
@@ -53,7 +53,7 @@ public class AntWorldLoader {
              */
             int ySize = lines.size();
             int xSize = (lines.get(2).length() / 2) + 1;
-            BoardTile[][] board = new BoardTile[ySize][xSize];            
+            BoardTile[][] board = new BoardTile[ySize][xSize];
             Boolean offset = false;
 
             /*
@@ -79,10 +79,21 @@ public class AntWorldLoader {
                 }
 
                 /*
+                Set first or last x position on board to be rock depending on
+                offset.
+                */
+                if (offset) {
+                    board[i][0] = new BoardTile(0, Terrain.ROCK);
+                }else{
+                    board[i][xSize-1] = new BoardTile(0, Terrain.ROCK);
+                }
+
+                /*
                  Iterate over the characters in the iterator selected line, adding 
                  corresponding BoardTiles to the board array.
                  */
-                for (int j = 0; j < xSize-1; j++) {
+                for (int j = 0; j < xSize - 1; j++) {
+
                     if (currentLine.charAt(j) == '#') {
                         if (offset) {
                             board[i][j + 1] = new BoardTile(0, Terrain.ROCK);
@@ -126,12 +137,12 @@ public class AntWorldLoader {
                             } else {
                                 board[i][j] = new BoardTile(Integer.parseInt(s), Terrain.GRASS);
                             }
-                        } else {                            
-                            throw new AntWorldLoaderException("Unknown character found in world String ArrayList: "+s);
+                        } else {
+                            throw new AntWorldLoaderException("Unknown character found in world String ArrayList: " + s);
                         }
                     }
                 }
-            }            
+            }
             return new Board(board);
         } else {
             throw new AntWorldLoaderException("checkWorldSyntax failed when called by loadWorld");
