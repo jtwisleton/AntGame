@@ -20,13 +20,13 @@ public abstract class DirectionalInstruction {
             if(cellPosition.getPosY() % 2 == 0){
                 return new Pos(cellPosition.getPosX(), cellPosition.getPosY()+1);
             } else {
-                return new Pos(cellPosition.getPosX()-1, cellPosition.getPosY()+1);
+                return new Pos(cellPosition.getPosX()+1, cellPosition.getPosY()+1);
             }   
         } else if(adjacentDirection == 2){
             if(cellPosition.getPosY() % 2 == 0){
-                return new Pos(cellPosition.getPosX(), cellPosition.getPosY()+1);
-            } else {
                 return new Pos(cellPosition.getPosX()-1, cellPosition.getPosY()+1);
+            } else {
+                return new Pos(cellPosition.getPosX(), cellPosition.getPosY()+1);
             }
         } else if(adjacentDirection == 4){
             if(cellPosition.getPosY() % 2 == 0){
@@ -38,7 +38,7 @@ public abstract class DirectionalInstruction {
             if(cellPosition.getPosY() % 2 == 0){
                 return new Pos(cellPosition.getPosX(), cellPosition.getPosY()-1);
             } else {
-                return new Pos(cellPosition.getPosX()-1, cellPosition.getPosY()-1);
+                return new Pos(cellPosition.getPosX()+1, cellPosition.getPosY()-1);
             }
         }
     }
