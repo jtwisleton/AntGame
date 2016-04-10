@@ -59,4 +59,12 @@ public class BoardTile {
     public Terrain getCellTerrain(){
         return cellTerrain;
     }
+    
+    public String toString(){
+        if(antOnTile == null){
+            return cellTerrain.toString();
+        } else {
+            return antOnTile.getAntColour().toString();
+        }
+    }
 }
