@@ -97,11 +97,13 @@ public class Board {
         board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, mark); 
     }
     
-    public void clearMarker(Pos markerPos, Colour markerCol, int mark){ 
-        int markInTile = board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol);
-        if(markInTile == mark){
-            board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, null);
-        }
+    public void clearMarker(Pos markerPos, Colour markerCol, int mark){
+        if(board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) != null){
+            int markInTile = board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol);
+            if(markInTile == mark){
+                board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, null);
+            }
+        }    
     }
     
     public boolean checkMarker(Pos markerPos, Colour markerCol, int mark){
