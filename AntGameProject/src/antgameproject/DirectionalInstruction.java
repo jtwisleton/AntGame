@@ -59,7 +59,11 @@ public abstract class DirectionalInstruction {
         if(directionToTurn == TurnDirection.RIGHT){
             return (currentFacingDirection + 1) % 6;
         } else {
-            return (currentFacingDirection - 1) % 6;
+            if((currentFacingDirection - 1) < 0){
+                return 5;
+            } else {
+                return (currentFacingDirection - 1) % 6;
+            }    
         } 
     }
         
