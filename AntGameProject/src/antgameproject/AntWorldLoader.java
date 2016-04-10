@@ -143,10 +143,11 @@ public class AntWorldLoader {
                     }
                 }
             }
-            return new Board(board);
+            //return new Board(board);
         } else {
             throw new AntWorldLoaderException("checkWorldSyntax failed when called by loadWorld");
         }
+    return null;
     }
     /*
      Returns true is a world is syntactically correct, or throws an exception.
@@ -184,11 +185,13 @@ public class AntWorldLoader {
          later).
          */
         int xDimension = Integer.parseInt(lines.get(0));
-        int yDimension = Integer.parseInt(lines.get(0));
-
+        int yDimension = Integer.parseInt(lines.get(1));
+        
         if (lines.get(2).length() != (xDimension * 2) - 1) {
             throw new AntWorldLoaderException("xDimension doesn't match size of world.");
-        } else if (yDimension != lines.size() - 2) {
+        }
+        
+        if (yDimension != lines.size() - 2) {
             throw new AntWorldLoaderException("yDimension doesn't match size of the world.");
         }
 
