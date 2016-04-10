@@ -27,7 +27,7 @@ public class Game {
             }
             step++;
         }
-        getScores();
+        updateScores();
     }
     
     private void takeAntWithIdMove(int antId){
@@ -54,15 +54,23 @@ public class Game {
         }
     }
     
-    private void getScores() {
+    /**
+     * Update the current scores of the game.
+     */
+    private void updateScores() {
         playerOneScore = 0;
         playerTwoScore = 0;
         
+        // Iterate over each cell
         for (int i = 0; i < 150; i++) {
             for (int j = 0; j < 150; j++) {
                 Pos pos = new Pos(i, j);
+                
+                // If red anthill, add number of food to red score
                 if (gameBoard.anthillAt(pos, Colour.RED)) {
                     playerOneScore += gameBoard.getFoodAtint(pos);
+                    
+                // If black anthill, add number of food to black score
                 } else if (gameBoard.anthillAt(pos, Colour.BLACK)) {
                     playerTwoScore += gameBoard.getFoodAtint(pos);
                 }
@@ -70,10 +78,20 @@ public class Game {
         }
     }
     
+    /**
+     * Get the red ant's score.
+     * 
+     * @return Red ant score.
+     */
     public int getPlayerOneScore() {
         return playerOneScore;
     }
     
+    /**
+     * Get the black ant's score.
+     * 
+     * @return Black ant score.
+     */
     public int getPlayerTwoScore() {
         return playerTwoScore;
     }
