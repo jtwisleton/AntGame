@@ -5,6 +5,7 @@ import antgameproject.AntWorldChecker.AntWorldCheckerException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class AntGameTournament {
     private List<Pair<AntBrain, AntBrain>> pairs;
     private HashMap<AntBrain, Integer> scores;
     private Game currentGame;
+    private int topScore;
     
     /**
      * Static class to represent an AntBrain pairing.
@@ -58,6 +60,7 @@ public class AntGameTournament {
         for (AntBrain brain : antBrains) {
             scores.put(brain, 0);
         }
+        topScore = 0;
     }
     
     /**
@@ -72,6 +75,14 @@ public class AntGameTournament {
             // Generate ant world
             // Check ant world and add to array
         }
+        pairs = new ArrayList<>();
+        
+        // Initialise each ant brain's score to 0
+        scores = new HashMap<>();
+        for (AntBrain brain : antBrains) {
+            scores.put(brain, 0);
+        }
+        topScore = 0;
     }
     
     /**
@@ -92,6 +103,23 @@ public class AntGameTournament {
                 runGame(pair.two, pair.one, antWorld);
             }
         }
+        
+        // Remove all ant brains that have less than the top score
+        Iterator<AntBrain> it = antBrains.iterator();
+        while (it.hasNext()) {
+            AntBrain antBrain = it.next();
+            if (scores.get(antBrain) < topScore) {
+                it.remove();
+            }
+        }
+        
+        // If there are more than one ant brain with the top score, repeat tournament
+        if (antBrains.size() > 1) {
+            // Could reset scores to 0
+            runTournament();
+        }
+        
+        // Do something with winning ant brain: antBrains.get(0)
     }
     
     /**
@@ -117,6 +145,13 @@ public class AntGameTournament {
         } else {
             scores.put(one, scores.get(one) + 1);
             scores.put(two, scores.get(two) + 1);
+        }
+        
+        // Maintain a record of the highest score
+        if (scores.get(one) > topScore)  {
+            topScore = scores.get(one);
+        } else if (scores.get(two) > topScore) {
+            topScore = scores.get(two);
         }
     }
     
