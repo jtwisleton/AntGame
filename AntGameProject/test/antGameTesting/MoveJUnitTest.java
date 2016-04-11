@@ -28,9 +28,13 @@ public class MoveJUnitTest {
     private Ant testAnt;
     private Ant testOddYAnt;
     private Board testBoard;
+    private int nextStateIfAheadClear;
+    private int nextStateIfAheadBlocked;
     
     @Before
     public void setUp() {
+        nextStateIfAheadClear = 22;
+        nextStateIfAheadBlocked = 9;
         testAnt = new Ant(Colour.RED, 1, new Pos(2,2));
         testOddYAnt = new Ant(Colour.BLACK, 2, new Pos(5,5));
         BoardTile[][] board = new BoardTile[20][20]; 
@@ -49,13 +53,11 @@ public class MoveJUnitTest {
         testBoard.setAntAt(new Pos(5, 5), testOddYAnt);
     }
     
-    // test clear move from even y
+    // test a clear move from an even y position in all directions
     @Test
     public void testNormalMoveFromEvenY(){
         Pos[] expectedPositions = {new Pos(3,2), new Pos(2,3), new Pos(1,3), new Pos(1,2), 
             new Pos(1,1), new Pos(2,1)};
-        int nextStateIfAheadClear = 22;
-        int nextStateIfAheadBlocked = 9;
         Move testMove = new Move(nextStateIfAheadClear, nextStateIfAheadBlocked);
                 
         for(int i = 0; i < 6; i++){
@@ -72,13 +74,11 @@ public class MoveJUnitTest {
         }
     }
     
-    // test clear move from odd y
+    // test a clear move from an odd y position in all directions
     @Test
     public void testNormalMoveFromOddY(){
         Pos[] expectedPositions = {new Pos(6,5), new Pos(6,6), new Pos(5,6), new Pos(4,5), 
             new Pos(5,4), new Pos(6,4)};
-        int nextStateIfAheadClear = 22;
-        int nextStateIfAheadBlocked = 9;
         Move testMove = new Move(nextStateIfAheadClear, nextStateIfAheadBlocked);
                 
         for(int i = 0; i < 6; i++){
@@ -88,16 +88,57 @@ public class MoveJUnitTest {
                 new Turn(TurnDirection.RIGHT, 1).execute(testBoard, testOddYAnt);
             }
             testMove.execute(testBoard, testOddYAnt);
-            assertTrue(testOddYAnt.getBoardPosition().getPosX() == expectedPositions[i].getPosX() && 
-                testOddYAnt.getBoardPosition().getPosY() == expectedPositions[i].getPosY()); 
+            assertTrue(testOddYAnt.getBoardPosition().getPosX() == expectedPositions[i].getPosX()
+                    && testOddYAnt.getBoardPosition().getPosY() == expectedPositions[i].getPosY()); 
             assertTrue(testBoard.antInPosition(expectedPositions[i])); 
             assertFalse(testBoard.antInPosition(new Pos(5,5)));
         }
     }
     
+    // test rest value is reducing
+    @Test
+    public void testResting(){
+        Move testMove = new Move(nextStateIfAheadClear, nextStateIfAheadBlocked);
+        testMove.execute(testBoard, testAnt);
+        for(int i = 0; i < 14; i++){
+            assertTrue(testAnt.antIsResting());
+            testAnt.decreaseAntResting();        
+        }
+        assertFalse(testAnt.antIsResting());
+    }
+    
     // test blocked by rock
+    @Test
+    public void antBlockedByRock(){
+        Pos antPositionBeforeMove = new Pos(1, 1);
+        Ant blockedAnt = new Ant(Colour.RED, 3, antPositionBeforeMove);
+        blockedAnt.setFacingDirection(3); // set ant to face a rock
+        testBoard.setAntAt(antPositionBeforeMove, blockedAnt);
+        testBoard.printBoardToASCII();
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, 
+                blockedAnt);
+        assertTrue(blockedAnt.getFacingDirection() == 3);
+        assertTrue(blockedAnt.getBoardPosition() == antPositionBeforeMove);
+        assertTrue(blockedAnt.getCurrentBrainState() == nextStateIfAheadBlocked);
+        assertTrue(testBoard.antAt(antPositionBeforeMove) == blockedAnt);
+    }
     
     // test blocked by ant
+    @Test
+    public void antBlockedByAnt(){
+        Pos antPositionBeforeMove = new Pos(1, 1);
+        Ant blockedAnt = new Ant(Colour.RED, 3, antPositionBeforeMove);
+        blockedAnt.setFacingDirection(1); // set ant to face an ant
+        testBoard.setAntAt(antPositionBeforeMove, blockedAnt);
+        testBoard.printBoardToASCII();
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, 
+                blockedAnt);
+        assertTrue(blockedAnt.getFacingDirection() == 1);
+        assertTrue(blockedAnt.getBoardPosition() == antPositionBeforeMove);
+        assertTrue(blockedAnt.getCurrentBrainState() == nextStateIfAheadBlocked);
+        assertTrue(testBoard.antAt(antPositionBeforeMove) == blockedAnt);
+    }
+    
     
     // test surrounded
     
