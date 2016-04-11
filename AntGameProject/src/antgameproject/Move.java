@@ -35,10 +35,10 @@ public class Move extends DirectionalInstruction implements Instruction {
     
     private int numAdjacentEnemyAnts(Pos position, Colour antColour, Board gameBoard){
         int numberOfAdjacentEnemies = 0;
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 6; i++){
             Pos adjacentPosition = getAdjacentCell(position, i);
             if(gameBoard.antAt(adjacentPosition) != null && 
-                    gameBoard.antAt(adjacentPosition).getAntColour() == antColour){ //is this right?
+                    gameBoard.antAt(adjacentPosition).getAntColour() != antColour){ 
                 numberOfAdjacentEnemies++;
             }
         }
