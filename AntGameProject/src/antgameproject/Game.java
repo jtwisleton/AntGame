@@ -68,11 +68,11 @@ public class Game {
                 
                 // If red anthill, add number of food to red score
                 if (gameBoard.anthillAt(pos, Colour.RED)) {
-                    playerOneScore += gameBoard.getFoodAtint(pos);
+                    playerOneScore += gameBoard.numberOfFoodAt(pos);
                     
                 // If black anthill, add number of food to black score
                 } else if (gameBoard.anthillAt(pos, Colour.BLACK)) {
-                    playerTwoScore += gameBoard.getFoodAtint(pos);
+                    playerTwoScore += gameBoard.numberOfFoodAt(pos);
                 }
             }
         }

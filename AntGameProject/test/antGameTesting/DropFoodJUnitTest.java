@@ -50,9 +50,9 @@ public class DropFoodJUnitTest {
     public void testDropFoodWhenAntHasfood(){
         int nextState = 22;
         testAnt.setCarryingFood(true);
-        assertTrue(testBoard.getFoodAtint(testAnt.getBoardPosition()) == 5);
+        assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 5);
         new DropFood(nextState).execute(testBoard, testAnt);
-        assertTrue(testBoard.getFoodAtint(testAnt.getBoardPosition()) == 6);
+        assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 6);
         assertFalse(testAnt.getCarryingFood());
         assertTrue(testAnt.getCurrentBrainState() == nextState);
     }
@@ -61,9 +61,9 @@ public class DropFoodJUnitTest {
     @Test
     public void testDropFoodWhenAntNoFood(){
         int nextState = 22;
-        assertTrue(testBoard.getFoodAtint(testAnt.getBoardPosition()) == 5);
+        assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 5);
         new DropFood(nextState).execute(testBoard, testAnt);
-        assertTrue(testBoard.getFoodAtint(testAnt.getBoardPosition()) == 5);
+        assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 5);
         assertFalse(testAnt.getCarryingFood());
         assertTrue(testAnt.getCurrentBrainState() == nextState);
     }

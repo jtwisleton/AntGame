@@ -9,7 +9,7 @@ public class Food  implements Condition {
     
     @Override
     public boolean testCondition(Pos sensePosition, Colour antColour, Board gameBoard) {
-        return gameBoard.getFoodAtint(sensePosition) > 0;
+        return gameBoard.numberOfFoodAt(sensePosition) > 0;
     }
     
 }

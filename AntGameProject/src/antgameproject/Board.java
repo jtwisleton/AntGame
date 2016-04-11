@@ -130,13 +130,11 @@ public class Board {
         return board[positionOfTerrain.getPosY()][positionOfTerrain.getPosX()].getCellTerrain();
     }
     
-    // Possibly duplicate class of numberOfFoodAt?
-    public int getFoodAtint(Pos tilePosition){
-        return board[tilePosition.getPosY()][tilePosition.getPosX()].getFoodInTile();
-    }
-    
     public void printBoardToASCII(){
         for(int i = 0; i < board.length; i++){
+            if(i % 2 != 0){
+                System.out.print(" ");
+            }
             for(int j = 0; j < board[0].length; j++){
                 System.out.print(board[i][j]);
             }

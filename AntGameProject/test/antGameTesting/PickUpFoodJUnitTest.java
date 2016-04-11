@@ -54,10 +54,10 @@ public class PickUpFoodJUnitTest {
         int nextStateIfFoodFound = 12;
         int nextStateIfNoFood = 23;
         Pos antPosition = antOnTileWithFood.getBoardPosition();
-        assertTrue(testBoard.getFoodAtint(antPosition) == 5);
+        assertTrue(testBoard.numberOfFoodAt(antPosition) == 5);
         assertFalse(antOnTileWithFood.getCarryingFood());
         new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood).execute(testBoard, antOnTileWithFood);
-        assertTrue(testBoard.getFoodAtint(antPosition) == 4);
+        assertTrue(testBoard.numberOfFoodAt(antPosition) == 4);
         assertTrue(antOnTileWithFood.getCarryingFood());
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfFoodFound);
     }
@@ -67,10 +67,10 @@ public class PickUpFoodJUnitTest {
         int nextStateIfFoodFound = 12;
         int nextStateIfNoFood = 23;
         Pos antPosition = antOnTileWithoutFood.getBoardPosition();
-        assertTrue(testBoard.getFoodAtint(antPosition) == 0);
+        assertTrue(testBoard.numberOfFoodAt(antPosition) == 0);
         assertFalse(antOnTileWithoutFood.getCarryingFood());
         new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood).execute(testBoard, antOnTileWithoutFood);
-        assertTrue(testBoard.getFoodAtint(antPosition) == 0);
+        assertTrue(testBoard.numberOfFoodAt(antPosition) == 0);
         assertFalse(antOnTileWithoutFood.getCarryingFood());
         assertTrue(antOnTileWithoutFood.getCurrentBrainState() == nextStateIfNoFood);
     }
@@ -83,11 +83,11 @@ public class PickUpFoodJUnitTest {
         PickUpFood testPickUpFood = new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood);
         Pos antPosition = antOnTileWithFood.getBoardPosition();
         testPickUpFood.execute(testBoard, antOnTileWithFood);
-        assertTrue(testBoard.getFoodAtint(antPosition) == 4);
+        assertTrue(testBoard.numberOfFoodAt(antPosition) == 4);
         assertTrue(antOnTileWithFood.getCarryingFood());
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfFoodFound);
         testPickUpFood.execute(testBoard, antOnTileWithFood);
-        assertTrue(testBoard.getFoodAtint(antPosition) == 4);
+        assertTrue(testBoard.numberOfFoodAt(antPosition) == 4);
         assertTrue(antOnTileWithFood.getCarryingFood());
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfNoFood);
     }

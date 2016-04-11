@@ -50,7 +50,7 @@ public class Move extends DirectionalInstruction implements Instruction {
             Ant currentAnt = gameBoard.antAt(antPosition);
             if(numAdjacentEnemyAnts(antPosition, currentAnt.getAntColour(), gameBoard) >= 5){
                 gameBoard.killAntAt(antPosition);
-                int foodInCell = gameBoard.getFoodAtint(antPosition);
+                int foodInCell = gameBoard.numberOfFoodAt(antPosition);
                 if(currentAnt.getCarryingFood()){
                     foodInCell += 4;
                 } else {
