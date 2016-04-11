@@ -6,7 +6,7 @@ package antgameproject;
  * @author wilki
  */
 public enum Terrain {
-    GRASS("."), ROCK("#"), BLACKBASE("+"), REDBASE("-");
+    GRASS("."), ROCK("#"), BLACKBASE("-"), REDBASE("+");
     
     private final String symbol;
     
