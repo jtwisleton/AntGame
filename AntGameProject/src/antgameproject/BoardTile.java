@@ -60,11 +60,14 @@ public class BoardTile {
         return cellTerrain;
     }
     
+    @Override
     public String toString(){
-        if(antOnTile == null){
-            return cellTerrain.toString();
-        } else {
+        if(antOnTile != null){
             return antOnTile.getAntColour().toString();
+        } else if(foodInTile > 0) {
+            return Integer.toString(foodInTile);
+        } else {
+            return cellTerrain.toString();
         }
     }
 }
