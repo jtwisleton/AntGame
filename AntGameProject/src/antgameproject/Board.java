@@ -17,6 +17,8 @@ public class Board {
     private BoardTile[][] board;
     private List<Ant> antsOnBoard; 
     private HashMap<Colour, Terrain> colourToBaseMatch;
+    private int redAntsAlive;   // should change for more colours added?
+    private int blackAntsAlive;
     
     public Board(BoardTile[][] board){
         this.board = board;
@@ -26,9 +28,10 @@ public class Board {
         colourToBaseMatch.put(Colour.BLACK, Terrain.BLACKBASE);
         colourToBaseMatch.put(Colour.RED, Terrain.REDBASE);
         
-        printBoardToASCII();    // needs to be removed once proram complete
         addAnts();
-        printBoardToASCII();    // needs to be removed once program complete
+        redAntsAlive = antsOnBoard.size() / 2;
+        blackAntsAlive = antsOnBoard.size() / 2;
+
     }
     
     private void addAnts(){
@@ -82,6 +85,7 @@ public class Board {
         Ant ant = board[positionToKillAnt.getPosY()][positionToKillAnt.getPosX()].getAntOnTile();
         ant.killAnt();
         clearAntAt(positionToKillAnt);
+        // reduce ants alive number
     }
     
     public int numberOfFoodAt(Pos position){
