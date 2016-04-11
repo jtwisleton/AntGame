@@ -139,8 +139,43 @@ public class MoveJUnitTest {
         assertTrue(testBoard.antAt(antPositionBeforeMove) == blockedAnt);
     }
     
+    // test moving into surrounded
+    @Test
+    public void testAntSurroundedAfterMove(){
+        Pos antsNewPosition = new Pos(3, 2);
+        Pos[] killingAntPositions = {new Pos(2,1), new Pos(3,1), new Pos(4,2), 
+            new Pos(2,3), new Pos(3,3)};
+        for(int i = 0; i < killingAntPositions.length; i++){
+            Ant killingAnt = new Ant(Colour.BLACK, i + 3, killingAntPositions[i]);
+            testBoard.setAntAt(killingAntPositions[i], killingAnt);
+        }
+        assertTrue(testAnt.getAntIsAlive());
+        assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 0);
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt);
+        assertFalse(testAnt.getAntIsAlive());
+        assertFalse(testBoard.antInPosition(antsNewPosition)); 
+        assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 3);   
+    }
     
-    // test surrounded
+    // test moving into surrounded carrying food
+    @Test
+    public void testAntSurroundedAfterMoveCarryingFood(){
+        Pos antsNewPosition = new Pos(3, 2);
+        testAnt.setCarryingFood(true);
+        Pos[] killingAntPositions = {new Pos(2,1), new Pos(3,1), new Pos(4,2), 
+            new Pos(2,3), new Pos(3,3)};
+        for(int i = 0; i < killingAntPositions.length; i++){
+            Ant killingAnt = new Ant(Colour.BLACK, i + 3, killingAntPositions[i]);
+            testBoard.setAntAt(killingAntPositions[i], killingAnt);
+        }
+        assertTrue(testAnt.getAntIsAlive());
+        assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 0);
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt);
+        assertFalse(testAnt.getAntIsAlive());
+        assertFalse(testBoard.antInPosition(antsNewPosition)); 
+        assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 4);   
+    }
     
-    // check if can be surrounded in a corner
+    
+    // surrounded ant by moving
 }
