@@ -178,4 +178,23 @@ public class MoveJUnitTest {
     
     
     // surrounded ant by moving
+    @Test 
+    public void testAntSurroundingWithMove(){
+        Pos antsNewPosition = new Pos(3, 2);
+        Pos[] killingAntPositions = {new Pos(1,1), new Pos(3,1), new Pos(4,2), 
+            new Pos(2,3), new Pos(3,3)};
+        for(int i = 0; i < killingAntPositions.length; i++){
+            Ant killingAnt = new Ant(Colour.BLACK, i+3, killingAntPositions[i]);
+            testBoard.setAntAt(killingAntPositions[i], killingAnt);    
+        }
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt);
+        assertTrue(testAnt.getAntIsAlive());
+        assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 0);
+        Ant antThatMovesToKill = testBoard.antAt(new Pos(1,1));
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, 
+                antThatMovesToKill);
+        assertFalse(testAnt.getAntIsAlive());
+        assertFalse(testBoard.antInPosition(antsNewPosition)); 
+        assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 3);   
+    }
 }
