@@ -52,7 +52,7 @@ public class AntWorldLoader {
              size is given by the length of each line divided by 2, plus one.
              */
             int ySize = lines.size()-2;
-            int xSize = (lines.get(2).length() / 2) + 1;
+            int xSize = (lines.get(2).length() / 2) + 2;
             BoardTile[][] board = new BoardTile[ySize][xSize];
             Boolean offset = false;
 
