@@ -9,11 +9,11 @@ import antgameproject.Ant;
 import antgameproject.Board;
 import antgameproject.BoardTile;
 import antgameproject.Colour;
-import antgameproject.Move;
+import instructions.Move;
 import antgameproject.Pos;
 import antgameproject.Terrain;
-import antgameproject.Turn;
-import antgameproject.TurnDirection;
+import instructions.Turn;
+import instructions.TurnDirection;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -195,6 +195,6 @@ public class MoveJUnitTest {
                 antThatMovesToKill);
         assertFalse(testAnt.getAntIsAlive());
         assertFalse(testBoard.antInPosition(antsNewPosition)); 
-        assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 3);   
+        assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 3);
     }
 }

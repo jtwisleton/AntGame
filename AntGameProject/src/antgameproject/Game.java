@@ -1,6 +1,8 @@
 
 package antgameproject;
 
+import instructions.Instruction;
+
 /**
  *
  * @author wilki

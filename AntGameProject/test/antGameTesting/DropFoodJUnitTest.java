@@ -9,7 +9,7 @@ import antgameproject.Ant;
 import antgameproject.Board;
 import antgameproject.BoardTile;
 import antgameproject.Colour;
-import antgameproject.DropFood;
+import instructions.DropFood;
 import antgameproject.Pos;
 import antgameproject.Terrain;
 import org.junit.After;

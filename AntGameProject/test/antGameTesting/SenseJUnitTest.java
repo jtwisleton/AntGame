@@ -5,7 +5,7 @@ import antgameproject.Ant;
 import antgameproject.Board;
 import antgameproject.BoardTile;
 import antgameproject.Colour;
-import antgameproject.Marker;
+import conditions.Marker;
 import conditions.Foe;
 import conditions.FoeHome;
 import conditions.Food;
