@@ -27,20 +27,19 @@ public class AntWorldLoader {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, AntWorldLoaderException {
         String fn = "src//antgameproject//testWorld.txt";
-        Board b = loadWorld(fn);
-        //Pos p = new Pos(0,0);
+        Board b = loadWorld(fn,false);        
     }
 
-    public static Boolean tournamentReady(Board b) {
-        return null;
+    public static Boolean tournamentReady(BoardTile[][] b) {
+     return null;   
     }
 
     /*
      Calls the checkWorldSyntax method, then uses the lines ArrayList to create
      a board from the given world file if checkWorldSyntax returns true.
      */
-    public static Board loadWorld(String fileName) throws AntWorldLoaderException, IOException {
-
+    public static Board loadWorld(String fileName,boolean tournamentReady) throws AntWorldLoaderException, IOException {
+        
         /*
          If the world is syntactically correct
          */
@@ -49,7 +48,7 @@ public class AntWorldLoader {
             /*
              Set the board size depending on the given world - as the boards have
              spaces between the elements and a line might be offset, horizontal
-             size is given by the length of each line divided by 2, plus one.
+             size is given by the length of each line divided by 2, plus two.
              */
             int ySize = lines.size()-2;
             int xSize = (lines.get(2).length() / 2) + 2;
@@ -141,8 +140,17 @@ public class AntWorldLoader {
                         }                    
                     }                
                 }                                        
-            }                                     
-            return new Board(board);
+            }               
+            if(tournamentReady){
+                if(tournamentReady(board)){
+                    return new Board(board);
+                }else{
+                    throw new AntWorldLoaderException("Expected tournament ready board.");
+                }
+            }else{
+                return new Board(board);
+            }
+            
         } else {
             throw new AntWorldLoaderException("checkWorldSyntax failed when called by loadWorld");
         }    
