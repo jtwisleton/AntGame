@@ -27,19 +27,22 @@ public class AntWorldLoader {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, AntWorldLoaderException {
         String fn = "src//antgameproject//testWorld.txt";
-        Board b = loadWorld(fn,false);        
+        Board b = loadWorld(fn, false);
     }
 
     public static Boolean tournamentReady(BoardTile[][] b) {
-     return null;   
+        for (int i = 3; i < b.length; i++) {
+
+        }
+        return null;
     }
 
     /*
      Calls the checkWorldSyntax method, then uses the lines ArrayList to create
      a board from the given world file if checkWorldSyntax returns true.
      */
-    public static Board loadWorld(String fileName,boolean tournamentReady) throws AntWorldLoaderException, IOException {
-        
+    public static Board loadWorld(String fileName, boolean tournamentReady) throws AntWorldLoaderException, IOException {
+
         /*
          If the world is syntactically correct
          */
@@ -47,76 +50,38 @@ public class AntWorldLoader {
 
             /*
              Set the board size depending on the given world - as the boards have
-             spaces between the elements and a line might be offset, horizontal
-             size is given by the length of each line divided by 2, plus two.
+             spaces between the elements horizontal size is given by the length 
+             of each line divided by 2, plus one.
              */
-            int ySize = lines.size()-2;
-            int xSize = (lines.get(2).length() / 2) + 2;
+            int ySize = lines.size() - 2;
+            int xSize = (lines.get(2).length() / 2)+1;
             BoardTile[][] board = new BoardTile[ySize][xSize];
-            Boolean offset = false;
 
             /*
              Iterate over each line in the line ArrayList except the first 2
              (which declare the world size).
              */
             for (int i = 0; i < ySize; i++) {
-
+                
                 /*
                  Remove all the whitespace in iterator selected line and put the
-                 result in a String. Then set offset boolean to true if line number 
-                 is odd, false if not. This offset variable will determine where 
-                 in the BoardTile array to place spawned BoardTiles - if offset is 
-                 true, then the x coordinate that a BoardTile is placed into will 
-                 be increased by one.
+                 result in a String. 
                  */
-                String currentLine = lines.get(i+2).replaceAll("\\s", "");                
-                if (i % 2 != 0) {
-                    offset = true;
-                } else {
-                    offset = false;
-                }
-
-                /*
-                Set first or last x position on board to be rock depending on
-                offset.
-                */
-                if (offset) {
-                    board[i][0] = new BoardTile(0, Terrain.ROCK);                    
-                }else{
-                    board[i][xSize-1] = new BoardTile(0, Terrain.ROCK);
-                }
+                String currentLine = lines.get(i + 2).replaceAll("\\s", "");
 
                 /*
                  Iterate over the characters in the iterator selected line, adding 
                  corresponding BoardTiles to the board array.
                  */
-                for (int j = 0; j < xSize - 1; j++) {
-
+                for (int j = 0; j < xSize; j++) {
                     if (currentLine.charAt(j) == '#') {
-                        if (offset) {
-                            board[i][j + 1] = new BoardTile(0, Terrain.ROCK);
-                        } else {
-                            board[i][j] = new BoardTile(0, Terrain.ROCK);
-                        }                        
+                        board[i][j] = new BoardTile(0, Terrain.ROCK);
                     } else if (currentLine.charAt(j) == '.') {
-                        if (offset) {
-                            board[i][j + 1] = new BoardTile(0, Terrain.GRASS);
-                        } else {
-                            board[i][j] = new BoardTile(0, Terrain.GRASS);
-                        }
+                        board[i][j] = new BoardTile(0, Terrain.GRASS);
                     } else if (currentLine.charAt(j) == '+') {
-                        if (offset) {
-                            board[i][j + 1] = new BoardTile(0, Terrain.REDBASE);
-                        } else {
-                            board[i][j] = new BoardTile(0, Terrain.REDBASE);
-                        }
-
+                        board[i][j] = new BoardTile(0, Terrain.REDBASE);
                     } else if (currentLine.charAt(j) == '-') {
-                        if (offset) {
-                            board[i][j + 1] = new BoardTile(0, Terrain.BLACKBASE);
-                        } else {
-                            board[i][j] = new BoardTile(0, Terrain.BLACKBASE);
-                        }
+                        board[i][j] = new BoardTile(0, Terrain.BLACKBASE);
                     } else {
 
                         /*
@@ -125,42 +90,48 @@ public class AntWorldLoader {
                          */
                         String s = Character.toString(currentLine.charAt(j));
                         if (s.matches("\\d")) {
-                            
+
                             /*
                              If character is a digit, place a new GRASS BoardTile
                              on the board with food value set to the digit.
                              */
-                            if (offset) {
-                                board[i][j + 1] = new BoardTile(Integer.parseInt(s), Terrain.GRASS);
-                            } else {
-                                board[i][j] = new BoardTile(Integer.parseInt(s), Terrain.GRASS);                            
-                            }
-                        } else {                            
-                            throw new AntWorldLoaderException("Unknown character found in world String ArrayList: " + s);                        
-                        }                    
-                    }                
-                }                                        
-            }               
-            if(tournamentReady){
-                if(tournamentReady(board)){
-                    return new Board(board);
-                }else{
-                    throw new AntWorldLoaderException("Expected tournament ready board.");
+                            board[i][j] = new BoardTile(Integer.parseInt(s), Terrain.GRASS);
+
+                        } else {
+                            throw new AntWorldLoaderException("Unknown character found in world String ArrayList: " + s);
+                        }
+                    }
                 }
-            }else{
-                return new Board(board);
             }
             
+            /*
+            If the tournamentReady Boolean is true, meaning the world needs to
+            be tournament ready, run the tournamentReady method on the board
+            and return it if it is tournament ready, throw an exception if not.
+            */
+            if (tournamentReady) {
+                if (tournamentReady(board)) {
+                    return new Board(board);
+                } else {
+                    throw new AntWorldLoaderException("Expected tournament ready board.");
+                }
+            } else {
+                
+                /*
+                If the board doesn't need to be tournament ready just return it.
+                */
+                return new Board(board);
+            }
+
         } else {
             throw new AntWorldLoaderException("checkWorldSyntax failed when called by loadWorld");
-        }    
+        }
     }
-    
+
     /*
      Returns true is a world is syntactically correct, or throws an exception.
      Also loads given world into lines ArrayList.
      */
-
     public static Boolean checkWorldSyntax(String fileName) throws FileNotFoundException, IOException, AntWorldLoaderException {
 
         /*
@@ -193,11 +164,11 @@ public class AntWorldLoader {
          */
         int xDimension = Integer.parseInt(lines.get(0));
         int yDimension = Integer.parseInt(lines.get(1));
-        
+
         if (lines.get(2).length() != (xDimension * 2) - 1) {
             throw new AntWorldLoaderException("xDimension doesn't match size of world.");
         }
-        
+
         if (yDimension != lines.size() - 2) {
             throw new AntWorldLoaderException("yDimension doesn't match size of the world.");
         }
@@ -252,4 +223,3 @@ public class AntWorldLoader {
         return true;
     }
 }
-
