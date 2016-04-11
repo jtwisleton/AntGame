@@ -20,7 +20,8 @@ public class Move extends DirectionalInstruction implements Instruction {
     public void execute(Board gameBoard, Ant currentAnt) {
         Pos antPosition = currentAnt.getBoardPosition();
         Pos newPosition = getAdjacentCell(antPosition, currentAnt.getFacingDirection());
-        if(gameBoard.getTerrainAtPosition(antPosition) == Terrain.ROCK){
+        if(gameBoard.getTerrainAtPosition(newPosition) == Terrain.ROCK || 
+                gameBoard.antInPosition(newPosition)){
             currentAnt.setBrainState(nextStateIfAheadIsBlocked);
         } else {
             gameBoard.clearAntAt(antPosition);
