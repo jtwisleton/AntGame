@@ -17,8 +17,8 @@ public class Board {
     private BoardTile[][] board;
     private List<Ant> antsOnBoard; 
     private HashMap<Colour, Terrain> colourToBaseMatch;
-    private int redAntsAlive;   // should change for more colours added?
-    private int blackAntsAlive;
+    private HashMap<Colour, Integer> numberOfAntsAlive;
+    private HashMap<Colour, Integer> numberOfFoodOnTile;    //think about implmentation of this?
     
     public Board(BoardTile[][] board){
         this.board = board;
@@ -28,10 +28,10 @@ public class Board {
         colourToBaseMatch.put(Colour.BLACK, Terrain.BLACKBASE);
         colourToBaseMatch.put(Colour.RED, Terrain.REDBASE);
         
+        numberOfAntsAlive = new HashMap<>();
+        numberOfFoodOnTile = new HashMap<>();
+        
         addAnts();
-        redAntsAlive = antsOnBoard.size() / 2;
-        blackAntsAlive = antsOnBoard.size() / 2;
-
     }
     
     private void addAnts(){
@@ -47,6 +47,12 @@ public class Board {
                             Ant antToAdd = new Ant(antColour, antId, antPosition);
                             antsOnBoard.add(antToAdd);
                             board[i][j].setAntOnTile(antToAdd);
+                            
+                            if(numberOfAntsAlive.get(key) == null){
+                                numberOfAntsAlive.put(key, 1);
+                            } else {
+                                numberOfAntsAlive.put(key, numberOfAntsAlive.get(key) + 1);
+                            }
                         }
                     }
                 }
@@ -85,7 +91,7 @@ public class Board {
         Ant ant = board[positionToKillAnt.getPosY()][positionToKillAnt.getPosX()].getAntOnTile();
         ant.killAnt();
         clearAntAt(positionToKillAnt);
-        // reduce ants alive number
+        numberOfAntsAlive.put(ant.getAntColour(), numberOfAntsAlive.get(ant.getAntColour()) - 1);
     }
     
     public int numberOfFoodAt(Pos position){
@@ -93,6 +99,19 @@ public class Board {
     }
     
     public void setFoodAt(Pos foodPosition, int amountOfFood){
+        int oldAmountOfFood = board[foodPosition.getPosY()][foodPosition.getPosX()].getFoodInTile();
+        int difference = oldAmountOfFood - amountOfFood;
+        if(board[foodPosition.getPosY()][foodPosition.getPosX()].getCellTerrain() ==
+                Terrain.BLACKBASE){
+            int totalBlackFood = numberOfFoodOnTile.get(Colour.BLACK);
+            int newTotalFood = totalBlackFood + difference;
+            numberOfFoodOnTile.put(Colour.BLACK, newTotalFood);
+        } else if(board[foodPosition.getPosY()][foodPosition.getPosX()].getCellTerrain() ==
+                Terrain.REDBASE){
+            int totalRedFood = numberOfFoodOnTile.get(Colour.RED);
+            int newTotalFood = totalRedFood + difference;
+            numberOfFoodOnTile.put(Colour.RED, newTotalFood);
+        }
         board[foodPosition.getPosY()][foodPosition.getPosX()].setFoodInTile(amountOfFood);
     }
     
