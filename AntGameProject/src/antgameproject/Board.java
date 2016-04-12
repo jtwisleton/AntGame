@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package antgameproject;
 
 import java.util.ArrayList;
@@ -18,7 +14,7 @@ public class Board {
     private List<Ant> antsOnBoard; 
     private HashMap<Colour, Terrain> colourToBaseMatch;
     private HashMap<Colour, Integer> numberOfAntsAlive;
-    private HashMap<Colour, Integer> numberOfFoodOnTile;    //think about implmentation of this?
+    private HashMap<Colour, Integer> numberOfFoodInBase;    //think about implmentation of this?
     
     public Board(BoardTile[][] board){
         this.board = board;
@@ -29,7 +25,7 @@ public class Board {
         colourToBaseMatch.put(Colour.RED, Terrain.REDBASE);
         
         numberOfAntsAlive = new HashMap<>();
-        numberOfFoodOnTile = new HashMap<>();
+        numberOfFoodInBase = new HashMap<>();
         
         addAnts();
     }
@@ -103,16 +99,24 @@ public class Board {
         int difference = oldAmountOfFood - amountOfFood;
         if(board[foodPosition.getPosY()][foodPosition.getPosX()].getCellTerrain() ==
                 Terrain.BLACKBASE){
-            int totalBlackFood = numberOfFoodOnTile.get(Colour.BLACK);
+            int totalBlackFood = numberOfFoodInBase.get(Colour.BLACK);
             int newTotalFood = totalBlackFood + difference;
-            numberOfFoodOnTile.put(Colour.BLACK, newTotalFood);
+            numberOfFoodInBase.put(Colour.BLACK, newTotalFood);
         } else if(board[foodPosition.getPosY()][foodPosition.getPosX()].getCellTerrain() ==
                 Terrain.REDBASE){
-            int totalRedFood = numberOfFoodOnTile.get(Colour.RED);
+            int totalRedFood = numberOfFoodInBase.get(Colour.RED);
             int newTotalFood = totalRedFood + difference;
-            numberOfFoodOnTile.put(Colour.RED, newTotalFood);
+            numberOfFoodInBase.put(Colour.RED, newTotalFood);
         }
         board[foodPosition.getPosY()][foodPosition.getPosX()].setFoodInTile(amountOfFood);
+    }
+    
+    public int getNumberOfAntsAlive(Colour colourOfTeam){
+        return numberOfAntsAlive.get(colourOfTeam);
+    }
+    
+    public int getNumberOfFoodInBase(Colour colourOfTeam){
+        return numberOfFoodInBase.get(colourOfTeam);
     }
     
     public boolean anthillAt(Pos anthillPos, Colour anthillColour){
