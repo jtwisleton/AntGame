@@ -28,6 +28,7 @@ public class AntWorldLoader {
     public static void main(String[] args) throws FileNotFoundException, IOException, AntWorldLoaderException {
         String fn = "src//antgameproject//testWorld.txt";
         Board b = loadWorld(fn, false);
+        b.printBoardToASCII();
     }
 
     public static Boolean tournamentReady(BoardTile[][] b) {
