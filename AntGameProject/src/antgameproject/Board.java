@@ -39,7 +39,7 @@ public class Board {
                         if(colourToBaseMatch.get(key) == board[i][j].getCellTerrain()){
                             Colour antColour = key;
                             int antId = antsOnBoard.size();
-                            Pos antPosition = new Pos(i, j);
+                            Pos antPosition = new Pos(j, i);
                             Ant antToAdd = new Ant(antColour, antId, antPosition);
                             antsOnBoard.add(antToAdd);
                             board[i][j].setAntOnTile(antToAdd);
