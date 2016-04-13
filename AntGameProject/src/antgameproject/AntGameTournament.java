@@ -188,7 +188,7 @@ public class AntGameTournament {
         // For each file, try to load the ant world and catch any exceptions
         for (String antWorldFile : antWorldFiles) {
             try {
-                AntWorldLoader.loadWorld(antWorldFile);
+                worlds.add(AntWorldLoader.loadWorld(antWorldFile, true));
             } catch (IOException | AntWorldLoaderException e) {
                 System.out.println(e);
             }

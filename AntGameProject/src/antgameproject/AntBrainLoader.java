@@ -1,5 +1,27 @@
 package antgameproject;
 
+import conditions.Marker;
+import instructions.TurnDirection;
+import conditions.FriendWithFood;
+import conditions.Rock;
+import conditions.Home;
+import conditions.Foe;
+import conditions.Food;
+import conditions.FoeHome;
+import conditions.FoeWithFood;
+import conditions.Friend;
+import conditions.FoeMarker;
+import instructions.SenseDirection;
+import conditions.Condition;
+import instructions.Instruction;
+import instructions.PickUpFood;
+import instructions.Flip;
+import instructions.DropFood;
+import instructions.Sense;
+import instructions.Turn;
+import instructions.Unmark;
+import instructions.Mark;
+import instructions.Move;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -116,20 +138,20 @@ public class AntBrainLoader {
                     int nextStateIfConditionFalse = Integer.parseInt(splitInstruction[3].trim());
                     String condition = splitInstruction[4].trim();
                     Condition c = null;
-                    Direction d = null;
+                    SenseDirection d = null;
 
                     switch (direction) {
                         case "Ahead":
-                            d = Direction.AHEAD;
+                            d = SenseDirection.AHEAD;
                             break;
                         case "Here":
-                            d = Direction.HERE;
+                            d = SenseDirection.HERE;
                             break;
                         case "LeftAhead":
-                            d = Direction.LEFTAHEAD;
+                            d = SenseDirection.LEFTAHEAD;
                             break;
                         case "RightAhead":
-                            d = Direction.RIGHTAHEAD;
+                            d = SenseDirection.RIGHTAHEAD;
                             break;
                     }
 

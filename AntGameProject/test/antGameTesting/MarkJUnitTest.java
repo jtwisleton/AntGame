@@ -5,7 +5,7 @@ import antgameproject.Ant;
 import antgameproject.Board;
 import antgameproject.BoardTile;
 import antgameproject.Colour;
-import antgameproject.Mark;
+import instructions.Mark;
 import antgameproject.Pos;
 import antgameproject.Terrain;
 import static org.junit.Assert.assertFalse;

@@ -24,7 +24,6 @@ public class Ant {
         currentBrainState = 0;
         this.id = id;
         resting = 0;
-        // facing direction 0?
         carryingFood = false;
         this.boardPosition = boardPosition;
         antIsAlive = true;

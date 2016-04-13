@@ -1,5 +1,11 @@
 
-package antgameproject;
+package instructions;
+
+import antgameproject.Ant;
+import antgameproject.Board;
+import antgameproject.Colour;
+import antgameproject.Pos;
+import antgameproject.Terrain;
 
 /**
  *
