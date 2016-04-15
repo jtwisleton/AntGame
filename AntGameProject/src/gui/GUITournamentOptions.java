@@ -130,11 +130,12 @@ public class GUITournamentOptions extends BasicGameState {
                 } catch (IOException ex) {
                     // notify user
                 }
+                bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
             }
         } else if(loadAntWorldMO.isMouseOver()){
             currentLoadAntWorld = loadAntWorldHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                File antWorldToLoad = fileLoader();
+                File antWorldToLoad = fileLoader(); //add check for null
                 try {
                     tournament.loadAntWorld(antWorldToLoad.getAbsolutePath());
                     antWorldList = tournament.getListOfAntWorlds();
@@ -144,6 +145,7 @@ public class GUITournamentOptions extends BasicGameState {
                 } catch (IOException ex) {
                     // notify user
                 }
+                bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
             }
         } else if(genAntWorldMO.isMouseOver()){
             curGenWorld = genAntWorldHover;
