@@ -121,6 +121,6 @@ public class AntWorldGenerator {
             
         }
 
-        return new Board(board);
+        return new Board(board, "Board 1");
     }
 }

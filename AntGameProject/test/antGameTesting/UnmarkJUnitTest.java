@@ -44,7 +44,7 @@ public class UnmarkJUnitTest {
             }
         }
         
-        testBoard = new Board(board);
+        testBoard = new Board(board, "Board 8");
     }
     
     // test unmark when mark set

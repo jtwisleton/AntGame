@@ -48,7 +48,9 @@ public class MoveJUnitTest {
                 }
             }
         }
-        testBoard = new Board(board);
+        board[17][5] = new BoardTile(0, Terrain.REDBASE);
+        board[17][4] = new BoardTile(0, Terrain.REDBASE);        
+        testBoard = new Board(board, "Board 5");
         testBoard.setAntAt(new Pos(2, 2), testAnt);
         testBoard.setAntAt(new Pos(5, 5), testOddYAnt);
     }

@@ -46,7 +46,7 @@ public class PickUpFoodJUnitTest {
         }
         board[2][2] = new BoardTile(5, Terrain.GRASS);
         board[3][3] = new BoardTile(0, Terrain.GRASS);
-        testBoard = new Board(board);
+        testBoard = new Board(board, "Board 6");
     }
  
     @Test

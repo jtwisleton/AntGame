@@ -44,7 +44,7 @@ public class MarkJUnitTest {
             }
         }
         
-        testBoard = new Board(board);
+        testBoard = new Board(board, "Board 4");
     }
     
     @Test 

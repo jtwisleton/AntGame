@@ -15,9 +15,11 @@ public class Board {
     private HashMap<Colour, Terrain> colourToBaseMatch;
     private HashMap<Colour, Integer> numberOfAntsAlive;
     private HashMap<Colour, Integer> numberOfFoodInBase;    //think about implmentation of this?
+    private String boardName;
     
-    public Board(BoardTile[][] board){
+    public Board(BoardTile[][] board, String boardName){
         this.board = board;
+        this.boardName = boardName;
         antsOnBoard = new ArrayList<>();
         
         colourToBaseMatch = new HashMap<>();
@@ -167,6 +169,11 @@ public class Board {
             }
             System.out.print("\n");
         }
+    }
+    
+    @Override
+    public String toString(){
+        return boardName;
     }
     
 }
