@@ -21,7 +21,7 @@ public class AntGameTournament {
     private HashMap<AntBrain, Integer> scores;
     private Game currentGame;
     private int topScore;
-    
+
     /**
      * Static class to represent an AntBrain pairing.
      * 
@@ -42,6 +42,11 @@ public class AntGameTournament {
             this.one = one;
             this.two = two;
         }
+    }
+    
+    public AntGameTournament(){
+        antWorlds = new ArrayList<>();
+        antBrains = new ArrayList<>();
     }
     
     /**
@@ -132,7 +137,7 @@ public class AntGameTournament {
     private void runGame(AntBrain one, AntBrain two, Board world) {
         // Update current game and run it
         currentGame = new Game(one, two, world);
-        currentGame.runGame();
+        currentGame.run();
         
         // Update scores with 2 points for a win and 1 point for a draw
         int playerOneScore = currentGame.getPlayerOneScore();
@@ -167,7 +172,7 @@ public class AntGameTournament {
         // For each file, try to load the ant brain and catch any exceptions
         for (String antBrainFile : antBrainFiles) {
             try {
-                brains.add(AntBrainLoader.loadBrain(antBrainFile));
+                brains.add(AntBrainLoader.loadBrain(antBrainFile, " "));
             } catch (IOException | AntBrainLoaderException e) {
                 System.out.println(e);
             }
@@ -196,4 +201,25 @@ public class AntGameTournament {
         
         return worlds;
     }
+    
+    public void loadAntWorld(String antWorldFilePath) throws AntWorldLoaderException, IOException {
+        antWorlds.add(AntWorldLoader.loadWorld(antWorldFilePath, false));    // change back to true as some point
+    }
+    
+    public void loadAntBrain(String antBrainFilePath, String name) throws AntBrainLoaderException, IOException{
+        antBrains.add(AntBrainLoader.loadBrain(antBrainFilePath, name));
+    }
+    
+    public List getListOfAntWorlds(){
+        return antWorlds;
+    }
+    
+    public List getListOfAntBrains(){
+        return antBrains;
+    }
+    
+    public Game getCurrentGame(){
+        return currentGame;
+    }
+    
 }

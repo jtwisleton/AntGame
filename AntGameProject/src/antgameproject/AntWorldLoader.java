@@ -112,7 +112,7 @@ public class AntWorldLoader {
             */
             if (tournamentReady) {
                 if (tournamentReady(board)) {
-                    return new Board(board);
+                    return new Board(board, "Board 1");
                 } else {
                     throw new AntWorldLoaderException("Expected tournament ready board.");
                 }
@@ -121,7 +121,7 @@ public class AntWorldLoader {
                 /*
                 If the board doesn't need to be tournament ready just return it.
                 */
-                return new Board(board);
+                return new Board(board, "Board 1");
             }
 
         } else {

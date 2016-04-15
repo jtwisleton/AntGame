@@ -51,14 +51,14 @@ public class AntBrainLoader {
          as expected.
          */
         String fn = "src//antgameproject//testBrain.txt";
-        AntBrain ab = loadBrain(fn);
+        AntBrain ab = loadBrain(fn, "Test Brain");
         for (int i = 0; i < 16; i++) {
             System.out.println(ab.getInstruction(i).toString());
         }
 
     }
 
-    public static AntBrain loadBrain(String fileName) throws FileNotFoundException, IOException, AntBrainLoaderException {
+    public static AntBrain loadBrain(String fileName, String name) throws FileNotFoundException, IOException, AntBrainLoaderException {
 
         /*
          Read the brain from a file into a String.
@@ -275,7 +275,7 @@ public class AntBrainLoader {
              create a new AntBrain object with instructions as its parameter, and
              return this AntBrain.
              */
-            return new AntBrain(instructions);
+            return new AntBrain(instructions, name);
         }
     }
 }

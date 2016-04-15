@@ -58,7 +58,7 @@ public class SenseJUnitTest {
         board[2][3] = new BoardTile(0, Terrain.BLACKBASE);
         board[3][2] = new BoardTile(5, Terrain.GRASS);
         
-        testBoard = new Board(board);
+        testBoard = new Board(board, "Board 8");
         testBoard.setAntAt(new Pos(2,1), blackAnt);
         testBoard.setAntAt(new Pos(2, 2), testAnt);
         testBoard.setAntAt(new Pos(5,5), secondAnt);

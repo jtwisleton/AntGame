@@ -42,7 +42,7 @@ public class DropFoodJUnitTest {
             }
         }
         board[2][2] = new BoardTile(5, Terrain.GRASS);
-        testBoard = new Board(board);
+        testBoard = new Board(board, "Board 2");
     }
     
     // drop food when ant has food

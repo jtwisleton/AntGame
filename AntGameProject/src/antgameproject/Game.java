@@ -22,7 +22,7 @@ public class Game {
         step = 0;
     }
     
-    public void runGame(){
+    public void run(){
         while(step < 300000){
             for(int i = 0; i < gameBoard.getNumberOfAnts(); i++){
                 takeAntWithIdMove(i);
