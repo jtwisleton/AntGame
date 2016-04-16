@@ -27,8 +27,8 @@ public class AntWorldGenerator {
     public static Board generateWorld(int avgRockSize) {
         BoardTile[][] b = placeBordersAndGrass();
         b = placeAnthills(b);
-        b = placeFood(b);
-        return new Board(b);
+        
+        return new Board(b,"testworld");
     }
 
     public static BoardTile[][] placeBordersAndGrass() {

@@ -26,7 +26,7 @@ public class AntWorldLoader {
     }
 
     public static void main(String[] args) throws FileNotFoundException, IOException, AntWorldLoaderException {
-        String fn = "src//antgameproject//testWorld.txt";
+        String fn = "src//antgameproject//sample1.world";
         Board b = loadWorld(fn, false);
         b.printBoardToASCII();
     }
@@ -166,7 +166,7 @@ public class AntWorldLoader {
         int xDimension = Integer.parseInt(lines.get(0));
         int yDimension = Integer.parseInt(lines.get(1));
 
-        if (lines.get(2).length() != (xDimension * 2) - 1) {
+        if (lines.get(2).length() != (xDimension * 2)) {
             throw new AntWorldLoaderException("xDimension doesn't match size of world.");
         }
 
@@ -187,8 +187,8 @@ public class AntWorldLoader {
          syntactically valid, throw exception if not.
          */
         for (int i = 3; i < lines.size(); i++) {
-            if (!lines.get(i).matches("\\s?#(\\d|\\s|\\.|\\-|\\+|#)+#")) {
-                throw new AntWorldLoaderException("line in world doesn't match regex");
+            if (!lines.get(i).matches("\\s?#(\\d|\\s|\\.|\\-|\\+|#)+#\\s?")) {
+                throw new AntWorldLoaderException("line in world doesn't match regex: "+ lines.get(i));
             } else {
 
                 /*
