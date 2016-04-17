@@ -10,6 +10,7 @@ import antgameproject.AntGameTournament;
 import antgameproject.AntWorldLoader;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -121,16 +122,30 @@ public class GUISingleGameOptions extends BasicGameState {
                     sbg.enterState(7);
                 //}
             }
+        } else if(mainMenuMO.isMouseOver()){
+            curMainMenu = mainMenuHover;
+            if(gc.getInput().isMouseButtonDown(0)){
+                try {
+                    tournament.reset();
+                    TimeUnit.MILLISECONDS.sleep(250);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                sbg.getState(2).init(gc, sbg);
+                sbg.enterState(2);    
+            }
         } else if(select1MO.isMouseOver()){
             currentSelect = selectHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 antBrainOne = fileLoader();
-                try {
-                    tournament.loadAntBrain(antBrainOne.getAbsolutePath(), "Ant brain one");
-                } catch (AntBrainLoader.AntBrainLoaderException ex) {
-                    showError(ex.getMessage(), "Ant brain error");
-                } catch (IOException ex) {
-                    showError(ex.getMessage(), "Error loading ant brain");
+                if(antBrainOne != null){
+                    try {
+                        tournament.loadAntBrain(antBrainOne.getAbsolutePath(), "Ant brain one");
+                    } catch (AntBrainLoader.AntBrainLoaderException ex) {
+                        showError(ex.getMessage(), "Ant brain error");
+                    } catch (IOException ex) {
+                        showError(ex.getMessage(), "Error loading ant brain");
+                    }
                 }
             }
         } else if(select2MO.isMouseOver()){
@@ -161,12 +176,6 @@ public class GUISingleGameOptions extends BasicGameState {
             currentWorldGen = worldGenHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 //worldGenPage?
-            }
-        } else if(mainMenuMO.isMouseOver()){
-            curMainMenu = mainMenuHover;
-            if(gc.getInput().isMouseButtonDown(0)){
-                // reset tournament
-                sbg.enterState(2);    
             }
         } else {
             currentSelect = select;
