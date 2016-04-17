@@ -85,4 +85,12 @@ public class Ant {
     public void setResting(int timeToRest){
         resting = timeToRest;
     }
+    
+    public int getId(){
+        return id;
+    }
+    
+    public int getResting(){
+        return resting;
+    }
 }
