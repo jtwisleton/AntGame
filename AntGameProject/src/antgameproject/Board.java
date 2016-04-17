@@ -131,24 +131,22 @@ public class Board {
     }
     
     public void clearMarker(Pos markerPos, Colour markerCol, int mark){
-        if(board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) != null){
-            int markInTile = board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol);
-            if(markInTile == mark){
-                board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, null);
-            }
-        }    
+        int index = board[markerPos.getPosY()][markerPos.getPosX()].getMarkers(markerCol).indexOf(mark);
+        if(index >= 0){
+            board[markerPos.getPosY()][markerPos.getPosX()].getMarkers(markerCol).remove(index);
+        }  
     }
     
     public boolean checkMarker(Pos markerPos, Colour markerCol, int mark){
-        if(board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) == null){
+        int index = board[markerPos.getPosY()][markerPos.getPosX()].getMarkers(markerCol).indexOf(mark);
+        if(index < 0){
             return false;
         }
-        return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) == mark;
+        return true;
     }
     
     public boolean checkAnyMarker(Pos markerPos, Colour markerCol){
-        return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) != null;
-
+        return board[markerPos.getPosY()][markerPos.getPosX()].getMarkers(markerCol).size() > 0;
     }
     
     public int getNumberOfAnts(){
@@ -169,6 +167,10 @@ public class Board {
             }
             System.out.print("\n");
         }
+    }
+    
+    public boolean foodInTile(Pos posToCheckForFood){
+        return board[posToCheckForFood.getPosY()][posToCheckForFood.getPosX()].getFoodInTile() > 0;
     }
     
     @Override

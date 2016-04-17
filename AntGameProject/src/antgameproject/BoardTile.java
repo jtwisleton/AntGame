@@ -5,7 +5,9 @@
  */
 package antgameproject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -13,7 +15,7 @@ import java.util.HashMap;
  */
 public class BoardTile {
     private int foodInTile;
-    private HashMap<Colour, Integer> markers; 
+    private HashMap<Colour, List<Integer>> markers; 
     private final Terrain cellTerrain;
     private Ant antOnTile;
     
@@ -28,7 +30,7 @@ public class BoardTile {
         
         markers = new HashMap<>();
         for(Colour col: Colour.values()){
-            markers.put(col, null);
+            markers.put(col, new ArrayList<Integer>());
         }
     }
     
@@ -41,10 +43,10 @@ public class BoardTile {
     }
     
     public void setMarker(Colour  colourOfMarker, Integer markerToSet){
-        markers.put(colourOfMarker, markerToSet);
+        markers.get(colourOfMarker).add(markerToSet);
     }
     
-    public Integer getMarker(Colour colourOfMarkerToGet){
+    public List<Integer> getMarkers(Colour colourOfMarkerToGet){
         return markers.get(colourOfMarkerToGet);
     }
     
