@@ -47,6 +47,8 @@ public class AntGameTournament {
     public AntGameTournament(){
         antWorlds = new ArrayList<>();
         antBrains = new ArrayList<>();
+        pairs = new ArrayList<>();
+        topScore = 0;
     }
     
     /**
@@ -220,6 +222,15 @@ public class AntGameTournament {
     
     public Game getCurrentGame(){
         return currentGame;
+    }
+    
+    public void reset(){
+        antWorlds = new ArrayList<>();
+        antBrains = new ArrayList<>();
+        pairs = new ArrayList<>();
+        scores = new HashMap<>();
+        currentGame = null;
+        topScore = 0;
     }
     
 }
