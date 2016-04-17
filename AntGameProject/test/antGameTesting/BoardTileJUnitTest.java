@@ -45,12 +45,14 @@ public class BoardTileJUnitTest {
     public void testSettingAndGettingMarkers(){
         int blackMarkerToSet = 3;
         int redMarkerToSet = 2;
-        assertTrue(grassTile.getMarker(Colour.BLACK) == null);
-        assertTrue(grassTile.getMarker(Colour.RED) == null);
+        assertTrue(grassTile.getMarkers(Colour.BLACK).size() == 0);
+        assertTrue(grassTile.getMarkers(Colour.RED).size() == 0);
         grassTile.setMarker(Colour.BLACK, blackMarkerToSet);
         grassTile.setMarker(Colour.RED, redMarkerToSet);
-        assertTrue(grassTile.getMarker(Colour.BLACK) == blackMarkerToSet);
-        assertTrue(grassTile.getMarker(Colour.RED) == redMarkerToSet);
+        assertTrue(grassTile.getMarkers(Colour.BLACK).contains(blackMarkerToSet));
+        assertTrue(grassTile.getMarkers(Colour.RED).contains(redMarkerToSet));
+        assertTrue(grassTile.getMarkers(Colour.BLACK).size() == 1);
+        assertTrue(grassTile.getMarkers(Colour.RED).size() == 1);
     }
     
     @Test
