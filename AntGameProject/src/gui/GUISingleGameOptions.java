@@ -5,9 +5,18 @@
  */
 package gui;
 
+import antgameproject.AntBrainLoader;
 import antgameproject.AntGameTournament;
+import antgameproject.AntWorldLoader;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -40,6 +49,9 @@ public class GUISingleGameOptions extends BasicGameState {
     private Image start;
     private Image startHover;
     private Image curStart;
+    private Image mainMenu;
+    private Image mainMenuHover;
+    private Image curMainMenu;
     private int rightMargin;
     private int leftMargin;
     private int offset;
@@ -49,12 +61,16 @@ public class GUISingleGameOptions extends BasicGameState {
     private MouseOverArea worldLoadMO;  
     private MouseOverArea worldGenMO;
     private MouseOverArea startMO;
+    private MouseOverArea mainMenuMO;
     private File antBrainOne;
     private File antBrainTwo;
     private File antWorldFile;
     
     public GUISingleGameOptions(AntGameTournament tournament){
         this.tournament = tournament;
+        UIManager UI=new UIManager();
+        UI.put("OptionPane.background",new ColorUIResource(33, 252, 172));
+        UI.put("Panel.background",new ColorUIResource(33, 252, 172));
     }
     
     @Override
@@ -79,17 +95,21 @@ public class GUISingleGameOptions extends BasicGameState {
         start = new Image("resources/startGame.png");
         startHover = new Image("resources/startGameHover.png");
         curStart = start;
+        mainMenu = new Image("resources/mainMenu.png");
+        mainMenuHover = new Image("resources/mainMenuHover.png");
+        curMainMenu = mainMenu;
         
         rightMargin = 1920 - 350;
         leftMargin = 350;
-        offset = 120;
-        topButton = pageTitle.getHeight() + 100;
+        offset = 115;
+        topButton = pageTitle.getHeight() + 80;
         
         select1MO = new MouseOverArea(gc, select, rightMargin - currentSelect.getWidth(), topButton);
         select2MO = new MouseOverArea(gc, select, rightMargin - currentSelect.getWidth(), topButton + offset);
-        startMO = new MouseOverArea(gc, start, rightMargin - curStart.getWidth(), topButton + 3 * offset);
+        startMO = new MouseOverArea(gc, start, rightMargin - curStart.getWidth(), topButton + 4 * offset);
         worldLoadMO = new MouseOverArea(gc, worldLoad, leftMargin, topButton + 2 * offset);
         worldGenMO = new MouseOverArea(gc, worldGen, rightMargin - worldGen.getWidth(), topButton + 2 * offset);
+        mainMenuMO = new MouseOverArea(gc, mainMenu, rightMargin - mainMenu.getWidth(), topButton + 3 * offset);
     }
     
     @Override
@@ -97,28 +117,56 @@ public class GUISingleGameOptions extends BasicGameState {
         if(startMO.isMouseOver()){
             curStart = startHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                // check for null then build a game
-                sbg.enterState(7);
+                //if(antBrainOne != null && antBrainTwo != null && antWorldFile != null){
+                    sbg.enterState(7);
+                //}
             }
         } else if(select1MO.isMouseOver()){
             currentSelect = selectHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 antBrainOne = fileLoader();
+                try {
+                    tournament.loadAntBrain(antBrainOne.getAbsolutePath(), "Ant brain one");
+                } catch (AntBrainLoader.AntBrainLoaderException ex) {
+                    showError(ex.getMessage(), "Ant brain error");
+                } catch (IOException ex) {
+                    showError(ex.getMessage(), "Error loading ant brain");
+                }
             }
         } else if(select2MO.isMouseOver()){
             currentSelect2 = selectHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 antBrainTwo = fileLoader();
+                try {
+                    tournament.loadAntBrain(antBrainTwo.getAbsolutePath(), "Ant brain two");
+                } catch (AntBrainLoader.AntBrainLoaderException ex) {
+                    showError(ex.getMessage(), "Ant brain error");
+                } catch (IOException ex) {
+                    showError(ex.getMessage(), "Error loading ant brain");
+                }
             }
         } else if(worldLoadMO.isMouseOver()){
             curWorldLoad = worldLoadHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 antWorldFile = fileLoader();
+                try {
+                    tournament.loadAntWorld(antWorldFile.getAbsolutePath());
+                } catch (AntWorldLoader.AntWorldLoaderException ex) {
+                    showError(ex.getMessage(), "Ant world error");
+                } catch (IOException ex) {
+                    showError(ex.getMessage(), "Error loading ant world");
+                }
             }
         } else if(worldGenMO.isMouseOver()){
             currentWorldGen = worldGenHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 //worldGenPage?
+            }
+        } else if(mainMenuMO.isMouseOver()){
+            curMainMenu = mainMenuHover;
+            if(gc.getInput().isMouseButtonDown(0)){
+                // reset tournament
+                sbg.enterState(2);    
             }
         } else {
             currentSelect = select;
@@ -126,6 +174,7 @@ public class GUISingleGameOptions extends BasicGameState {
             curStart = start;
             curWorldLoad = worldLoad;
             currentWorldGen = worldGen;
+            curMainMenu = mainMenu;
         }
         
     }
@@ -136,17 +185,19 @@ public class GUISingleGameOptions extends BasicGameState {
         grphcs.setFont(gameFont);
         
         grphcs.scale(2, 2);
-        gameFont.drawString(leftMargin/2, 475/2, "Ant brain one");
-        gameFont.drawString(leftMargin/2, 600/2, "Ant brain two");
-        gameFont.drawString((leftMargin+560)/2, 730/2, "or");
-        
+        gameFont.drawString(leftMargin/2, 455/2, "Ant brain one");
+        gameFont.drawString(leftMargin/2, 575/2, "Ant brain two");
+        gameFont.drawString((leftMargin+560)/2, 695/2, "or");
         grphcs.scale(0.5f, 0.5f);
+        
         grphcs.drawImage(pageTitle, 1920/2 - pageTitle.getWidth()/2, 20);
         grphcs.drawImage(currentSelect, rightMargin - currentSelect.getWidth(), topButton);
         grphcs.drawImage(currentSelect2, rightMargin - currentSelect.getWidth(), topButton + offset);
         grphcs.drawImage(curWorldLoad, leftMargin, topButton + 2 * offset);
         grphcs.drawImage(currentWorldGen, rightMargin - worldGen.getWidth(), topButton + 2 * offset);
-        grphcs.drawImage(curStart, rightMargin - curStart.getWidth(), topButton + 3 * offset);
+        grphcs.drawImage(curMainMenu, rightMargin - mainMenu.getWidth(), topButton + 3 * offset);
+        grphcs.drawImage(curStart, rightMargin - curStart.getWidth(), topButton + 4 * offset);
+        
         
     }
     
@@ -158,6 +209,11 @@ public class GUISingleGameOptions extends BasicGameState {
             return selectedFile;
         }
         return null;
+    }
+    
+    private void showError(String errorMessage, String errorType){
+        JOptionPane.showMessageDialog(new JFrame(), errorMessage,
+        errorType, JOptionPane.ERROR_MESSAGE);
     }
     
 }
