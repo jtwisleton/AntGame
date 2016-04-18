@@ -6,6 +6,8 @@
 package antgameproject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,11 +45,16 @@ public class BoardTile {
     }
     
     public void setMarker(Colour  colourOfMarker, Integer markerToSet){
-        markers.get(colourOfMarker).add(markerToSet);
+        if(!markers.get(colourOfMarker).contains(markerToSet)){
+           markers.get(colourOfMarker).add(markerToSet); 
+        }
+        
     }
     
     public List<Integer> getMarkers(Colour colourOfMarkerToGet){
+        Collections.sort(markers.get(colourOfMarkerToGet));
         return markers.get(colourOfMarkerToGet);
+        //return markers.get(colourOfMarkerToGet).sort(sortMarkers);
     }
     
     public void setFoodInTile(int newAmountOfFood){
@@ -71,5 +78,13 @@ public class BoardTile {
         } else {
             return cellTerrain.toString();
         }
+    }
+    
+    class sortMarkers implements Comparator<Integer>  {
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o1 - o2;
+        }
+    
     }
 }
