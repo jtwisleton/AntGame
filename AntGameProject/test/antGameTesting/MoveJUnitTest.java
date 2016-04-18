@@ -11,6 +11,7 @@ import antgameproject.BoardTile;
 import antgameproject.Colour;
 import instructions.Move;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 import antgameproject.Terrain;
 import instructions.Turn;
 import instructions.TurnDirection;
@@ -30,6 +31,7 @@ public class MoveJUnitTest {
     private Board testBoard;
     private int nextStateIfAheadClear;
     private int nextStateIfAheadBlocked;
+    private RandomNumber randomNumberGen;
     
     @Before
     public void setUp() {
@@ -53,6 +55,7 @@ public class MoveJUnitTest {
         testBoard = new Board(board, "Board 5");
         testBoard.setAntAt(new Pos(2, 2), testAnt);
         testBoard.setAntAt(new Pos(5, 5), testOddYAnt);
+        randomNumberGen = new RandomNumber(1);
     }
     
     // test a clear move from an even y position in all directions
@@ -66,9 +69,9 @@ public class MoveJUnitTest {
             testBoard.setAntAt(new Pos(2,2), testAnt);
             testAnt.setFacingDirection(0);
             for(int j = 0; j < i; j++){
-                new Turn(TurnDirection.RIGHT, 1).execute(testBoard, testAnt);
+                new Turn(TurnDirection.RIGHT, 1).execute(testBoard, testAnt, randomNumberGen);
             }
-            testMove.execute(testBoard, testAnt);
+            testMove.execute(testBoard, testAnt, randomNumberGen);
             assertTrue(testAnt.getBoardPosition().getPosX() == expectedPositions[i].getPosX() && 
                 testAnt.getBoardPosition().getPosY() == expectedPositions[i].getPosY()); 
             assertTrue(testBoard.antInPosition(expectedPositions[i])); 
@@ -87,9 +90,9 @@ public class MoveJUnitTest {
             testBoard.setAntAt(new Pos(5,5), testOddYAnt);
             testOddYAnt.setFacingDirection(0);
             for(int j = 0; j < i; j++){
-                new Turn(TurnDirection.RIGHT, 1).execute(testBoard, testOddYAnt);
+                new Turn(TurnDirection.RIGHT, 1).execute(testBoard, testOddYAnt, randomNumberGen);
             }
-            testMove.execute(testBoard, testOddYAnt);
+            testMove.execute(testBoard, testOddYAnt, randomNumberGen);
             assertTrue(testOddYAnt.getBoardPosition().getPosX() == expectedPositions[i].getPosX()
                     && testOddYAnt.getBoardPosition().getPosY() == expectedPositions[i].getPosY()); 
             assertTrue(testBoard.antInPosition(expectedPositions[i])); 
@@ -101,7 +104,7 @@ public class MoveJUnitTest {
     @Test
     public void testResting(){
         Move testMove = new Move(nextStateIfAheadClear, nextStateIfAheadBlocked);
-        testMove.execute(testBoard, testAnt);
+        testMove.execute(testBoard, testAnt, randomNumberGen);
         for(int i = 0; i < 14; i++){
             assertTrue(testAnt.antIsResting());
             testAnt.decreaseAntResting();        
@@ -118,7 +121,7 @@ public class MoveJUnitTest {
         testBoard.setAntAt(antPositionBeforeMove, blockedAnt);
         testBoard.printBoardToASCII();
         new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, 
-                blockedAnt);
+                blockedAnt, randomNumberGen);
         assertTrue(blockedAnt.getFacingDirection() == 3);
         assertTrue(blockedAnt.getBoardPosition() == antPositionBeforeMove);
         assertTrue(blockedAnt.getCurrentBrainState() == nextStateIfAheadBlocked);
@@ -134,7 +137,7 @@ public class MoveJUnitTest {
         testBoard.setAntAt(antPositionBeforeMove, blockedAnt);
         testBoard.printBoardToASCII();
         new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, 
-                blockedAnt);
+                blockedAnt, randomNumberGen);
         assertTrue(blockedAnt.getFacingDirection() == 1);
         assertTrue(blockedAnt.getBoardPosition() == antPositionBeforeMove);
         assertTrue(blockedAnt.getCurrentBrainState() == nextStateIfAheadBlocked);
@@ -153,7 +156,8 @@ public class MoveJUnitTest {
         }
         assertTrue(testAnt.getAntIsAlive());
         assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 0);
-        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt);
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt, 
+                randomNumberGen);
         assertFalse(testAnt.getAntIsAlive());
         assertFalse(testBoard.antInPosition(antsNewPosition)); 
         assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 3);   
@@ -172,7 +176,8 @@ public class MoveJUnitTest {
         }
         assertTrue(testAnt.getAntIsAlive());
         assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 0);
-        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt);
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt,
+                randomNumberGen);
         assertFalse(testAnt.getAntIsAlive());
         assertFalse(testBoard.antInPosition(antsNewPosition)); 
         assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 4);   
@@ -189,12 +194,13 @@ public class MoveJUnitTest {
             Ant killingAnt = new Ant(Colour.BLACK, i+3, killingAntPositions[i]);
             testBoard.setAntAt(killingAntPositions[i], killingAnt);    
         }
-        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt);
+        new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, testAnt,
+                randomNumberGen);
         assertTrue(testAnt.getAntIsAlive());
         assertTrue(testBoard.numberOfFoodAt(testAnt.getBoardPosition()) == 0);
         Ant antThatMovesToKill = testBoard.antAt(new Pos(1,1));
         new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard, 
-                antThatMovesToKill);
+                antThatMovesToKill, randomNumberGen);
         assertFalse(testAnt.getAntIsAlive());
         assertFalse(testBoard.antInPosition(antsNewPosition)); 
         assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 3);

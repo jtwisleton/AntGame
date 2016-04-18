@@ -7,6 +7,7 @@ import antgameproject.BoardTile;
 import antgameproject.Colour;
 import instructions.Mark;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 import antgameproject.Terrain;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -73,7 +74,7 @@ public class MarkJUnitTest {
         
         assertFalse(testBoard.checkMarker(testAnt.getBoardPosition(), testAnt.getAntColour(),
                 markValue));
-        testMark.execute(testBoard, testAnt);
+        testMark.execute(testBoard, testAnt, new RandomNumber(1));
         assertTrue(testBoard.checkMarker(testAnt.getBoardPosition(), testAnt.getAntColour(),
                 markValue)); 
     }
@@ -84,7 +85,7 @@ public class MarkJUnitTest {
         int nextState = 5;
         Mark testMark = new Mark(markValue, nextState);
         assertTrue(testAnt.getCurrentBrainState() == 0);
-        testMark.execute(testBoard, testAnt);
+        testMark.execute(testBoard, testAnt, new RandomNumber(1));
         assertTrue(testAnt.getCurrentBrainState() == nextState);
     }
 }

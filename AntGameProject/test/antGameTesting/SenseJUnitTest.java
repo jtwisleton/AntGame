@@ -13,6 +13,7 @@ import conditions.Friend;
 import conditions.FriendWithFood;
 import conditions.Home;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 import instructions.Sense;
 import instructions.SenseDirection;
 import antgameproject.Terrain;
@@ -35,6 +36,7 @@ public class SenseJUnitTest {
     private Board testBoard;
     private int nextStateIfConditionTrue;
     private int nextStateIfConditionFalse;
+    private RandomNumber randomNumberGen;
     
     @Before
     public void setUp() {
@@ -63,6 +65,7 @@ public class SenseJUnitTest {
         testBoard.setAntAt(new Pos(2, 2), testAnt);
         testBoard.setAntAt(new Pos(5,5), secondAnt);
         testBoard.printBoardToASCII();
+        randomNumberGen = new RandomNumber(1);
     }
     
     // tests sense here and ahead and home and foe home
@@ -70,20 +73,20 @@ public class SenseJUnitTest {
     public void senseDirectionHere(){
         Sense senseHome = new Sense(SenseDirection.HERE, new Home(), 
                 nextStateIfConditionTrue, nextStateIfConditionFalse);
-        senseHome.execute(testBoard, testAnt);
+        senseHome.execute(testBoard, testAnt, randomNumberGen);
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionTrue);
         Sense foeHome = new Sense(SenseDirection.HERE, new FoeHome(),
                 nextStateIfConditionTrue, nextStateIfConditionFalse);
-        foeHome.execute(testBoard, testAnt);
+        foeHome.execute(testBoard, testAnt, randomNumberGen);
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionFalse);
         
         Sense senseAheadHome = new Sense(SenseDirection.AHEAD, new FoeHome(), 
                 nextStateIfConditionTrue, nextStateIfConditionFalse);
-        senseAheadHome.execute(testBoard, testAnt);
+        senseAheadHome.execute(testBoard, testAnt, randomNumberGen);
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionTrue);
         Sense senseAheadFoeHome = new Sense(SenseDirection.AHEAD, new Home(),
                 nextStateIfConditionTrue, nextStateIfConditionFalse);
-        senseAheadFoeHome.execute(testBoard, testAnt);
+        senseAheadFoeHome.execute(testBoard, testAnt, randomNumberGen);
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionFalse);
     }
 
@@ -92,20 +95,20 @@ public class SenseJUnitTest {
     public void senseDirectionAhead(){
         Sense senseFoeLeftAhead = new Sense(SenseDirection.LEFTAHEAD, new Foe(), 
                 nextStateIfConditionTrue, nextStateIfConditionFalse);
-        senseFoeLeftAhead.execute(testBoard, testAnt);
+        senseFoeLeftAhead.execute(testBoard, testAnt, randomNumberGen);
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionTrue);
         Sense senseFoodLeftAhead = new Sense(SenseDirection.LEFTAHEAD, new Food(),
                 nextStateIfConditionTrue, nextStateIfConditionFalse);
-        senseFoodLeftAhead.execute(testBoard, testAnt);
+        senseFoodLeftAhead.execute(testBoard, testAnt, randomNumberGen);
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionFalse);
         
         Sense senseFoodRightAhead = new Sense(SenseDirection.RIGHTAHEAD, new Food(),
                 nextStateIfConditionTrue, nextStateIfConditionFalse);
-        senseFoodRightAhead.execute(testBoard, testAnt);
+        senseFoodRightAhead.execute(testBoard, testAnt, randomNumberGen);
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionTrue);
         Sense senseFoeRightAhead = new Sense(SenseDirection.RIGHTAHEAD, new Foe(),
                 nextStateIfConditionTrue, nextStateIfConditionFalse);
-        senseFoeRightAhead.execute(testBoard, testAnt);
+        senseFoeRightAhead.execute(testBoard, testAnt, randomNumberGen);
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionFalse);
         
     }
@@ -117,11 +120,11 @@ public class SenseJUnitTest {
         testBoard.setAntAt(new Pos(6,5), friend);
         
         new Sense(SenseDirection.AHEAD, new Friend(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, secondAnt);
+                nextStateIfConditionFalse).execute(testBoard, secondAnt, randomNumberGen);
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionTrue);
         
         new Sense(SenseDirection.LEFTAHEAD, new Friend(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, secondAnt);
+                nextStateIfConditionFalse).execute(testBoard, secondAnt, randomNumberGen);
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionFalse);
     }
     
@@ -132,12 +135,12 @@ public class SenseJUnitTest {
         testBoard.setAntAt(new Pos(6,5), friend);
         
         new Sense(SenseDirection.AHEAD, new FriendWithFood(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, secondAnt);
+                nextStateIfConditionFalse).execute(testBoard, secondAnt, randomNumberGen);
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionFalse);
         
         friend.setCarryingFood(true);
         new Sense(SenseDirection.AHEAD, new FriendWithFood(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, secondAnt);
+                nextStateIfConditionFalse).execute(testBoard, secondAnt, randomNumberGen);
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionTrue);
     }
     
@@ -148,12 +151,12 @@ public class SenseJUnitTest {
         testBoard.setAntAt(new Pos(6,5), foe);
         
         new Sense(SenseDirection.AHEAD, new FoeWithFood(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, secondAnt);
+                nextStateIfConditionFalse).execute(testBoard, secondAnt, randomNumberGen);
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionFalse);
         
         foe.setCarryingFood(true);
         new Sense(SenseDirection.AHEAD, new FoeWithFood(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, secondAnt);
+                nextStateIfConditionFalse).execute(testBoard, secondAnt, randomNumberGen);
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionTrue);
     }
     
@@ -161,11 +164,11 @@ public class SenseJUnitTest {
     @Test
     public void senseRock(){
         new Sense(SenseDirection.LEFTAHEAD, new Rock(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, blackAnt);
+                nextStateIfConditionFalse).execute(testBoard, blackAnt, randomNumberGen);
         assertTrue(blackAnt.getCurrentBrainState() == nextStateIfConditionTrue);
         
         new Sense(SenseDirection.AHEAD, new Rock(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, blackAnt);
+                nextStateIfConditionFalse).execute(testBoard, blackAnt, randomNumberGen);
         assertTrue(blackAnt.getCurrentBrainState() == nextStateIfConditionFalse);
     }
     
@@ -173,12 +176,12 @@ public class SenseJUnitTest {
     @Test
     public void senseFoeMarker(){
         new Sense(SenseDirection.AHEAD, new FoeMarker(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, secondAnt);
+                nextStateIfConditionFalse).execute(testBoard, secondAnt, randomNumberGen);
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionFalse);
         
         testBoard.setMarker(new Pos(6,5), Colour.BLACK, 3);
         new Sense(SenseDirection.AHEAD, new FoeMarker(), nextStateIfConditionTrue,
-                nextStateIfConditionFalse).execute(testBoard, secondAnt);
+                nextStateIfConditionFalse).execute(testBoard, secondAnt, randomNumberGen);
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionTrue);
     }
     
@@ -188,11 +191,11 @@ public class SenseJUnitTest {
         for(int i = 0; i < 6; i++){
             Sense senseMarker = new Sense(SenseDirection.AHEAD, new Marker(i), nextStateIfConditionTrue,
                 nextStateIfConditionFalse);
-            senseMarker.execute(testBoard, secondAnt);
+            senseMarker.execute(testBoard, secondAnt, randomNumberGen);
             assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionFalse);
             
             testBoard.setMarker(new Pos(6,5), Colour.RED, i);
-            senseMarker.execute(testBoard, secondAnt);
+            senseMarker.execute(testBoard, secondAnt, randomNumberGen);
             assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionTrue);        
         }
     }

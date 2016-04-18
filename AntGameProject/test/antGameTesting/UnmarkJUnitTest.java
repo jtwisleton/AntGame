@@ -12,6 +12,7 @@ import antgameproject.BoardTile;
 import antgameproject.Colour;
 import instructions.Mark;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 import antgameproject.Terrain;
 import instructions.Unmark;
 import org.junit.Before;
@@ -53,10 +54,10 @@ public class UnmarkJUnitTest {
         int markToSet = 2;
         int markToClear = markToSet;
         int nextState = 13;
-        new Mark(markToSet, 13).execute(testBoard, testAnt);
+        new Mark(markToSet, 13).execute(testBoard, testAnt, new RandomNumber(1));
         assertTrue(testBoard.checkMarker(testAnt.getBoardPosition(), testAnt.getAntColour(),
                 markToSet));
-        new Unmark(markToClear, 14).execute(testBoard, testAnt);
+        new Unmark(markToClear, 14).execute(testBoard, testAnt, new RandomNumber(1));
         assertFalse(testBoard.checkMarker(testAnt.getBoardPosition(), testAnt.getAntColour(),
                 markToClear));
     }
@@ -68,7 +69,7 @@ public class UnmarkJUnitTest {
         int nextState = 13;
         assertFalse(testBoard.checkMarker(testAnt.getBoardPosition(), testAnt.getAntColour(),
                 markToClear));
-        new Unmark(markToClear, 14).execute(testBoard, testAnt);
+        new Unmark(markToClear, 14).execute(testBoard, testAnt, new RandomNumber(1));
         assertFalse(testBoard.checkMarker(testAnt.getBoardPosition(), testAnt.getAntColour(),
                 markToClear));
     }
@@ -80,13 +81,13 @@ public class UnmarkJUnitTest {
         int redMarkToClear = redMarkToSet;
         int blackMarkToSet = 5;
         
-        new Mark(redMarkToSet, 5).execute(testBoard, testAnt);
-        new Mark(blackMarkToSet, 18).execute(testBoard, testAntBlack);
+        new Mark(redMarkToSet, 5).execute(testBoard, testAnt, new RandomNumber(1));
+        new Mark(blackMarkToSet, 18).execute(testBoard, testAntBlack, new RandomNumber(1));
         assertTrue(testBoard.checkMarker(testAnt.getBoardPosition(), testAnt.getAntColour(),
                 redMarkToSet));
         assertTrue(testBoard.checkMarker(testAntBlack.getBoardPosition(), testAntBlack.getAntColour(),
                 blackMarkToSet));
-        new Unmark(redMarkToClear, 29).execute(testBoard, testAnt);
+        new Unmark(redMarkToClear, 29).execute(testBoard, testAnt, new RandomNumber(1));
         assertFalse(testBoard.checkMarker(testAnt.getBoardPosition(), testAnt.getAntColour(),
                 redMarkToSet));
         assertTrue(testBoard.checkMarker(testAntBlack.getBoardPosition(), testAntBlack.getAntColour(),
@@ -100,7 +101,7 @@ public class UnmarkJUnitTest {
         int nextState = 23;
         Unmark testUnmark = new Unmark(markToClearValue, nextState);
         assertTrue(testAnt.getCurrentBrainState() == 0);
-        testUnmark.execute(testBoard, testAnt);
+        testUnmark.execute(testBoard, testAnt, new RandomNumber(1));
         assertTrue(testAnt.getCurrentBrainState() == nextState);
     }
     

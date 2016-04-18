@@ -11,11 +11,9 @@ import antgameproject.BoardTile;
 import antgameproject.Colour;
 import instructions.PickUpFood;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 import antgameproject.Terrain;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -28,6 +26,7 @@ public class PickUpFoodJUnitTest {
     private Ant antOnTileWithFood;
     private Ant antOnTileWithoutFood;
     private Board testBoard;
+    private RandomNumber randomNumberGen;
     
     @Before
     public void setUp(){
@@ -47,6 +46,7 @@ public class PickUpFoodJUnitTest {
         board[2][2] = new BoardTile(5, Terrain.GRASS);
         board[3][3] = new BoardTile(0, Terrain.GRASS);
         testBoard = new Board(board, "Board 6");
+        randomNumberGen = new RandomNumber(1);
     }
  
     @Test
@@ -56,7 +56,7 @@ public class PickUpFoodJUnitTest {
         Pos antPosition = antOnTileWithFood.getBoardPosition();
         assertTrue(testBoard.numberOfFoodAt(antPosition) == 5);
         assertFalse(antOnTileWithFood.getCarryingFood());
-        new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood).execute(testBoard, antOnTileWithFood);
+        new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood).execute(testBoard, antOnTileWithFood, randomNumberGen);
         assertTrue(testBoard.numberOfFoodAt(antPosition) == 4);
         assertTrue(antOnTileWithFood.getCarryingFood());
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfFoodFound);
@@ -69,7 +69,8 @@ public class PickUpFoodJUnitTest {
         Pos antPosition = antOnTileWithoutFood.getBoardPosition();
         assertTrue(testBoard.numberOfFoodAt(antPosition) == 0);
         assertFalse(antOnTileWithoutFood.getCarryingFood());
-        new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood).execute(testBoard, antOnTileWithoutFood);
+        new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood).execute(testBoard, 
+                antOnTileWithoutFood, randomNumberGen);
         assertTrue(testBoard.numberOfFoodAt(antPosition) == 0);
         assertFalse(antOnTileWithoutFood.getCarryingFood());
         assertTrue(antOnTileWithoutFood.getCurrentBrainState() == nextStateIfNoFood);
@@ -82,11 +83,11 @@ public class PickUpFoodJUnitTest {
         int nextStateIfNoFood = 23;
         PickUpFood testPickUpFood = new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood);
         Pos antPosition = antOnTileWithFood.getBoardPosition();
-        testPickUpFood.execute(testBoard, antOnTileWithFood);
+        testPickUpFood.execute(testBoard, antOnTileWithFood, randomNumberGen);
         assertTrue(testBoard.numberOfFoodAt(antPosition) == 4);
         assertTrue(antOnTileWithFood.getCarryingFood());
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfFoodFound);
-        testPickUpFood.execute(testBoard, antOnTileWithFood);
+        testPickUpFood.execute(testBoard, antOnTileWithFood, randomNumberGen);
         assertTrue(testBoard.numberOfFoodAt(antPosition) == 4);
         assertTrue(antOnTileWithFood.getCarryingFood());
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfNoFood);
