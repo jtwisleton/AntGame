@@ -26,7 +26,7 @@ public class AntWorldLoader {
     }
 
     public static void main(String[] args) throws FileNotFoundException, IOException, AntWorldLoaderException {
-        String fn = "src//antgameproject//sample1.world";
+        String fn = "src//antgameproject//1.world";
         Board b = loadWorld(fn, false);
         b.printBoardToASCII();
     }
@@ -50,12 +50,10 @@ public class AntWorldLoader {
         if (checkWorldSyntax(fileName)) {
 
             /*
-             Set the board size depending on the given world - as the boards have
-             spaces between the elements horizontal size is given by the length 
-             of each line divided by 2, plus one.
+             Set the board size depending on the given world.
              */
             int ySize = lines.size() - 2;
-            int xSize = (lines.get(2).length() / 2)+1;
+            int xSize = lines.get(2).length();
             BoardTile[][] board = new BoardTile[ySize][xSize];
 
             /*
@@ -63,12 +61,11 @@ public class AntWorldLoader {
              (which declare the world size).
              */
             for (int i = 0; i < ySize; i++) {
-                
+
                 /*
-                 Remove all the whitespace in iterator selected line and put the
-                 result in a String. 
+                 Put iterator selected line in a String. 
                  */
-                String currentLine = lines.get(i + 2).replaceAll("\\s", "");
+                String currentLine = lines.get(i + 2);
 
                 /*
                  Iterate over the characters in the iterator selected line, adding 
@@ -104,12 +101,12 @@ public class AntWorldLoader {
                     }
                 }
             }
-            
+
             /*
-            If the tournamentReady Boolean is true, meaning the world needs to
-            be tournament ready, run the tournamentReady method on the board
-            and return it if it is tournament ready, throw an exception if not.
-            */
+             If the tournamentReady Boolean is true, meaning the world needs to
+             be tournament ready, run the tournamentReady method on the board
+             and return it if it is tournament ready, throw an exception if not.
+             */
             if (tournamentReady) {
                 if (tournamentReady(board)) {
                     return new Board(board, "Board 1");
@@ -117,11 +114,11 @@ public class AntWorldLoader {
                     throw new AntWorldLoaderException("Expected tournament ready board.");
                 }
             } else {
-                
+
                 /*
-                If the board doesn't need to be tournament ready just return it.
-                */
-                return new Board(board, "Board 1");
+                 If the board doesn't need to be tournament ready just return it.
+                 */
+                return new Board(board, fileName);
             }
 
         } else {
@@ -136,14 +133,14 @@ public class AntWorldLoader {
     public static Boolean checkWorldSyntax(String fileName) throws FileNotFoundException, IOException, AntWorldLoaderException {
 
         /*
-         Read the world from a file into a String.
+         Read the world from a file into a String, removing all whitespace.
          */
         lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(new FileInputStream(fileName)))) {
             String line;
             while ((line = br.readLine()) != null) {
-                lines.add(line);
+                lines.add(line.replaceAll("\\s", ""));
             }
         }
 
@@ -166,7 +163,7 @@ public class AntWorldLoader {
         int xDimension = Integer.parseInt(lines.get(0));
         int yDimension = Integer.parseInt(lines.get(1));
 
-        if (lines.get(2).length() != (xDimension * 2)) {
+        if (lines.get(2).length() != (xDimension)) {
             throw new AntWorldLoaderException("xDimension doesn't match size of world.");
         }
 
@@ -175,11 +172,11 @@ public class AntWorldLoader {
         }
 
         /*
-         Check the third line and last lines are all hashtags and spaces, 
-         throw exception if not.
+         Check the third line and last lines are all hashtags, throw exception
+         if not.
          */
-        if (!lines.get(2).matches("(#|\\s)+") || !lines.get(lines.size() - 1).matches("(#|\\s)+")) {
-            throw new AntWorldLoaderException("3rd or last line isn't made up of # and spaces");
+        if (!lines.get(2).matches("#+") || !lines.get(lines.size() - 1).matches("#+")) {
+            throw new AntWorldLoaderException("3rd or last line isn't made up of #.");
         }
 
         /*
@@ -187,37 +184,15 @@ public class AntWorldLoader {
          syntactically valid, throw exception if not.
          */
         for (int i = 3; i < lines.size(); i++) {
-            if (!lines.get(i).matches("\\s?#(\\d|\\s|\\.|\\-|\\+|#)+#\\s?")) {
-                throw new AntWorldLoaderException("line in world doesn't match regex: "+ lines.get(i));
+            if (!lines.get(i).matches("#(\\d|\\.|\\-|\\+|#)+#")) {
+                throw new AntWorldLoaderException("line in world doesn't match regex: " + lines.get(i));
             } else {
 
                 /*
-                 If row should/shouldn't be offset isn't/is, throw exception.
+                 Check line is the right length.
                  */
-                if (i % 2 != 0) {
-                    if (lines.get(i).charAt(0) != ' ') {
-                        throw new AntWorldLoaderException("Expected line " + i + " to be offset, it wasn't.");
-                    } else {
-
-                        /*
-                         If row is wrong length, throw exception
-                         */
-                        if (lines.get(i).length() != (xDimension * 2)) {
-                            throw new AntWorldLoaderException("Line " + i + " wrong length.");
-                        }
-                    }
-                } else {
-                    if (lines.get(i).charAt(0) != '#') {
-                        throw new AntWorldLoaderException("Expected line " + i + "to not be offset, it was");
-                    } else {
-
-                        /*
-                         If row is wrong length, throw exception.
-                         */
-                        if (lines.get(i).length() != (xDimension * 2) - 1) {
-                            throw new AntWorldLoaderException("Line " + i + " wrong length");
-                        }
-                    }
+                if (lines.get(i).length() != xDimension) {
+                    throw new AntWorldLoaderException("line in world wrong length:" + lines.get(i));
                 }
             }
         }
