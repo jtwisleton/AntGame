@@ -14,12 +14,14 @@ public class Game {
     private int step;
     private int playerOneScore;
     private int playerTwoScore;
+    private RandomNumber randomNumberGen;
     
     public Game(AntBrain playerOne, AntBrain playerTwo, Board gameBoard){
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.gameBoard = gameBoard;
         step = 0;
+        randomNumberGen = new RandomNumber(12345);
     }
     
     public void run(){
@@ -29,7 +31,7 @@ public class Game {
             }
             step++;
         }
-        updateScores();
+        //updateScores();
     }
     
     private void takeAntWithIdMove(int antId){
@@ -41,7 +43,7 @@ public class Game {
             } else {
                 Instruction antsCurrentInstruction = getInstruction(currentAnt.getAntColour(), 
                         currentAnt.getCurrentBrainState());
-                antsCurrentInstruction.execute(gameBoard, currentAnt);    
+                antsCurrentInstruction.execute(gameBoard, currentAnt, randomNumberGen);    
             }
         } 
     }
@@ -57,36 +59,12 @@ public class Game {
     }
     
     /**
-     * Update the current scores of the game.
-     */
-    private void updateScores() {
-        playerOneScore = 0;
-        playerTwoScore = 0;
-        
-        // Iterate over each cell
-        for (int i = 0; i < 150; i++) {
-            for (int j = 0; j < 150; j++) {
-                Pos pos = new Pos(i, j);
-                
-                // If red anthill, add number of food to red score
-                if (gameBoard.anthillAt(pos, Colour.RED)) {
-                    playerOneScore += gameBoard.numberOfFoodAt(pos);
-                    
-                // If black anthill, add number of food to black score
-                } else if (gameBoard.anthillAt(pos, Colour.BLACK)) {
-                    playerTwoScore += gameBoard.numberOfFoodAt(pos);
-                }
-            }
-        }
-    }
-    
-    /**
      * Get the red ant's score.
      * 
      * @return Red ant score.
      */
     public int getPlayerOneScore() {
-        return playerOneScore;
+        return gameBoard.getNumberOfFoodInBase(Colour.RED);
     }
     
     /**
@@ -95,7 +73,28 @@ public class Game {
      * @return Black ant score.
      */
     public int getPlayerTwoScore() {
-        return playerTwoScore;
+        return gameBoard.getNumberOfFoodInBase(Colour.BLACK);
+    }
+    
+    public int getRedAntsAlive(){
+        return gameBoard.getNumberOfAntsAlive(Colour.RED);
+    }
+    
+    public int getBlackAntsAlive(){
+        return gameBoard.getNumberOfAntsAlive(Colour.BLACK);
+    }
+    
+    public Board getGameBoard(){
+        return gameBoard;
+    }
+
+    public void runRounds(int numberOfStepsToRun) {
+        for(int j = 0; j < numberOfStepsToRun; j++){    
+            for(int i = 0; i < gameBoard.getNumberOfAnts(); i++){
+                takeAntWithIdMove(i);
+            }
+            step++;
+        }    
     }
 
 }
