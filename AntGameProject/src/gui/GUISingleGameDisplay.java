@@ -13,6 +13,9 @@ import antgameproject.Game;
 import antgameproject.Pos;
 import antgameproject.Terrain;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -35,9 +38,9 @@ public class GUISingleGameDisplay extends BasicGameState {
     private int divide;
     private int steps;
     private float scale;
-    //private Game game;
+    private Game game;
     private HashMap<String, Pos> spritePositions;
-    Board gameBoard = createTestBoard();
+    private Board gameBoard;// = createTestBoard();
     private Image exitButton;
     private Image exitButtonHover;
     private Image currentExitButton;
@@ -59,6 +62,12 @@ public class GUISingleGameDisplay extends BasicGameState {
     private MouseOverArea slowDownMO;
     private MouseOverArea pauseMO;
     private MouseOverArea skipMO;
+    private BoardTile[][] board;
+    private int oldSteps;
+    private int numRedBaseFood;
+    private int numBlackBaseFood;
+    private int redAntsAlive;
+    private int blackAntsAlive;
     
     public GUISingleGameDisplay(AntGameTournament tournament){
         this.tournament = tournament;
@@ -74,7 +83,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         scale = 1f;
         divide = 1400;
         steps = 14;
-        //game = tournament.getCurrentGame();
+        
         tileset = new Image("resources/sprite.png");
 	tiles = new SpriteSheet(tileset, 64, 64);
         spritePositions = new HashMap<>();
@@ -107,8 +116,13 @@ public class GUISingleGameDisplay extends BasicGameState {
         if(exitMO.isMouseOver()){
             currentExitButton = exitButtonHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                // reset tournament
-                sbg.enterState(1);
+                try {
+                    //tournament.reset();
+                    sbg.enterState(2);
+                    TimeUnit.MILLISECONDS.sleep(250);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GUISingleGameDisplay.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } else {
             currentExitButton = exitButton;
@@ -116,27 +130,64 @@ public class GUISingleGameDisplay extends BasicGameState {
             
         if(speedUpMO.isMouseOver()){
             currentSpeedUp = speedUpButtonHover;
+            if(gc.getInput().isMouseButtonDown(0)){
+                if(steps < 1000){
+                    steps++;
+                }
+            }
         } else {
             currentSpeedUp = speedUpButton;
         }
             
         if(slowDownMO.isMouseOver()){
-            currentSlowDownButton = slowDownButtonHover; 
+            currentSlowDownButton = slowDownButtonHover;
+            if(gc.getInput().isMouseButtonDown(0)){
+                if(steps > 2){
+                    steps--;
+                }
+            }
         } else {
             currentSlowDownButton = slowDownButton;
         }
             
         if(pauseMO.isMouseOver()){
             currentPauseButton = pauseButtonHover;
+            if(gc.getInput().isMouseButtonDown(0)){
+                if(steps == 0){
+                    steps = oldSteps;
+                } else {
+                    oldSteps = steps;
+                    steps = 0;
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep(250);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GUISingleGameDisplay.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         } else {
             currentPauseButton = pauseButton;
         }
             
         if(skipMO.isMouseOver()){
             currentSkipToEndButton = skipToEndButtonHover;
+            if(gc.getInput().isMouseButtonDown(0)){
+                steps = 3000000;
+            }
         } else {
             currentSkipToEndButton = skipToEndButton;
         }
+        
+        game = tournament.getCurrentGame();
+        gameBoard = game.getGameBoard();
+        board = gameBoard.getBoard();
+        game.runRounds(steps);
+        
+        numRedBaseFood = game.getPlayerOneScore();
+        numBlackBaseFood = game.getPlayerTwoScore();
+        redAntsAlive = game.getRedAntsAlive();
+        blackAntsAlive = game.getBlackAntsAlive();
+        
     }
 
     @Override
@@ -152,11 +203,11 @@ public class GUISingleGameDisplay extends BasicGameState {
         int redFood = 150;
         int blueFood = 66;
         grphcs.setColor(new Color(231, 76, 60));
-        grphcs.fillRect(divide+120, 550-redAnts, 100, redAnts);
-        grphcs.fillRect(divide+120, 920-redFood, 100, redFood);
+        grphcs.fillRect(divide+120, 550-redAntsAlive, 100, redAntsAlive);
+        grphcs.fillRect(divide+120, 920-numRedBaseFood*2, 100, numRedBaseFood*2);
         grphcs.setColor(new Color(52, 73, 94));
-        grphcs.fillRect(divide+270, 550-blueAnts, 100, blueAnts);
-        grphcs.fillRect(divide+270, 920-blueFood, 100, blueFood);
+        grphcs.fillRect(divide+270, 550-blackAntsAlive, 100, blackAntsAlive);
+        grphcs.fillRect(divide+270, 920-numBlackBaseFood*2, 100, numBlackBaseFood*2);
         
         
         grphcs.setColor(Color.white);
@@ -176,13 +227,15 @@ public class GUISingleGameDisplay extends BasicGameState {
 
         grphcs.scale(0.5f, 0.5f);
         tiles.startUse();
-        for(int i = 0; i < 150; i++){   //use board size
-                for(int j = 0; j < 150; j++){   // use board size
-                        Pos spritePosition = calculateSpritePosition(i,j);
+        for(int i = 0; i < board.length; i++){   //use board size
+                for(int j = 0; j < board[0].length; j++){   // use board size
+                        Pos spritePosition = calculateSpritePosition(j,i);
                         if(i % 2 == 0){
-                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+16*j, 50+12*i, 16, 16);
+                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+128*j, 50+100*i, 128, 128);
+                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+16*j, 50+12*i, 16, 16);
                         }else{
-                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+8+16*j, 50+12f*i, 16, 16);
+                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+64+128*j, 50+100f*i, 128, 128);
+                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+8+16*j, 50+12f*i, 16, 16);
                         }
                 }
         }	
@@ -211,9 +264,10 @@ public class GUISingleGameDisplay extends BasicGameState {
         Terrain[] terrainVals = {Terrain.GRASS, Terrain.GRASS, Terrain.REDBASE, Terrain.REDBASE, 
             Terrain.BLACKBASE, Terrain.BLACKBASE};
         for(Terrain terrainType: terrainVals){
+            int antDirection = 0;
             for(int z=0; z<14; z++){
                 String key;
-                int antDirection = 0;
+                
                 if(z < 2){
                     key = terrainType.toString() + food;
                 } else {
