@@ -4,8 +4,7 @@ package antgameproject;
 import instructions.Instruction;
 
 /**
- *
- * @author wilki
+ * The Game class represents a single game between two ant brains on a single world.
  */
 public class Game {
     private final AntBrain playerOne;
@@ -16,6 +15,12 @@ public class Game {
     private int playerTwoScore;
     private RandomNumber randomNumberGen;
     
+    /**
+     * Constructor for the game class
+     * @param playerOne the AntBrain for player one.
+     * @param playerTwo the AntBrain for player two.
+     * @param gameBoard the Board to play the game on.
+     */
     public Game(AntBrain playerOne, AntBrain playerTwo, Board gameBoard){
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
@@ -24,6 +29,10 @@ public class Game {
         randomNumberGen = new RandomNumber(12345);
     }
     
+    /**
+     * Runs the game for 300000 turns. During a turn each alive ant on the board
+     * executes an instruction if it's not resting.
+     */
     public void run(){
         while(step < 300000){
             for(int i = 0; i < gameBoard.getNumberOfAnts(); i++){
@@ -31,9 +40,11 @@ public class Game {
             }
             step++;
         }
-        //updateScores();
     }
     
+    /*
+    * Takes the move for the ant given by the id if it is alive and is not resting.
+    */
     private void takeAntWithIdMove(int antId){
         if(gameBoard.antIsAlive(antId)){
             Pos antPosition = gameBoard.getAntPosition(antId);
@@ -48,9 +59,11 @@ public class Game {
         } 
     }
     
-            
+    /*
+    * returns the corrent instruction depending on the ant colour of the ant given as
+    * an argument.
+    */        
     private Instruction getInstruction(Colour antColour, int brainState){
-        // player one is red and player two black (only works for two players)
         if(antColour == Colour.RED){
             return playerOne.getInstruction(brainState);
         } else {
@@ -60,7 +73,6 @@ public class Game {
     
     /**
      * Get the red ant's score.
-     * 
      * @return Red ant score.
      */
     public int getPlayerOneScore() {
@@ -69,25 +81,41 @@ public class Game {
     
     /**
      * Get the black ant's score.
-     * 
      * @return Black ant score.
      */
     public int getPlayerTwoScore() {
         return gameBoard.getNumberOfFoodInBase(Colour.BLACK);
     }
     
+    /**
+     * Gets the number of red ants alive in this game.
+     * @return the number of red ants alive.
+     */
     public int getRedAntsAlive(){
         return gameBoard.getNumberOfAntsAlive(Colour.RED);
     }
     
+    /**
+     * Gets the number of black ants alive in this game.
+     * @return the number of black ants alive.
+     */
     public int getBlackAntsAlive(){
         return gameBoard.getNumberOfAntsAlive(Colour.BLACK);
     }
     
+    /**
+     * Returns the game board the game is being played on.
+     * @return the game board 
+     */
     public Board getGameBoard(){
         return gameBoard;
     }
 
+    /**
+     * Runs the current game for the given number of steps while the game has run 
+     * in total less than 300000 steps.
+     * @param numberOfStepsToRun the number of steps to run the game for.
+     */
     public void runRounds(int numberOfStepsToRun) {
         for(int j = 0; j < numberOfStepsToRun; j++){
             if(step > 300000){
