@@ -133,30 +133,33 @@ public class GUITournamentOptions extends BasicGameState {
             currentLoadAntBrain = loadAntBrainHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 File antBrainToLoad = fileLoader();
-                try {
-                    tournament.loadAntBrain(antBrainToLoad.getAbsolutePath(), antBrainToLoad.getName());
-                    antBrainList = tournament.getListOfAntBrains();
-                } catch (AntBrainLoader.AntBrainLoaderException ex) {
-                    // notify user
-                } catch (IOException ex) {
-                    // notify user
+                if(antBrainToLoad != null){
+                    try {
+                        tournament.loadAntBrain(antBrainToLoad.getAbsolutePath(), antBrainToLoad.getName());
+                        antBrainList = tournament.getListOfAntBrains();
+                    } catch (AntBrainLoader.AntBrainLoaderException ex) {
+                        // notify user
+                    } catch (IOException ex) {
+                        // notify user
+                    }
+                    bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
                 }
-                bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
             }
         } else if(loadAntWorldMO.isMouseOver()){
             currentLoadAntWorld = loadAntWorldHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                File antWorldToLoad = fileLoader(); //add check for null
-                try {
-                    tournament.loadAntWorld(antWorldToLoad.getAbsolutePath());
-                    antWorldList = tournament.getListOfAntWorlds();
-                } catch (AntWorldLoader.AntWorldLoaderException ex) {
-                    // notify user
-                    System.out.println(ex.getMessage());
-                } catch (IOException ex) {
-                    // notify user
+                File antWorldToLoad = fileLoader();
+                if(antWorldToLoad != null){
+                    try {
+                        tournament.loadAntWorld(antWorldToLoad.getAbsolutePath(), antWorldToLoad.getName());
+                        antWorldList = tournament.getListOfAntWorlds();
+                    } catch (AntWorldLoader.AntWorldLoaderException ex) {
+                        // notify user
+                    } catch (IOException ex) {
+                        // notify user
+                    }
+                    bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
                 }
-                bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
             }
         } else if(genAntWorldMO.isMouseOver()){
             curGenWorld = genAntWorldHover;
@@ -166,51 +169,71 @@ public class GUITournamentOptions extends BasicGameState {
         } else if(mainMenuMO.isMouseOver()){
             currentMainMenu = mainMenuHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                tournament.reset();
                 try {
                     TimeUnit.MILLISECONDS.sleep(250);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                sbg.getState(2).init(gc, sbg);
+                //sbg.getState(2).init(gc, sbg);
                 sbg.enterState(2);
             }
         } else if(startTournMO.isMouseOver()){
             currentStartTournament = startTournamentHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 if(tournament.getListOfAntBrains().size() >= 2 && tournament.getListOfAntWorlds().size() >= 1){
+                    tournament.createTournament();
                     sbg.enterState(6);
                 }
             }
         } else if(up1MO.isMouseOver()){
             currentUp1 = upHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                if(tournament.getListOfAntBrains().size() > 10){
+                if(tournament.getListOfAntBrains().size() > 10 && topOfAntBrainList > 0){
                     topOfAntBrainList--;
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(250);
+                    } catch (InterruptedException ex) {
+                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhhhhhhhhhhh");
+                    }
                 }
                 bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
             }
-        } else if (down1MO.isMouseOver()){
+        } else if(down1MO.isMouseOver()){
             currentDown1 = downHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                if(tournament.getListOfAntBrains().size() > 10){
+                if(tournament.getListOfAntBrains().size() > 10 && topOfAntBrainList+10 < tournament.getListOfAntBrains().size()){
                     topOfAntBrainList++;
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(250);
+                    } catch (InterruptedException ex) {
+                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhhhhhhhhhhh");
+                    }
                 }
                 bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
             }
         } else if(up2MO.isMouseOver()){
             currentUp2 = upHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                if(tournament.getListOfAntWorlds().size() > 10){
-                    topOfAntBrainList--;
+                if(tournament.getListOfAntWorlds().size() > 10 && topOfAntWorldList > 0){
+                    topOfAntWorldList--;
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(250);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GUITournamentOptions.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
             }
         } else if(down2MO.isMouseOver()){
             currentDown2 = downHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                if(tournament.getListOfAntWorlds().size() > 10){
-                    topOfAntBrainList++;
+                if(tournament.getListOfAntWorlds().size() > 10 && topOfAntWorldList+10 < tournament.getListOfAntWorlds().size()){
+                    topOfAntWorldList++;
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(250);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GUITournamentOptions.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
             }
@@ -251,13 +274,14 @@ public class GUITournamentOptions extends BasicGameState {
         grphcs.drawImage(currentUp2, 1280+530, 600);
         grphcs.drawImage(currentDown2, 1280+530, 680);
             
+        System.out.println(topOfAntBrainList + " " + bottomOfAntBrainList + " " + antBrainList.size());
         for(int i = topOfAntBrainList; i < bottomOfAntBrainList; i++){
-            gameFont.drawString(genAntWorld.getWidth()+120, 400 + i * 55, 
+            gameFont.drawString(genAntWorld.getWidth()+120, 400 + (i-topOfAntBrainList) * 60, 
                     antBrainList.get(i).toString());
         }
-        
+        System.out.println(topOfAntWorldList + " " + bottomOfAntWorldList + " " + antWorldList.size());
         for(int i = topOfAntWorldList; i < bottomOfAntWorldList; i++){
-            gameFont.drawString(1300, 400 + i * 55, 
+            gameFont.drawString(1300, 400 + (i-topOfAntWorldList) * 60, 
                     antWorldList.get(i).toString());
         }
     }
@@ -275,10 +299,10 @@ public class GUITournamentOptions extends BasicGameState {
     private int setListBottom(List listToSetBottomOf, int listTopPos){
         int listBottom = 0;
         if(listToSetBottomOf.size() > 0){
-            if(listToSetBottomOf.size() < 10){
+            if(listToSetBottomOf.size() < 11){
                 listBottom = listToSetBottomOf.size();
             } else {
-                listBottom = listTopPos+11;
+                listBottom = listTopPos+10;
             }
         }
        return listBottom;
