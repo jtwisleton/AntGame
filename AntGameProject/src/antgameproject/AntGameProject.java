@@ -17,6 +17,7 @@ public class AntGameProject {
 	AntGameTournament tournament = new AntGameTournament();
         AppGameContainer app = new AppGameContainer(new GUI("Ant game", tournament));
 	app.setDisplayMode(1920, 1080, false);
+        app.setTargetFrameRate(60);
 	app.start();
     }
     
