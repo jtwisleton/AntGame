@@ -89,7 +89,10 @@ public class Game {
     }
 
     public void runRounds(int numberOfStepsToRun) {
-        for(int j = 0; j < numberOfStepsToRun; j++){    
+        for(int j = 0; j < numberOfStepsToRun; j++){
+            if(step > 300000){
+                break;
+            }
             for(int i = 0; i < gameBoard.getNumberOfAnts(); i++){
                 takeAntWithIdMove(i);
             }
