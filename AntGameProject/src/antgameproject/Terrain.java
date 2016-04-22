@@ -2,8 +2,7 @@
 package antgameproject;
 
 /**
- *
- * @author wilki
+ * The Terrain enum is used to specify types of terrain for the board cells.
  */
 public enum Terrain {
     GRASS("."), ROCK("#"), BLACKBASE("-"), REDBASE("+");
