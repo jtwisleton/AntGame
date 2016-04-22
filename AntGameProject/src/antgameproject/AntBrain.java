@@ -8,7 +8,7 @@ import java.util.List;
  * The AntBrain class represents an ant brain. It holds the instructions of that 
  * ant brain but holds the score for that brain during a tournament.
  */
-public class AntBrain {
+public class AntBrain implements Comparable<AntBrain> {
 
     private List<Instruction> instructions = new ArrayList<>();
     private final String name;
@@ -163,6 +163,14 @@ public class AntBrain {
      */
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    @Override
+    public int compareTo(AntBrain o) {
+        if(o.points == this.points){
+            return o.totalFoodInBase - this.getTotalFoodInBase();
+        } 
+        return o.points - this.points; 
     }
     
 }
