@@ -16,15 +16,17 @@ import antgameproject.RandomNumber;
 public class Flip implements Instruction {
     private final int nextStateIfZero;
     private final int nextStateElse;
+    private final int n;
     
-    public Flip(int nextStateIfZero, int nextStateElse){
+    public Flip(int n, int nextStateIfZero, int nextStateElse){
         this.nextStateIfZero = nextStateIfZero;
         this.nextStateElse = nextStateElse;
+        this.n = n;
     }
     
     @Override
-    public void execute(Board gameBoard, Ant currentAnt) {
-        if(RandomNumber.generateNumber() == 0){
+    public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
+        if(randomNumberGen.generateNumber(n) == 0){
             currentAnt.setBrainState(nextStateIfZero);
         } else {
             currentAnt.setBrainState(nextStateElse);

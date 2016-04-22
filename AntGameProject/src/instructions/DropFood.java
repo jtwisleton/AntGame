@@ -8,6 +8,7 @@ package instructions;
 import antgameproject.Ant;
 import antgameproject.Board;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 
 /**
  *
@@ -21,7 +22,7 @@ public class DropFood implements Instruction{
     }
     
     @Override
-    public void execute(Board gameBoard, Ant currentAnt) {
+    public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
         if(currentAnt.getCarryingFood()){
             Pos antPosition = currentAnt.getBoardPosition();
             gameBoard.setFoodAt(antPosition, gameBoard.numberOfFoodAt(antPosition) + 1);

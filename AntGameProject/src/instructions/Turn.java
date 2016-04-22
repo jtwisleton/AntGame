@@ -7,6 +7,7 @@ package instructions;
 
 import antgameproject.Ant;
 import antgameproject.Board;
+import antgameproject.RandomNumber;
 
 /**
  *
@@ -23,7 +24,7 @@ public class Turn extends DirectionalInstruction implements Instruction{
     }
 
     @Override
-    public void execute(Board gameBoard, Ant currentAnt) {
+    public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
         currentAnt.setFacingDirection(turn(directionToTurn, currentAnt.getFacingDirection()));
         currentAnt.setBrainState(nextState);
     }

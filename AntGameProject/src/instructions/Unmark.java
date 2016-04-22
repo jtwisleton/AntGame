@@ -8,6 +8,7 @@ package instructions;
 import antgameproject.Ant;
 import antgameproject.Board;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 
 /**
  *
@@ -23,7 +24,7 @@ public class Unmark implements Instruction{
     }
     
     @Override
-    public void execute(Board gameBoard, Ant currentAnt) {
+    public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
         Pos antPosition = currentAnt.getBoardPosition();
         gameBoard.clearMarker(antPosition, currentAnt.getAntColour(), markToClear);
         currentAnt.setBrainState(nextState);

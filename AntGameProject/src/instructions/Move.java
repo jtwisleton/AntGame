@@ -5,6 +5,7 @@ import antgameproject.Ant;
 import antgameproject.Board;
 import antgameproject.Colour;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 import antgameproject.Terrain;
 
 /**
@@ -23,7 +24,7 @@ public class Move extends DirectionalInstruction implements Instruction {
     }
 
     @Override
-    public void execute(Board gameBoard, Ant currentAnt) {
+    public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
         Pos antPosition = currentAnt.getBoardPosition();
         Pos newPosition = getAdjacentCell(antPosition, currentAnt.getFacingDirection());
         if(gameBoard.getTerrainAtPosition(newPosition) == Terrain.ROCK || 

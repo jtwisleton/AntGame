@@ -8,6 +8,7 @@ package instructions;
 import antgameproject.Ant;
 import antgameproject.Board;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 
 /**
  *
@@ -23,7 +24,7 @@ public class PickUpFood implements Instruction{
     }
 
     @Override
-    public void execute(Board gameBoard, Ant currentAnt) {
+    public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
         Pos antPosition = currentAnt.getBoardPosition();
         int noFoodAtAntsPosition = gameBoard.numberOfFoodAt(antPosition);
         if(currentAnt.getCarryingFood() || noFoodAtAntsPosition == 0){

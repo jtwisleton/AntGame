@@ -9,6 +9,7 @@ import antgameproject.Ant;
 import antgameproject.Board;
 import conditions.Condition;
 import antgameproject.Pos;
+import antgameproject.RandomNumber;
 
 /**
  *
@@ -29,7 +30,7 @@ public class Sense extends DirectionalInstruction implements Instruction {
     }
     
     @Override
-    public void execute(Board gameBoard, Ant currentAnt) {
+    public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
         Pos cellToSense;
         Pos currentAntPosition = currentAnt.getBoardPosition();
         int currentAntFacingDirection = currentAnt.getFacingDirection();

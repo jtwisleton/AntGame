@@ -7,11 +7,12 @@ package instructions;
 
 import antgameproject.Ant;
 import antgameproject.Board;
+import antgameproject.RandomNumber;
 
 /**
  *
  * @author wilki
  */
 public interface Instruction {
-    public void execute(Board gameBoard, Ant currentAnt);
+    public void execute(Board gameBoard, Ant currentAnt, RandomNumber numberGen);
 }
