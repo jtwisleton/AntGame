@@ -1,26 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package antGameTesting;
 
 import antgameproject.Ant;
 import antgameproject.Colour;
 import antgameproject.Pos;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author wilki
+ * Test class to test the ant class.
  */
 public class AntJUnitTest {
     
+    // Test creation of an ant.
     @Test
     public void testAntCreation(){
         Pos testAntPosition = new Pos(2,2);
@@ -36,10 +28,20 @@ public class AntJUnitTest {
         assertTrue(testAnt.getAntColour() == testAntColour);
         
         assertFalse(testAnt.getCarryingFood());
-        assertFalse(testAnt.antIsResting());
-        
+        assertFalse(testAnt.antIsResting()); 
     }
     
-    // the rest of the ant methods are getters and setters and hold no program logic 
-    // so were not tested.
+    // Test creation of a black ant.
+    @Test
+    public void testBlackAntCreation(){
+        Pos testAntPosition = new Pos(3,18);
+        Colour testAntColour = Colour.BLACK;
+        Ant testAnt = new Ant(testAntColour, 2, testAntPosition);
+        assertTrue(testAnt.getAntColour() == testAntColour);       
+    }
+    
+    /* the rest of the ant methods are getters and setters and hold no program logic 
+    * so were not tested. The general behaviour of the ant is tested through the board
+    * and game tests
+    */ 
 }
