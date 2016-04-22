@@ -1,19 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package antgameproject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- *
- * @author wilki
+ * Represents a board tile, which is a single cell on the game board.
  */
 public class BoardTile {
     private int foodInTile;
@@ -21,6 +15,11 @@ public class BoardTile {
     private final Terrain cellTerrain;
     private Ant antOnTile;
     
+    /**
+     * Constructor for a board tile.
+     * @param foodInTile the amount of food in the tile.
+     * @param cellTerrain the terrain type of the tile.
+     */
     public BoardTile(int foodInTile, Terrain cellTerrain){
         assert foodInTile < 10;
         if(cellTerrain == Terrain.ROCK){
@@ -30,41 +29,70 @@ public class BoardTile {
         this.foodInTile = foodInTile;
         this.cellTerrain = cellTerrain;
         
+        //create an empty list of colours.
         markers = new HashMap<>();
         for(Colour col: Colour.values()){
             markers.put(col, new ArrayList<Integer>());
         }
     }
     
+    /**
+     * Sets the given ant in this tile.
+     * @param antOnTile ant to set on tile.
+     */
     public void setAntOnTile(Ant antOnTile){
         this.antOnTile = antOnTile;
     }
     
+    /**
+     * Return the ant on the tile.
+     * @return the ant on this tile.
+     */
     public Ant getAntOnTile(){
         return antOnTile;
     }
     
+    /**
+     * Set the marker type given for the colour given.
+     * @param colourOfMarker colour of the marker to set.
+     * @param markerToSet the type of the marker to set.
+     */
     public void setMarker(Colour  colourOfMarker, Integer markerToSet){
         if(!markers.get(colourOfMarker).contains(markerToSet)){
            markers.get(colourOfMarker).add(markerToSet); 
         }
-        
     }
     
+    /**
+     * Returns all the markers of a given colour for this board tile.
+     * @param colourOfMarkerToGet the colour of the markers to get.
+     * @return a list of all the markers set on this tile for the given colour.
+     */
     public List<Integer> getMarkers(Colour colourOfMarkerToGet){
         Collections.sort(markers.get(colourOfMarkerToGet));
         return markers.get(colourOfMarkerToGet);
-        //return markers.get(colourOfMarkerToGet).sort(sortMarkers);
     }
     
+    /**
+     * Sets the amount of food on this tile.
+     * @param newAmountOfFood the new amount of food to set on this tile.
+     */
     public void setFoodInTile(int newAmountOfFood){
         foodInTile = newAmountOfFood;
     }
     
+    /**
+     * Returns the amount of food in this tile.
+     * @return the amount of food in this tile.
+     */
     public int getFoodInTile(){
         return foodInTile;
     }
     
+    /**
+     * Returns the cell terrain for th given tile.
+     * @return the cell terrain of the given tile.
+     */
     public Terrain getCellTerrain(){
         return cellTerrain;
     }
@@ -80,11 +108,4 @@ public class BoardTile {
         }
     }
     
-    class sortMarkers implements Comparator<Integer>  {
-        @Override
-        public int compare(Integer o1, Integer o2) {
-            return o1 - o2;
-        }
-    
-    }
 }
