@@ -77,7 +77,7 @@ public class AntBrainLoader {
         /*
          Declare pattern that describe the entire brain.
          */
-        Pattern brainPattern = Pattern.compile("(Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Marker|Rock))|((Mark|Unmark|Pickup)\\s+\\d+\\s+\\d+)|(Move\\s+\\d+\\s+\\d+)|(Turn\\s+(Left|Right)\\s+\\d+)|(Drop\\s+\\d+)|(Flip\\s+\\d+\\s+\\d+\\s+\\d+)");
+        Pattern brainPattern = Pattern.compile("(Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Marker\\s+\\d+|Rock))|((Mark|Unmark|PickUp)\\s+\\d+\\s+\\d+)|(Move\\s+\\d+\\s+\\d+)|(Turn\\s+(Left|Right)\\s+\\d+)|(Drop\\s+\\d+)|(Flip\\s+\\d+\\s+\\d+\\s+\\d+)");
         Matcher brainPatternMatcher = brainPattern.matcher(brainString);
 
         /*
@@ -102,7 +102,7 @@ public class AntBrainLoader {
          "", return that brain is invalid.
          */
         brainString = brainString.replaceAll("\\s", "");
-        if (!"".equals(brainString)) {            
+        if (!"".equals(brainString)) {
             throw new AntBrainLoaderException("Invalid brain!");
         } else {
 
@@ -110,8 +110,9 @@ public class AntBrainLoader {
              If the brain is valid, parse the instructions and add to an instruction
              list.
              */
-            Pattern sensePattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Marker|Rock)");
-            Pattern markPattern = Pattern.compile("(Mark|Unmark|Pickup)\\s+\\d+\\s+\\d+");
+            Pattern sensePattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Rock)");
+            Pattern senseMarkerPattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+Marker\\s+\\d+");
+            Pattern markPattern = Pattern.compile("(Mark|Unmark|PickUp)\\s+\\d+\\s+\\d+");
             Pattern movePattern = Pattern.compile("Move\\s+\\d+\\s+\\d+");
             Pattern turnPattern = Pattern.compile("Turn\\s+(Left|Right)\\s+\\d+");
             Pattern dropPattern = Pattern.compile("Drop\\s+\\d+");
@@ -131,11 +132,15 @@ public class AntBrainLoader {
                  instruction, create a new Sense instruction with the parsed
                  parameters and add it to instructions.
                  */
-                if (instructionString.matches(sensePattern.pattern())) {
+                if (instructionString.matches(sensePattern.pattern()) || instructionString.matches(senseMarkerPattern.pattern())) {
                     splitInstruction = instructionString.split("\\s+");
                     String direction = splitInstruction[1].trim();
                     int nextStateIfConditionTrue = Integer.parseInt(splitInstruction[2].trim());
                     int nextStateIfConditionFalse = Integer.parseInt(splitInstruction[3].trim());
+                    int markerNo = -1;
+                    if(instructionString.matches(senseMarkerPattern.pattern())){
+                        markerNo = Integer.parseInt(splitInstruction[5].trim());
+                    }
                     String condition = splitInstruction[4].trim();
                     Condition c = null;
                     SenseDirection d = null;
@@ -181,13 +186,12 @@ public class AntBrainLoader {
                             c = new Home();
                             break;
                         case "Marker":
-                            c = new Marker(0);
+                            c = new Marker(markerNo);
                             break;
                         case "Rock":
                             c = new Rock();
                             break;
-                    }
-
+                    } 
                     instructions.add(new Sense(d, c, nextStateIfConditionTrue, nextStateIfConditionFalse));
 
                 } /*
@@ -208,7 +212,7 @@ public class AntBrainLoader {
                         case "Unmark":
                             i = new Unmark(markToSet, nextState);
                             break;
-                        case "Pickup":
+                        case "PickUp":
                             i = new PickUpFood(markToSet, nextState);
                             break;
                     }
@@ -263,10 +267,11 @@ public class AntBrainLoader {
                  parameters and add it to instructions.
                  */ else if (instructionString.matches(flipPattern.pattern())) {
                     splitInstruction = instructionString.split("\\s+");
+                    int n = Integer.parseInt(splitInstruction[1].trim());
                     int nextStateIfZero = Integer.parseInt(splitInstruction[2].trim());
                     int nextStateElse = Integer.parseInt(splitInstruction[3].trim());
 
-                    instructions.add(new Flip(nextStateIfZero, nextStateElse));
+                    instructions.add(new Flip(n, nextStateIfZero, nextStateElse));
                 }
             }
 
