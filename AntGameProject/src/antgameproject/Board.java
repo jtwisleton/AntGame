@@ -28,6 +28,9 @@ public class Board {
         
         numberOfAntsAlive = new HashMap<>();
         numberOfFoodInBase = new HashMap<>();
+        for(Colour c: Colour.values()){
+            numberOfFoodInBase.put(c, 0);
+        }
         
         addAnts();
     }
@@ -98,7 +101,7 @@ public class Board {
     
     public void setFoodAt(Pos foodPosition, int amountOfFood){
         int oldAmountOfFood = board[foodPosition.getPosY()][foodPosition.getPosX()].getFoodInTile();
-        int difference = oldAmountOfFood - amountOfFood;
+        int difference = amountOfFood - oldAmountOfFood;
         if(board[foodPosition.getPosY()][foodPosition.getPosX()].getCellTerrain() ==
                 Terrain.BLACKBASE){
             int totalBlackFood = numberOfFoodInBase.get(Colour.BLACK);
@@ -176,6 +179,10 @@ public class Board {
     @Override
     public String toString(){
         return boardName;
+    }
+
+    public BoardTile[][] getBoard() {
+        return board;
     }
     
 }
