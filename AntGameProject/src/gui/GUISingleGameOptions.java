@@ -118,20 +118,27 @@ public class GUISingleGameOptions extends BasicGameState {
         if(startMO.isMouseOver()){
             curStart = startHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                //if(antBrainOne != null && antBrainTwo != null && antWorldFile != null){
+                if(antBrainOne != null && antBrainTwo != null && antWorldFile != null){
+                    antBrainOne = null;
+                    antBrainTwo = null;
+                    antWorldFile = null;
+                    tournament.runGame();
                     sbg.enterState(7);
-                //}
+                }
             }
         } else if(mainMenuMO.isMouseOver()){
             curMainMenu = mainMenuHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 try {
-                    tournament.reset();
+                    tournament.reset(); //needed?
+                    antBrainOne = null;
+                    antBrainTwo = null;
+                    antWorldFile = null;
                     TimeUnit.MILLISECONDS.sleep(250);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                sbg.getState(2).init(gc, sbg);
+                //sbg.getState(2).init(gc, sbg);
                 sbg.enterState(2);    
             }
         } else if(select1MO.isMouseOver()){
@@ -152,24 +159,28 @@ public class GUISingleGameOptions extends BasicGameState {
             currentSelect2 = selectHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 antBrainTwo = fileLoader();
-                try {
-                    tournament.loadAntBrain(antBrainTwo.getAbsolutePath(), "Ant brain two");
-                } catch (AntBrainLoader.AntBrainLoaderException ex) {
-                    showError(ex.getMessage(), "Ant brain error");
-                } catch (IOException ex) {
-                    showError(ex.getMessage(), "Error loading ant brain");
+                if(antBrainTwo != null){
+                    try {
+                        tournament.loadAntBrain(antBrainTwo.getAbsolutePath(), "Ant brain two");
+                    } catch (AntBrainLoader.AntBrainLoaderException ex) {
+                        showError(ex.getMessage(), "Ant brain error");
+                    } catch (IOException ex) {
+                        showError(ex.getMessage(), "Error loading ant brain");
+                    }
                 }
             }
         } else if(worldLoadMO.isMouseOver()){
             curWorldLoad = worldLoadHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 antWorldFile = fileLoader();
-                try {
-                    tournament.loadAntWorld(antWorldFile.getAbsolutePath());
-                } catch (AntWorldLoader.AntWorldLoaderException ex) {
-                    showError(ex.getMessage(), "Ant world error");
-                } catch (IOException ex) {
-                    showError(ex.getMessage(), "Error loading ant world");
+                if(antWorldFile != null){
+                    try {
+                        tournament.loadAntWorld(antWorldFile.getAbsolutePath(), antWorldFile.getName());
+                    } catch (AntWorldLoader.AntWorldLoaderException ex) {
+                        showError(ex.getMessage(), "Ant world error");
+                    } catch (IOException ex) {
+                        showError(ex.getMessage(), "Error loading ant world");
+                    }
                 }
             }
         } else if(worldGenMO.isMouseOver()){
