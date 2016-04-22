@@ -18,9 +18,8 @@ public class AntGameTournament {
     private List<Board> antWorlds;
     private List<AntBrain> antBrains;
     private List<Pair<AntBrain, AntBrain>> pairs;
-    private HashMap<AntBrain, Integer> scores;
     private Game currentGame;
-    private int topScore;
+    private int boardToPlayIndex;
 
     /**
      * Static class to represent an AntBrain pairing.
@@ -48,7 +47,7 @@ public class AntGameTournament {
         antWorlds = new ArrayList<>();
         antBrains = new ArrayList<>();
         pairs = new ArrayList<>();
-        topScore = 0;
+        boardToPlayIndex = 0;
     }
     
     /**
@@ -77,6 +76,7 @@ public class AntGameTournament {
      * @param antBrainFiles Collection of ant brain files.
      * @param numAntWorlds Number of ant worlds to be generated.
      */
+    /*
     public AntGameTournament(List<String> antBrainFiles, int numAntWorlds) {
         antBrains = loadAntBrains(antBrainFiles);
         for (int i = 0; i < numAntWorlds; i++) {
@@ -92,10 +92,11 @@ public class AntGameTournament {
         }
         topScore = 0;
     }
-    
+    */
     /**
      * Run the tournament simulation.
      */
+    /*
     public void runTournament() {
         // Find every combination of ant brains (AB == BA)
         for (int i = 0; i < antBrains.size() - 1; i++) {
@@ -129,7 +130,7 @@ public class AntGameTournament {
         
         // Do something with winning ant brain: antBrains.get(0)
     }
-    
+    */
     /**
      * Run a game simulation.
      * 
@@ -146,21 +147,28 @@ public class AntGameTournament {
         int playerOneScore = currentGame.getPlayerOneScore();
         int playerTwoScore = currentGame.getPlayerTwoScore();
         
+        
+        one.incrementGamesPlayedIn();
+        two.incrementGamesPlayedIn();
+        one.setTotalFoodInBase(one.getTotalFoodInBase() + playerOneScore);
+        one.setTotalFoodInEnemyBase(one.getTotalFoodInEnemyBase() + playerTwoScore);
+        two.setTotalFoodInBase(two.getTotalFoodInBase() + playerTwoScore);
+        two.setTotalFoodInEnemyBase(two.getTotalFoodInEnemyBase() + playerOneScore);
         if (playerOneScore > playerTwoScore) {
-            scores.put(one, scores.get(one) + 2);
+            one.incrementGamesWon();
+            two.incrementGamesLost();
+            one.setPoints(one.getPoints() + 2);
         } else if (playerTwoScore > playerOneScore) {
-            scores.put(two, scores.get(two) + 2);
+            one.incrementGamesLost();
+            two.incrementGamesWon();
+            two.setPoints(two.getPoints() + 2);
         } else {
-            scores.put(one, scores.get(one) + 1);
-            scores.put(two, scores.get(two) + 1);
+            one.incrementGamesDrawn();
+            two.incrementGamesDrawn();
+            one.setPoints(one.getPoints() + 1);
+            two.setPoints(two.getPoints() + 1);
         }
         
-        // Maintain a record of the highest score
-        if (scores.get(one) > topScore)  {
-            topScore = scores.get(one);
-        } else if (scores.get(two) > topScore) {
-            topScore = scores.get(two);
-        }
     }
     
     /**
@@ -211,6 +219,30 @@ public class AntGameTournament {
         currentGame = new Game(antBrains.get(0), antBrains.get(1), antWorlds.get(0));
     }
     
+    // Once called should not allow more brains or world to be added
+    public void createTournament(){
+        for (int i = 0; i < antBrains.size() - 1; i++) {
+            for (int j = i + 1; j < antBrains.size(); j++) {
+                pairs.add(new Pair(antBrains.get(i), antBrains.get(j)));
+            }
+        }
+    }
+    
+    public void runTournamentRound(){
+        Board boardToPlayRoundOn = antWorlds.get(boardToPlayIndex);
+        
+        for (Pair pair : pairs) {
+            runGame(pair.one, pair.two, boardToPlayRoundOn);
+            runGame(pair.two, pair.one, boardToPlayRoundOn);
+        }
+        
+        if(boardToPlayIndex < antWorlds.size()){
+            boardToPlayIndex++;
+        } else {
+            System.out.println("gameComplete");
+        }
+    }
+    
     public void loadAntWorld(String antWorldFilePath, String antWorldName) throws AntWorldLoaderException, IOException {
         antWorlds.add(AntWorldLoader.loadWorld(antWorldFilePath, antWorldName, false));    // change back to true as some point
     }
@@ -235,9 +267,7 @@ public class AntGameTournament {
         antWorlds = new ArrayList<>();
         antBrains = new ArrayList<>();
         pairs = new ArrayList<>();
-        scores = new HashMap<>();
         currentGame = null;
-        topScore = 0;
     }
     
 }
