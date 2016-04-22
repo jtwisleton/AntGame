@@ -5,6 +5,7 @@
  */
 package gui;
 
+import antgameproject.AntGameTournament;
 import java.io.File;
 import javax.swing.JFileChooser;
 import org.lwjgl.input.Cursor;
@@ -25,6 +26,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class GUIMenuScreen extends BasicGameState{
 
+    private AntGameTournament tournament;
     private Image title;
     private Image singlePButton;
     private Image tournamentButton;
@@ -49,6 +51,10 @@ public class GUIMenuScreen extends BasicGameState{
         return 2;
     }
 
+    public GUIMenuScreen(AntGameTournament tournament){
+        this.tournament = tournament;
+    }
+    
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         title = new Image("resources/menu_screen1.png");
@@ -72,8 +78,8 @@ public class GUIMenuScreen extends BasicGameState{
     
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        gc.setDefaultMouseCursor();
-        
+        //gc.setDefaultMouseCursor();
+        tournament.reset(); //probably remove
         if(singleGameMO.isMouseOver()){
             currentSP = singleGButtonHover;
             if(gc.getInput().isMouseButtonDown(0)){
