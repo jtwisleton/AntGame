@@ -57,6 +57,7 @@ public class AntGameTournament {
      * @param antBrainFiles Collection of ant brain files.
      * @param antWorldFiles Collection of ant world files.
      */
+    /*
     public AntGameTournament(List<String> antBrainFiles, List<String> antWorldFiles) {
         antBrains = loadAntBrains(antBrainFiles);
         antWorlds = loadAntWorlds(antWorldFiles);
@@ -69,7 +70,7 @@ public class AntGameTournament {
         }
         topScore = 0;
     }
-    
+    */
     /**
      * Constructor for a list of ant brain files and a number of ant worlds.
      * 
@@ -189,6 +190,7 @@ public class AntGameTournament {
      * @param antWorldFiles List of ant world files.
      * @return A list of ant worlds.
      */
+    /*
     private List<Board> loadAntWorlds(List<String> antWorldFiles) {
         List<Board> worlds = new ArrayList<>();
         
@@ -203,9 +205,14 @@ public class AntGameTournament {
         
         return worlds;
     }
+    */
+    public void runGame(){
+        // add checks
+        currentGame = new Game(antBrains.get(0), antBrains.get(1), antWorlds.get(0));
+    }
     
-    public void loadAntWorld(String antWorldFilePath) throws AntWorldLoaderException, IOException {
-        antWorlds.add(AntWorldLoader.loadWorld(antWorldFilePath, false));    // change back to true as some point
+    public void loadAntWorld(String antWorldFilePath, String antWorldName) throws AntWorldLoaderException, IOException {
+        antWorlds.add(AntWorldLoader.loadWorld(antWorldFilePath, antWorldName, false));    // change back to true as some point
     }
     
     public void loadAntBrain(String antBrainFilePath, String name) throws AntBrainLoaderException, IOException{
