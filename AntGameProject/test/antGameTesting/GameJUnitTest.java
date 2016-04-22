@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package antGameTesting;
 
 import antgameproject.Ant;
@@ -44,7 +40,7 @@ public class GameJUnitTest {
         Board gameBoard;
         Game testGame;
         try {
-            gameBoard = AntWorldLoader.loadWorld("src//antgameproject//testWorld.txt", false);
+            gameBoard = AntWorldLoader.loadWorld("src//antgameproject//testWorld.txt", "Test project", false);
             antBrainOne = AntBrainLoader.loadBrain("src//antgameproject//sampleAnt.txt", "sample");
             antBrainTwo = AntBrainLoader.loadBrain("src//antgameproject//sampleAnt.txt", "sample");
             testGame = new Game(antBrainOne, antBrainTwo, gameBoard);
