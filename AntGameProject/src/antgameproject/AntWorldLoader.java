@@ -27,7 +27,7 @@ public class AntWorldLoader {
 
     public static void main(String[] args) throws FileNotFoundException, IOException, AntWorldLoaderException {
         String fn = "src//antgameproject//1.world";
-        Board b = loadWorld(fn, false);
+        Board b = loadWorld(fn, "1", false);
         b.printBoardToASCII();
     }
 
@@ -42,7 +42,7 @@ public class AntWorldLoader {
      Calls the checkWorldSyntax method, then uses the lines ArrayList to create
      a board from the given world file if checkWorldSyntax returns true.
      */
-    public static Board loadWorld(String fileName, boolean tournamentReady) throws AntWorldLoaderException, IOException {
+    public static Board loadWorld(String fileName, String name, boolean tournamentReady) throws AntWorldLoaderException, IOException {
 
         /*
          If the world is syntactically correct
@@ -118,7 +118,7 @@ public class AntWorldLoader {
                 /*
                  If the board doesn't need to be tournament ready just return it.
                  */
-                return new Board(board, fileName);
+                return new Board(board, name);
             }
 
         } else {
