@@ -6,10 +6,7 @@
 package gui;
 
 import antgameproject.AntGameTournament;
-import org.lwjgl.input.Cursor;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -31,7 +28,7 @@ public class GUI extends StateBasedGame {
         //container.setMouseCursor(new Image("resources/hand_cursor.png"), 0, 0);
         this.addState(new GUITeamScreen());
         this.addState(new GUITitleScreen());
-        this.addState(new GUIMenuScreen());
+        this.addState(new GUIMenuScreen(tournament));
         this.addState(new GUITournamentOptions(tournament));
         this.addState(new GUISingleGameOptions(tournament));
         this.addState(new GUITournamentDisplay(tournament));
