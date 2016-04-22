@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package antgameproject;
 
 /**
@@ -11,7 +7,19 @@ package antgameproject;
  */
 public class RandomNumber {
     
-    public static int generateNumber(){
-        return 0; // temporary value 
+    private int s4;
+    
+    public RandomNumber(int seed){
+        s4 = seed; 
+        for(int i = 0; i < 4; i++){
+            s4 = (s4 * 22695477 + 1) & (int)(Math.pow(2, 32) - 1);
+        }
     }
+    
+    public int generateNumber(int n){
+        int x = (s4 / 65536) % 16384;
+        s4 = (s4 * 22695477 + 1) & (int)(Math.pow(2, 32) - 1);
+        return x % n;
+    }
+
 }
