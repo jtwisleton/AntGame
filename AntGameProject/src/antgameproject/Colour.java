@@ -2,10 +2,10 @@
 package antgameproject;
 
 /**
- *
- * @author wilki
+ * Colour Enum used to specify ant colours.
  */
 public enum Colour {
+
     RED("R"), BLACK("B");
     
     private String symbol;
