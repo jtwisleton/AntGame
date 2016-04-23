@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package instructions;
 
 import antgameproject.Ant;
@@ -11,13 +6,18 @@ import antgameproject.Pos;
 import antgameproject.RandomNumber;
 
 /**
- *
- * @author wilki
+ * Provides implementation for the PickUpFood instruction, that picks up food
+ * in the current ants cell.
  */
 public class PickUpFood implements Instruction{
     private final int nextStateIfFoodFound;
     private final int nextStateIfNoFoodFound;
     
+    /**
+     * Constructor for the PickUpFood class. 
+     * @param nextStateIfFoodFound the next state if food is found in the cell.
+     * @param nextStateIfNoFoodFound the next cell if no food is found in the cell.
+     */
     public PickUpFood(int nextStateIfFoodFound, int nextStateIfNoFoodFound){
         this.nextStateIfFoodFound = nextStateIfFoodFound;
         this.nextStateIfNoFoodFound = nextStateIfNoFoodFound;

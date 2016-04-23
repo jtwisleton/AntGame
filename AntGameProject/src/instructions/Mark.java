@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package instructions;
 
 import antgameproject.Ant;
@@ -11,13 +6,18 @@ import antgameproject.Pos;
 import antgameproject.RandomNumber;
 
 /**
- *
- * @author wilki
+ * Provides implementation for the mark instruction, which sets the specified mark
+ * in the ants current position.
  */
 public class Mark implements Instruction {
     private final int nextState;
     private final Integer markToSet;
     
+    /**
+     * Constructor for the mark class.
+     * @param markToSet the mark to be set.
+     * @param nextState the next state to be set after the mark has been set.
+     */
     public Mark(Integer markToSet, int nextState){
         assert markToSet >= 0 && markToSet < 6;
         assert nextState >= 0 && nextState < 10000;

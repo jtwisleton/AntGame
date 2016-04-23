@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package instructions;
 
 import antgameproject.Ant;
@@ -11,16 +6,27 @@ import antgameproject.Pos;
 import antgameproject.RandomNumber;
 
 /**
- *
- * @author wilki
+ * Provides implementation to the drop food instruction.
  */
 public class DropFood implements Instruction{
     private final int nextState;
     
+    /**
+     * Constructor for the drop food class, takes as an argument the next state
+     * to set after instruction is completed.
+     * @param nextState
+     */
     public DropFood(int nextState){
         this.nextState = nextState;
     }
     
+    /**
+     * Executes the drop food instruction by placing one extra food in the ants board
+     * tile if its carrying food and sets the ants next state.
+     * @param gameBoard the board to perform the drop food on.
+     * @param currentAnt the ant that is carrying the food.
+     * @param randomNumberGen 
+     */
     @Override
     public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
         if(currentAnt.getCarryingFood()){

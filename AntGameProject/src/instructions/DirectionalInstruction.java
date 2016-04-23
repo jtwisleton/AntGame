@@ -1,18 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package instructions;
 
 import antgameproject.Pos;
 
 /**
- *
- * @author wilki
+ * DirectionalInstruction is an abstract class that has methods shared by instructions
+ * that involve directions.
  */
 public abstract class DirectionalInstruction {
     
+    /**
+     * Returns the position of the adjacent cell in an offset hexagonal board in
+     * the given direction.
+     * @param cellPosition the cell to find the adjacent cell to.
+     * @param adjacentDirection the direction to find the adjacent cell.
+     * @return returns the cell adjacent to the given cell in the given direction.
+     */
     protected Pos getAdjacentCell(Pos cellPosition, int adjacentDirection){
         if(adjacentDirection == 0){
             return new Pos(cellPosition.getPosX()+1, cellPosition.getPosY());
@@ -44,19 +46,14 @@ public abstract class DirectionalInstruction {
             }
         }
     }
-        
-        //function adjacent_cell(p:pos, d:dir):pos =
-        //let (x,y) = p in
-        //switch d of
-        //case 0: (x+1, y)
-        //case 1: if evenyes then (x, y+1) else (x+1, y+1)
-        //case 2: if evenyes then (x-1, y+1) else (x, y+1)
-        //case 3: (x-1, y)
-        //case 4: if evenyes then (x-1, y-1) else (x, y-1)
-        //case 5: if evenyes then (x, y-1) else (x+1, y-1)
-        
-    
-   
+       
+    /**
+     * Returns the new facing direction after a turn has taken place.
+     * @param directionToTurn the direction to turn.
+     * @param currentFacingDirection the current facing direction before the turn.
+     * @return the new facing direction after performing the given turn on the
+     * given facing direction.
+     */
     protected int turn(TurnDirection directionToTurn, int currentFacingDirection){
         if(directionToTurn == TurnDirection.RIGHT){
             return (currentFacingDirection + 1) % 6;

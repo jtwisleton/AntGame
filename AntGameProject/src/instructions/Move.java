@@ -1,4 +1,3 @@
-
 package instructions;
 
 import antgameproject.Ant;
@@ -9,14 +8,19 @@ import antgameproject.RandomNumber;
 import antgameproject.Terrain;
 
 /**
- *
- * @author wilki
+ * Provides implementation for the move instruction. The ant moves in the direction
+ * it is currently facing if the way isn't blocked. 
  */
 public class Move extends DirectionalInstruction implements Instruction {
     private final int nextStateIfAheadIsClear;
     private final int nextStateIfAheadIsBlocked;
     private final int restDuration;
     
+    /**
+     * Constructor for the move class.
+     * @param nextStateIfAheadIsClear the next state if the ant can make its move.
+     * @param nextStateIfAheadIsBlocked the next state if the ant can't move.
+     */
     public Move(int nextStateIfAheadIsClear, int nextStateIfAheadIsBlocked){
         this.nextStateIfAheadIsClear = nextStateIfAheadIsClear;
         this.nextStateIfAheadIsBlocked = nextStateIfAheadIsBlocked;
