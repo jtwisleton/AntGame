@@ -16,7 +16,9 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -31,7 +33,8 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author wilki
  */
 public class GUISingleGameDisplay extends BasicGameState {
-
+    
+    private Font gameFont;
     private AntGameTournament tournament;
     private SpriteSheet tiles;
     private Image tileset;
@@ -84,6 +87,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         divide = 1400;
         steps = 14;
         
+        gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
         tileset = new Image("resources/sprite.png");
 	tiles = new SpriteSheet(tileset, 64, 64);
         spritePositions = new HashMap<>();
@@ -197,6 +201,8 @@ public class GUISingleGameDisplay extends BasicGameState {
         grphcs.drawLine(divide, 0, divide, 1080);
         grphcs.drawRoundRect(divide + 20, 250, 480, 350, 10);
         grphcs.drawRoundRect(divide + 20, 620, 480, 350, 10);
+        gameFont.drawString(divide+40, 260, "Ants alive");
+        gameFont.drawString(divide+40, 630, "Food in base");
         
         int redAnts = 200;
         int blueAnts = 190;
@@ -208,7 +214,6 @@ public class GUISingleGameDisplay extends BasicGameState {
         grphcs.setColor(new Color(52, 73, 94));
         grphcs.fillRect(divide+270, 550-blackAntsAlive, 100, blackAntsAlive);
         grphcs.fillRect(divide+270, 920-numBlackBaseFood*2, 100, numBlackBaseFood*2);
-        
         
         grphcs.setColor(Color.white);
         grphcs.drawLine(divide+70, 320, divide+70, 550);
@@ -250,9 +255,9 @@ public class GUISingleGameDisplay extends BasicGameState {
         Pos somePos = new Pos(x, y);
         if(gameBoard.antInPosition(somePos)){
             key  = gameBoard.getTerrainAtPosition(somePos).toString()+gameBoard.antAt(somePos).getAntColour()
-                    +gameBoard.antAt(somePos).getFacingDirection()+gameBoard.foodInTile(somePos);
+                    +gameBoard.antAt(somePos).getFacingDirection()+(gameBoard.numberOfFoodAt(somePos)>0);
         } else {
-            key = gameBoard.getTerrainAtPosition(somePos).toString()+gameBoard.foodInTile(somePos);
+            key = gameBoard.getTerrainAtPosition(somePos).toString()+(gameBoard.numberOfFoodAt(somePos)>0);
         }
         return spritePositions.get(key);
     }
