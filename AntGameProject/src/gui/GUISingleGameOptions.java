@@ -8,11 +8,16 @@ package gui;
 import antgameproject.AntBrainLoader;
 import antgameproject.AntGameTournament;
 import antgameproject.AntWorldLoader;
+import java.awt.Component;
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -49,10 +54,15 @@ public class GUISingleGameOptions extends BasicGameState {
     private Image curWorldLoad;
     private Image start;
     private Image startHover;
+    private Image startUnavailable;
     private Image curStart;
     private Image mainMenu;
     private Image mainMenuHover;
     private Image curMainMenu;
+    private Image tick;
+    private Image selectTick;
+    private Image selectTick2;
+    private Image worldTick;
     private int rightMargin;
     private int leftMargin;
     private int offset;
@@ -95,10 +105,18 @@ public class GUISingleGameOptions extends BasicGameState {
         curWorldLoad = worldLoad;
         start = new Image("resources/startGame.png");
         startHover = new Image("resources/startGameHover.png");
-        curStart = start;
+        startUnavailable = new Image("resources/startGameUnavailable.png");
+        curStart = startUnavailable;
         mainMenu = new Image("resources/mainMenu.png");
         mainMenuHover = new Image("resources/mainMenuHover.png");
         curMainMenu = mainMenu;
+        
+        selectTick = new Image("resources/tick.png");
+        selectTick2 = new Image("resources/tick.png");
+        worldTick = new Image("resources/tick.png");
+        selectTick.setAlpha(0);
+        selectTick2.setAlpha(0);
+        worldTick.setAlpha(0);
         
         rightMargin = 1920 - 350;
         leftMargin = 350;
@@ -116,12 +134,9 @@ public class GUISingleGameOptions extends BasicGameState {
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         if(startMO.isMouseOver()){
-            curStart = startHover;
-            if(gc.getInput().isMouseButtonDown(0)){
-                if(antBrainOne != null && antBrainTwo != null && antWorldFile != null){
-                    antBrainOne = null;
-                    antBrainTwo = null;
-                    antWorldFile = null;
+            if(antBrainOne != null && antBrainTwo != null && antWorldFile != null){
+                curStart = startHover;
+                if(gc.getInput().isMouseButtonDown(0)){
                     tournament.runGame();
                     sbg.enterState(7);
                 }
@@ -148,11 +163,14 @@ public class GUISingleGameOptions extends BasicGameState {
                 if(antBrainOne != null){
                     try {
                         tournament.loadAntBrain(antBrainOne.getAbsolutePath(), "Ant brain one");
+                        selectTick.setAlpha(1);
                     } catch (AntBrainLoader.AntBrainLoaderException ex) {
                         showError(ex.getMessage(), "Ant brain error");
                     } catch (IOException ex) {
                         showError(ex.getMessage(), "Error loading ant brain");
                     }
+                } else {
+                    selectTick.setAlpha(0);
                 }
             }
         } else if(select2MO.isMouseOver()){
@@ -162,11 +180,14 @@ public class GUISingleGameOptions extends BasicGameState {
                 if(antBrainTwo != null){
                     try {
                         tournament.loadAntBrain(antBrainTwo.getAbsolutePath(), "Ant brain two");
+                        selectTick2.setAlpha(1);
                     } catch (AntBrainLoader.AntBrainLoaderException ex) {
                         showError(ex.getMessage(), "Ant brain error");
                     } catch (IOException ex) {
                         showError(ex.getMessage(), "Error loading ant brain");
                     }
+                } else {
+                    selectTick2.setAlpha(0);
                 }
             }
         } else if(worldLoadMO.isMouseOver()){
@@ -176,11 +197,14 @@ public class GUISingleGameOptions extends BasicGameState {
                 if(antWorldFile != null){
                     try {
                         tournament.loadAntWorld(antWorldFile.getAbsolutePath(), antWorldFile.getName());
+                        worldTick.setAlpha(1);
                     } catch (AntWorldLoader.AntWorldLoaderException ex) {
                         showError(ex.getMessage(), "Ant world error");
                     } catch (IOException ex) {
                         showError(ex.getMessage(), "Error loading ant world");
                     }
+                } else {
+                    worldTick.setAlpha(0);
                 }
             }
         } else if(worldGenMO.isMouseOver()){
@@ -191,7 +215,7 @@ public class GUISingleGameOptions extends BasicGameState {
         } else {
             currentSelect = select;
             currentSelect2 = select;
-            curStart = start;
+            curStart = updateStart();
             curWorldLoad = worldLoad;
             currentWorldGen = worldGen;
             curMainMenu = mainMenu;
@@ -218,10 +242,13 @@ public class GUISingleGameOptions extends BasicGameState {
         grphcs.drawImage(curMainMenu, rightMargin - mainMenu.getWidth(), topButton + 3 * offset);
         grphcs.drawImage(curStart, rightMargin - curStart.getWidth(), topButton + 4 * offset);
         
-        
+        grphcs.drawImage(selectTick, rightMargin + 20, topButton);
+        grphcs.drawImage(selectTick2, rightMargin + 20, topButton + offset);
+        grphcs.drawImage(worldTick, rightMargin + 20, topButton + 2 * offset);
     }
     
     private File fileLoader(){
+        /*
         JFileChooser fileChooser = new JFileChooser();
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -229,11 +256,43 @@ public class GUISingleGameOptions extends BasicGameState {
             return selectedFile;
         }
         return null;
+        */
+        
+        String osName = System.getProperty("os.name");
+        File selectedFile = null;
+        
+        if (osName.equals("Mac OS X")) {
+            FileDialog fd = new FileDialog(new Frame(), "Choose a file", FileDialog.LOAD);
+            fd.setVisible(true);
+            String filename = fd.getDirectory() + fd.getFile();
+            try {
+                selectedFile = new File(filename);
+            } catch (Exception e) {
+                // Cancelled
+            }
+            
+        } else {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                selectedFile = fileChooser.getSelectedFile();
+            }
+        }
+        
+        return selectedFile;
     }
     
     private void showError(String errorMessage, String errorType){
         JOptionPane.showMessageDialog(new JFrame(), errorMessage,
         errorType, JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private Image updateStart() {
+        if (antBrainOne != null && antBrainTwo != null && antWorldFile != null) {
+            return start;
+        } else {
+            return startUnavailable;
+        }
     }
     
 }
