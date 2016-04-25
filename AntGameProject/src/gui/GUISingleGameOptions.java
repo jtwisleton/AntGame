@@ -242,6 +242,12 @@ public class GUISingleGameOptions extends BasicGameState {
         grphcs.drawImage(selectTick, rightMargin + 20, topButton);
         grphcs.drawImage(selectTick2, rightMargin + 20, topButton + offset);
         grphcs.drawImage(worldTick, rightMargin + 20, topButton + 2 * offset);
+        
+        if (antBrainOne == null && antBrainTwo == null && antWorldFile == null) {
+            selectTick.setAlpha(0);
+            selectTick2.setAlpha(0);
+            worldTick.setAlpha(0);
+        }
     }
     
     private File fileLoader(){
