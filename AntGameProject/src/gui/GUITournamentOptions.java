@@ -17,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -142,9 +144,9 @@ public class GUITournamentOptions extends BasicGameState {
                         tournament.loadAntBrain(antBrainToLoad.getAbsolutePath(), antBrainToLoad.getName());
                         antBrainList = tournament.getListOfAntBrains();
                     } catch (AntBrainLoader.AntBrainLoaderException ex) {
-                        // notify user
+                        showError(ex.getMessage(), "Ant brain error");
                     } catch (IOException ex) {
-                        // notify user
+                        showError(ex.getMessage(), "Error loading ant brain");
                     }
                     bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
                 }
@@ -158,9 +160,9 @@ public class GUITournamentOptions extends BasicGameState {
                         tournament.loadAntWorld(antWorldToLoad.getAbsolutePath(), antWorldToLoad.getName());
                         antWorldList = tournament.getListOfAntWorlds();
                     } catch (AntWorldLoader.AntWorldLoaderException ex) {
-                        // notify user
+                        showError(ex.getMessage(), "Ant world error");
                     } catch (IOException ex) {
-                        // notify user
+                        showError(ex.getMessage(), "Error loading ant world");
                     }
                     bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
                 }
@@ -335,6 +337,11 @@ public class GUITournamentOptions extends BasicGameState {
             }
         }
        return listBottom;
+    }
+    
+    private void showError(String errorMessage, String errorType){
+        JOptionPane.showMessageDialog(new JFrame(), errorMessage,
+        errorType, JOptionPane.ERROR_MESSAGE);
     }
     
     private Image updateStart() {
