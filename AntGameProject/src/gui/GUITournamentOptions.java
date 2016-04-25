@@ -8,6 +8,8 @@ package gui;
 import antgameproject.AntBrainLoader;
 import antgameproject.AntGameTournament;
 import antgameproject.AntWorldLoader;
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +55,7 @@ public class GUITournamentOptions extends BasicGameState {
     private Image currentLoadAntWorld;
     private Image startTournament;
     private Image startTournamentHover;
+    private Image startTournamentUnavailable;
     private Image currentStartTournament;
     private Image mainMenu;
     private Image mainMenuHover;
@@ -106,7 +109,8 @@ public class GUITournamentOptions extends BasicGameState {
         currentLoadAntWorld = loadAntWorld;
         startTournament = new Image("resources/startTourn.png");
         startTournamentHover = new Image("resources/startTournHover.png");
-        currentStartTournament = startTournament;
+        startTournamentUnavailable = new Image("resources/startTournUnavailable.png");
+        currentStartTournament = startTournamentUnavailable;
         mainMenu = new Image("resources/mainMenu.png");
         mainMenuHover = new Image("resources/mainMenuHover.png");
         currentMainMenu = mainMenu;
@@ -178,9 +182,9 @@ public class GUITournamentOptions extends BasicGameState {
                 sbg.enterState(2);
             }
         } else if(startTournMO.isMouseOver()){
-            currentStartTournament = startTournamentHover;
-            if(gc.getInput().isMouseButtonDown(0)){
-                if(tournament.getListOfAntBrains().size() >= 2 && tournament.getListOfAntWorlds().size() >= 1){
+            if(tournament.getListOfAntBrains().size() >= 2 && tournament.getListOfAntWorlds().size() >= 1){
+                currentStartTournament = startTournamentHover;
+                if(gc.getInput().isMouseButtonDown(0)){
                     tournament.createTournament();
                     sbg.enterState(6);
                 }
@@ -243,7 +247,7 @@ public class GUITournamentOptions extends BasicGameState {
             currentDown1 = down;
             currentDown2 = down;
             currentLoadAntBrain = loadAntBrain;
-            currentStartTournament = startTournament;
+            currentStartTournament = updateStart();
             curGenWorld = genAntWorld;
             currentLoadAntWorld = loadAntWorld;
             currentMainMenu = mainMenu;
@@ -273,13 +277,23 @@ public class GUITournamentOptions extends BasicGameState {
         gameFont.drawString(1280+20, 330, "Ant Worlds");
         grphcs.drawImage(currentUp2, 1280+530, 600);
         grphcs.drawImage(currentDown2, 1280+530, 680);
-            
-        System.out.println(topOfAntBrainList + " " + bottomOfAntBrainList + " " + antBrainList.size());
+        
+        antBrainList = tournament.getListOfAntBrains();
+        antWorldList = tournament.getListOfAntWorlds();
+        
+        if (antBrainList.isEmpty() && antWorldList.isEmpty()) {
+            topOfAntBrainList = 0;
+            topOfAntWorldList = 0;
+            bottomOfAntBrainList = 0;
+            bottomOfAntWorldList = 0;
+        }
+        
+        //System.out.println(topOfAntBrainList + " " + bottomOfAntBrainList + " " + antBrainList.size());
         for(int i = topOfAntBrainList; i < bottomOfAntBrainList; i++){
             gameFont.drawString(genAntWorld.getWidth()+120, 400 + (i-topOfAntBrainList) * 60, 
                     antBrainList.get(i).toString());
         }
-        System.out.println(topOfAntWorldList + " " + bottomOfAntWorldList + " " + antWorldList.size());
+        //System.out.println(topOfAntWorldList + " " + bottomOfAntWorldList + " " + antWorldList.size());
         for(int i = topOfAntWorldList; i < bottomOfAntWorldList; i++){
             gameFont.drawString(1300, 400 + (i-topOfAntWorldList) * 60, 
                     antWorldList.get(i).toString());
@@ -287,13 +301,28 @@ public class GUITournamentOptions extends BasicGameState {
     }
     
     private File fileLoader(){
-        JFileChooser fileChooser = new JFileChooser();
-        int returnValue = fileChooser.showOpenDialog(null);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            return selectedFile;
+        String osName = System.getProperty("os.name");
+        File selectedFile = null;
+        
+        if (osName.equals("Mac OS X")) {
+            FileDialog fd = new FileDialog(new Frame(), "Choose a file", FileDialog.LOAD);
+            fd.setVisible(true);
+            String filename = fd.getDirectory() + fd.getFile();
+            try {
+                selectedFile = new File(filename);
+            } catch (Exception e) {
+                // Cancelled
+            }
+            
+        } else {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                selectedFile = fileChooser.getSelectedFile();
+            }
         }
-        return null;
+        
+        return selectedFile;
     }
     
     private int setListBottom(List listToSetBottomOf, int listTopPos){
@@ -306,5 +335,13 @@ public class GUITournamentOptions extends BasicGameState {
             }
         }
        return listBottom;
+    }
+    
+    private Image updateStart() {
+        if (tournament.getListOfAntBrains().size() >= 2 && tournament.getListOfAntWorlds().size() >= 1) {
+            return startTournament;
+        } else {
+            return startTournamentUnavailable;
+        }
     }
 }
