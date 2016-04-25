@@ -84,6 +84,7 @@ public class GUISingleGameDisplay extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         scale = 1f;
+        //scale = 0.15f;
         divide = 1400;
         steps = 14;
         
