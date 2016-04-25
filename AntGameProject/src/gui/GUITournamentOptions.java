@@ -36,7 +36,9 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GUITournamentOptions extends BasicGameState {
 
     private AntGameTournament tournament;
-    private Font gameFont;
+    // private Font gameFont;
+    private Font headerFont;
+    private Font fileFont;
     private Image pageTitle;
     private Image genAntWorld;
     private Image genAntWorldHover;
@@ -90,7 +92,9 @@ public class GUITournamentOptions extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
+        // gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
+        headerFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
+        fileFont = new AngelCodeFont("resources/fontAlt.fnt", "resources/fontAlt_0.png");
         pageTitle = new Image("resources/tournament_setup.png");
         genAntWorld = new Image("resources/generateAntWorld.png");
         genAntWorldHover = new Image("resources/generateAntWorldHover.png");
@@ -270,13 +274,13 @@ public class GUITournamentOptions extends BasicGameState {
         
         grphcs.drawRoundRect(genAntWorld.getWidth()+100, 330, 520, 700, 10);
         grphcs.drawLine(genAntWorld.getWidth()+100, 390, genAntWorld.getWidth()+620, 390);
-        gameFont.drawString(genAntWorld.getWidth()+120, 330, "Ant Brains");
+        headerFont.drawString(genAntWorld.getWidth()+120, 330, "Ant Brains");
         grphcs.drawImage(currentUp1, genAntWorld.getWidth()+630, 600);
         grphcs.drawImage(currentDown1, genAntWorld.getWidth()+630, 680);
         
         grphcs.drawRoundRect(1280, 330, 520, 700, 10);
         grphcs.drawLine(1280, 390, 1280+520, 390);
-        gameFont.drawString(1280+20, 330, "Ant Worlds");
+        headerFont.drawString(1280+20, 330, "Ant Worlds");
         grphcs.drawImage(currentUp2, 1280+530, 600);
         grphcs.drawImage(currentDown2, 1280+530, 680);
         
@@ -292,13 +296,13 @@ public class GUITournamentOptions extends BasicGameState {
         
         //System.out.println(topOfAntBrainList + " " + bottomOfAntBrainList + " " + antBrainList.size());
         for(int i = topOfAntBrainList; i < bottomOfAntBrainList; i++){
-            gameFont.drawString(genAntWorld.getWidth()+120, 400 + (i-topOfAntBrainList) * 60, 
-                    antBrainList.get(i).toString());
+            String filename = removeExtension(antBrainList.get(i).toString());
+            fileFont.drawString(genAntWorld.getWidth()+120, 400 + (i-topOfAntBrainList) * 60, filename);
         }
         //System.out.println(topOfAntWorldList + " " + bottomOfAntWorldList + " " + antWorldList.size());
         for(int i = topOfAntWorldList; i < bottomOfAntWorldList; i++){
-            gameFont.drawString(1300, 400 + (i-topOfAntWorldList) * 60, 
-                    antWorldList.get(i).toString());
+            String filename = removeExtension(antWorldList.get(i).toString());
+            fileFont.drawString(1300, 400 + (i-topOfAntWorldList) * 60, filename);
         }
     }
     
@@ -350,5 +354,12 @@ public class GUITournamentOptions extends BasicGameState {
         } else {
             return startTournamentUnavailable;
         }
+    }
+    
+    private String removeExtension(String filename) {
+        if (filename.indexOf(".") > 0) {
+            filename = filename.substring(0, filename.lastIndexOf("."));
+        }
+        return filename;
     }
 }
