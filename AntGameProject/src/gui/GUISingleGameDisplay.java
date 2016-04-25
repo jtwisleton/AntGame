@@ -57,7 +57,11 @@ public class GUISingleGameDisplay extends BasicGameState {
     private Image currentSlowDownButton;
     private Image pauseButton;
     private Image pauseButtonHover;
+    private Image playButton;
+    private Image playButtonHover;
     private Image currentPauseButton;
+    private Image currentPauseButtonHover;
+    private Image currentButton;
     private Image skipToEndButton;
     private Image skipToEndButtonHover;
     private Image currentSkipToEndButton;
@@ -84,7 +88,6 @@ public class GUISingleGameDisplay extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         scale = 1f;
-        //scale = 0.15f;
         divide = 1400;
         steps = 14;
         
@@ -106,7 +109,11 @@ public class GUISingleGameDisplay extends BasicGameState {
         currentSlowDownButton = slowDownButton;
         pauseButton = new Image("resources/pauseButton.png");
         pauseButtonHover = new Image("resources/pauseButtonHover.png");
+        playButton = new Image("resources/playButton.png");
+        playButtonHover = new Image("resources/playButtonHover.png");
         currentPauseButton = pauseButton;
+        currentPauseButtonHover = pauseButtonHover;
+        currentButton = currentPauseButton;
         skipToEndButton = new Image("resources/SFButton.png");
         skipToEndButtonHover = new Image("resources/SFButtonHover.png");
         currentSkipToEndButton = skipToEndButton;
@@ -156,8 +163,9 @@ public class GUISingleGameDisplay extends BasicGameState {
         }
             
         if(pauseMO.isMouseOver()){
-            currentPauseButton = pauseButtonHover;
+            currentButton = currentPauseButtonHover;
             if(gc.getInput().isMouseButtonDown(0)){
+                switchButtons();
                 if(steps == 0){
                     steps = oldSteps;
                 } else {
@@ -171,7 +179,7 @@ public class GUISingleGameDisplay extends BasicGameState {
                 }
             }
         } else {
-            currentPauseButton = pauseButton;
+            currentButton = currentPauseButton;
         }
             
         if(skipMO.isMouseOver()){
@@ -226,7 +234,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         grphcs.drawImage(logo, 1800, 990);
         grphcs.drawImage(currentExitButton, divide+20, 985);
         
-        grphcs.drawImage(currentPauseButton, divide+170, 15);
+        grphcs.drawImage(currentButton, divide+170, 15);
         grphcs.drawImage(currentSpeedUp, divide+227, 115);
         grphcs.drawImage(currentSlowDownButton, divide+113, 115);
         grphcs.drawImage(currentSkipToEndButton, divide+284, 15);
@@ -237,11 +245,11 @@ public class GUISingleGameDisplay extends BasicGameState {
                 for(int j = 0; j < board[0].length; j++){   // use board size
                         Pos spritePosition = calculateSpritePosition(j,i);
                         if(i % 2 == 0){
-                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+128*j, 50+100*i, 128, 128);
-                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+16*j, 50+12*i, 16, 16);
+                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+128*j, 50+100*i, 128, 128);
+                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+16*j, 50+12*i, 16, 16);
                         }else{
-                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+64+128*j, 50+100f*i, 128, 128);
-                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+8+16*j, 50+12f*i, 16, 16);
+                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+64+128*j, 50+100f*i, 128, 128);
+                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+8+16*j, 50+12f*i, 16, 16);
                         }
                 }
         }	
@@ -311,5 +319,14 @@ public class GUISingleGameDisplay extends BasicGameState {
         return new Board(board, "test board");
     }
     
+    private void switchButtons() {
+        if (currentPauseButton == pauseButton) {
+            currentPauseButton = playButton;
+            currentPauseButtonHover = playButtonHover;
+        } else {
+            currentPauseButton = pauseButton;
+            currentPauseButtonHover = pauseButtonHover;
+        }
+    }
     
 }
