@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -32,9 +34,11 @@ public class GUITournamentDisplay extends BasicGameState{
     private Image pageTitle;
     private Image playNextRound;
     private Image playNextRoundHover;
+    private Image playNextRoundUnavailable;
     private Image currentPlayNextRound;
     private Image skipToEnd;
     private Image skipToEndHover;
+    private Image skipToEndUnavailable;
     private Image currentSkipToEnd;
     private Image exit;
     private Image exitHover;
@@ -53,7 +57,9 @@ public class GUITournamentDisplay extends BasicGameState{
     private List<AntBrain> antBrainList;
     private int topOfAntBrainList;
     private int bottomOfAntBrainList;
-    
+    private boolean finished;
+    private boolean gameOverMessageShown;
+    private boolean scoresShown;
     
     public GUITournamentDisplay(AntGameTournament tournament){
         this.tournament = tournament;
@@ -70,9 +76,11 @@ public class GUITournamentDisplay extends BasicGameState{
         pageTitle = new Image("resources/tournamentLogo.png");
         playNextRound = new Image("resources/playNextRound.png");
         playNextRoundHover = new Image("resources/playNextRoundHover.png");
+        playNextRoundUnavailable = new Image("resources/playNextRoundUnavailable.png");
         currentPlayNextRound = playNextRound;
         skipToEnd = new Image("resources/skipToEnd.png");
         skipToEndHover = new Image("resources/skipToEndHover.png");
+        skipToEndUnavailable  = new Image("resources/skipToEndUnavailable.png");
         currentSkipToEnd = skipToEnd;
         exit = new Image("resources/exitalt.png");
         exitHover = new Image("resources/exitAltHover.png");
@@ -91,23 +99,30 @@ public class GUITournamentDisplay extends BasicGameState{
         downMO = new MouseOverArea(gc, down, 1850, 650);
         
         topOfAntBrainList = 0;
+        finished = false;
+        gameOverMessageShown = false;
+        scoresShown = false;
     }
     
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         antBrainList = tournament.getListOfAntBrains();
         if(playNextRoundMO.isMouseOver()){
-            currentPlayNextRound = playNextRoundHover;
-            if(gc.getInput().isMouseButtonDown(0)){
-                tournament.runTournamentRound();
-                try {
-                    TimeUnit.MILLISECONDS.sleep(250);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GUITournamentDisplay.class.getName()).log(Level.SEVERE, null, ex);
+            if (!finished) {
+                currentPlayNextRound = playNextRoundHover;
+                if (gc.getInput().isMouseButtonDown(0)) {
+                    finished = tournament.runTournamentRound();
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(250);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GUITournamentDisplay.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         } else if(skipToEndMO.isMouseOver()){
-            currentSkipToEnd = skipToEndHover;
+            if (!finished) {
+                currentSkipToEnd = skipToEndHover;
+            }
         } else if(exitMO.isMouseOver()){
             currentExit = exitHover;
             if(gc.getInput().isMouseButtonDown(0)){
@@ -131,8 +146,8 @@ public class GUITournamentDisplay extends BasicGameState{
                 bottomOfAntBrainList = setListBottom(antBrainList, bottomOfAntBrainList);
             }
         } else {
-            currentPlayNextRound = playNextRound;
-            currentSkipToEnd = skipToEnd;
+            currentPlayNextRound = updatePlayNextRound();
+            currentSkipToEnd = updateSkipToEnd();
             currentExit = exit;
             currentUp = up;
             currentDown = down;
@@ -151,14 +166,14 @@ public class GUITournamentDisplay extends BasicGameState{
         grphcs.drawImage(currentDown, 1850, 650);
         
         int topMargin = pageTitle.getHeight() + 40;
-        gameFont.drawString(exit.getWidth()+60, topMargin+5, "Ant brain");
-        gameFont.drawString(exit.getWidth()+800, topMargin+5, "P");
-        gameFont.drawString(exit.getWidth()+885, topMargin+5, "W");
-        gameFont.drawString(exit.getWidth()+975, topMargin+5, "D");
-        gameFont.drawString(exit.getWidth()+1068, topMargin+5, "L");
-        gameFont.drawString(exit.getWidth()+1148, topMargin+5, "PF");
-        gameFont.drawString(exit.getWidth()+1235, topMargin+5, "PA");
-        gameFont.drawString(exit.getWidth()+1340, topMargin+5, "S");
+        gameFont.drawString(exit.getWidth()+60, topMargin+4, "Ant brain");
+        gameFont.drawString(exit.getWidth()+800, topMargin+4, "S");
+        gameFont.drawString(exit.getWidth()+890, topMargin+4, "P");
+        gameFont.drawString(exit.getWidth()+973, topMargin+4, "W");
+        gameFont.drawString(exit.getWidth()+1068, topMargin+4, "D");
+        gameFont.drawString(exit.getWidth()+1159, topMargin+4, "L");
+        gameFont.drawString(exit.getWidth()+1235, topMargin+4, "PF");
+        gameFont.drawString(exit.getWidth()+1325, topMargin+4, "PA");
         grphcs.drawRoundRect(exit.getWidth()+50, pageTitle.getHeight() + 40, 1350, 800, 10);
         grphcs.drawLine(exit.getWidth()+50, pageTitle.getHeight() + 100, exit.getWidth()+1400, pageTitle.getHeight() + 100);
         for(int i = 0; i < 7; i++){
@@ -170,15 +185,38 @@ public class GUITournamentDisplay extends BasicGameState{
         for(int i = 0 ; i < antBrainList.size(); i++){  //no size control at moment
             AntBrain currentAntBrain = antBrainList.get(i);
             topMargin += 60;
-            gameFont.drawString(exit.getWidth()+60, topMargin+(60 * i), currentAntBrain.toString());
-            gameFont.drawString(exit.getWidth()+800, topMargin+(60 * i), Integer.toString(currentAntBrain.getGamesPlayedIn()));
-            gameFont.drawString(exit.getWidth()+885, topMargin+(60 * i), Integer.toString(currentAntBrain.getGamesWon()));
-            gameFont.drawString(exit.getWidth()+975, topMargin+(60 * i), Integer.toString(currentAntBrain.getGamesDrawn()));
-            gameFont.drawString(exit.getWidth()+1068, topMargin+(60 * i), Integer.toString(currentAntBrain.getGamesLost()));
-            gameFont.drawString(exit.getWidth()+1152, topMargin+(60 * i), Integer.toString(currentAntBrain.getTotalFoodInBase()));
-            gameFont.drawString(exit.getWidth()+1239, topMargin+(60 * i), Integer.toString(currentAntBrain.getTotalFoodInEnemyBase()));
-            gameFont.drawString(exit.getWidth()+1340, topMargin+(60 * i), Integer.toString(currentAntBrain.getPoints()));
+            gameFont.drawString(exit.getWidth()+60, topMargin+(60 * i), removeExtension(currentAntBrain.toString()));
+            gameFont.drawString(exit.getWidth()+800, topMargin+(60 * i), Integer.toString(currentAntBrain.getPoints()));
+            gameFont.drawString(exit.getWidth()+885, topMargin+(60 * i), Integer.toString(currentAntBrain.getGamesPlayedIn()));
+            gameFont.drawString(exit.getWidth()+975, topMargin+(60 * i), Integer.toString(currentAntBrain.getGamesWon()));
+            gameFont.drawString(exit.getWidth()+1068, topMargin+(60 * i), Integer.toString(currentAntBrain.getGamesDrawn()));
+            gameFont.drawString(exit.getWidth()+1157, topMargin+(60 * i), Integer.toString(currentAntBrain.getGamesLost()));
+            gameFont.drawString(exit.getWidth()+1239, topMargin+(60 * i), Integer.toString(currentAntBrain.getTotalFoodInBase()));
+            gameFont.drawString(exit.getWidth()+1332, topMargin+(60 * i), Integer.toString(currentAntBrain.getTotalFoodInEnemyBase()));
             topMargin -= 60;
+        }
+        
+        // Check if the game has finished & the winning message has not already been shown
+        if ((finished) && (!gameOverMessageShown)) {
+
+            if (scoresShown) {
+
+                // Game finished, show winning screen
+                int firstScore = antBrainList.get(0).getPoints();
+                int secondScore = antBrainList.get(1).getPoints();
+
+                if (firstScore == secondScore) {
+                    // Draw
+                    showMessage("It's a draw!", "Game Over!");
+                } else {
+                    // Win
+                    showMessage("Ant Brain " + removeExtension(antBrainList.get(0).toString()) + " wins!", "Game Over!");
+                }
+
+                gameOverMessageShown = true;
+            } else {
+                scoresShown = true;
+            }
         }
     }
     
@@ -192,6 +230,34 @@ public class GUITournamentDisplay extends BasicGameState{
             }
         }
        return listBottom;
+    }
+    
+    private void showMessage(String message, String errorType){
+        JOptionPane.showMessageDialog(new JFrame(), message,
+        errorType, JOptionPane.PLAIN_MESSAGE);
+    }
+    
+    private String removeExtension(String filename) {
+        if (filename.indexOf(".") > 0) {
+            filename = filename.substring(0, filename.lastIndexOf("."));
+        }
+        return filename;
+    }
+    
+    private Image updatePlayNextRound() {
+        if (finished) {
+            return playNextRoundUnavailable;
+        } else {
+            return playNextRound;
+        }
+    }
+    
+    private Image updateSkipToEnd() {
+        if (finished) {
+            return skipToEndUnavailable;
+        } else {
+            return skipToEnd;
+        }
     }
 
 }
