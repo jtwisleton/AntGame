@@ -116,16 +116,17 @@ public class Game {
      * in total less than 300000 steps.
      * @param numberOfStepsToRun the number of steps to run the game for.
      */
-    public void runRounds(int numberOfStepsToRun) {
+    public boolean runRounds(int numberOfStepsToRun) {
         for(int j = 0; j < numberOfStepsToRun; j++){
             if(step > 300000){
-                break;
+                return true;
             }
             for(int i = 0; i < gameBoard.getNumberOfAnts(); i++){
                 takeAntWithIdMove(i);
             }
             step++;
-        }    
+        }  
+        return false;
     }
 
 }
