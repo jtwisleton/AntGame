@@ -77,7 +77,8 @@ public class GUISingleGameDisplay extends BasicGameState {
     private int numBlackBaseFood;
     private int redAntsAlive;
     private int blackAntsAlive;
-    private boolean gameOverMessageShown = false;
+    private boolean gameOverMessageShown;
+    private boolean exiting;
     
     public GUISingleGameDisplay(AntGameTournament tournament){
         this.tournament = tournament;
@@ -124,20 +125,19 @@ public class GUISingleGameDisplay extends BasicGameState {
         slowDownMO = new MouseOverArea(gc, slowDownButton, divide+113, 115);
         pauseMO = new MouseOverArea(gc, pauseButton, divide+170, 15);
         skipMO = new MouseOverArea(gc, skipToEndButton, divide+284, 15);
+        
+        gameOverMessageShown = false;
+        exiting = false;
     }
     
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         if(exitMO.isMouseOver()){
             currentExitButton = exitButtonHover;
-            if(gc.getInput().isMouseButtonDown(0)){
-                try {
-                    // tournament.reset();
-                    sbg.enterState(2);
-                    TimeUnit.MILLISECONDS.sleep(250);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GUISingleGameDisplay.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            if(gc.getInput().isMouseButtonDown(0)) {
+                tournament.reset();
+                sbg.enterState(2);
+                exiting = true;
             }
         } else {
             currentExitButton = exitButton;
@@ -194,35 +194,36 @@ public class GUISingleGameDisplay extends BasicGameState {
             currentSkipToEndButton = skipToEndButton;
         }
         
-        game = tournament.getCurrentGame();
-        gameBoard = game.getGameBoard();
-        board = gameBoard.getBoard();
-        
-        // Check if the game has finished & the winning message has not already been shown
-        if ((!gameOverMessageShown) && (game.runRounds(steps))) {
-            // Game finished, show winning screen
-            int p1Score = game.getPlayerOneScore();
-            int p2Score = game.getPlayerTwoScore();
-            
-            if (p1Score > p2Score) {
-                // Player one wins
-                showMessage("Player one wins the game " + p1Score + " - " + p2Score + "!", "Game Over!");
-            } else if (p2Score > p1Score) {
-                // Player two wins
-                showMessage("Player two wins the game " + p2Score + " - " + p1Score + "!", "Game Over!");
-            } else {
-                // Draw
-                showMessage("It's a draw! " + p1Score + " - " + p2Score + "", "Game Over!");
+        if (!exiting) {
+            game = tournament.getCurrentGame();
+            gameBoard = game.getGameBoard();
+            board = gameBoard.getBoard();
+
+            // Check if the game has finished & the winning message has not already been shown
+            if ((!gameOverMessageShown) && (game.runRounds(steps))) {
+                // Game finished, show winning screen
+                int p1Score = game.getPlayerOneScore();
+                int p2Score = game.getPlayerTwoScore();
+
+                if (p1Score > p2Score) {
+                    // Player one wins
+                    showMessage("Player one wins the game " + p1Score + " - " + p2Score + "!", "Game Over!");
+                } else if (p2Score > p1Score) {
+                    // Player two wins
+                    showMessage("Player two wins the game " + p2Score + " - " + p1Score + "!", "Game Over!");
+                } else {
+                    // Draw
+                    showMessage("It's a draw! " + p1Score + " - " + p2Score + "", "Game Over!");
+                }
+
+                gameOverMessageShown = true;
             }
-            
-            gameOverMessageShown = true;
+
+            numRedBaseFood = game.getPlayerOneScore();
+            numBlackBaseFood = game.getPlayerTwoScore();
+            redAntsAlive = game.getRedAntsAlive();
+            blackAntsAlive = game.getBlackAntsAlive();
         }
-        
-        numRedBaseFood = game.getPlayerOneScore();
-        numBlackBaseFood = game.getPlayerTwoScore();
-        redAntsAlive = game.getRedAntsAlive();
-        blackAntsAlive = game.getBlackAntsAlive();
-        
     }
 
     @Override
