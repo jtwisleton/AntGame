@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -75,6 +77,7 @@ public class GUISingleGameDisplay extends BasicGameState {
     private int numBlackBaseFood;
     private int redAntsAlive;
     private int blackAntsAlive;
+    private boolean gameOverMessageShown = false;
     
     public GUISingleGameDisplay(AntGameTournament tournament){
         this.tournament = tournament;
@@ -129,7 +132,7 @@ public class GUISingleGameDisplay extends BasicGameState {
             currentExitButton = exitButtonHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 try {
-                    //tournament.reset();
+                    // tournament.reset();
                     sbg.enterState(2);
                     TimeUnit.MILLISECONDS.sleep(250);
                 } catch (InterruptedException ex) {
@@ -194,7 +197,26 @@ public class GUISingleGameDisplay extends BasicGameState {
         game = tournament.getCurrentGame();
         gameBoard = game.getGameBoard();
         board = gameBoard.getBoard();
-        game.runRounds(steps);
+        
+        // Check if the game has finished & the winning message has not already been shown
+        if ((!gameOverMessageShown) && (game.runRounds(steps))) {
+            // Game finished, show winning screen
+            int p1Score = game.getPlayerOneScore();
+            int p2Score = game.getPlayerTwoScore();
+            
+            if (p1Score > p2Score) {
+                // Player one wins
+                showMessage("Player one wins the game " + p1Score + " - " + p2Score + "!", "Game Over!");
+            } else if (p2Score > p1Score) {
+                // Player two wins
+                showMessage("Player two wins the game " + p2Score + " - " + p1Score + "!", "Game Over!");
+            } else {
+                // Draw
+                showMessage("It's a draw! " + p1Score + " - " + p2Score + "", "Game Over!");
+            }
+            
+            gameOverMessageShown = true;
+        }
         
         numRedBaseFood = game.getPlayerOneScore();
         numBlackBaseFood = game.getPlayerTwoScore();
@@ -327,6 +349,11 @@ public class GUISingleGameDisplay extends BasicGameState {
             currentPauseButton = pauseButton;
             currentPauseButtonHover = pauseButtonHover;
         }
+    }
+    
+    private void showMessage(String message, String errorType){
+        JOptionPane.showMessageDialog(new JFrame(), message,
+        errorType, JOptionPane.PLAIN_MESSAGE);
     }
     
 }
