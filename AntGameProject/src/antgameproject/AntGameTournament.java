@@ -92,22 +92,28 @@ public class AntGameTournament {
      * Runs one round of a tournament. A round means all teams play all enemies
      * on a board as both the red and the black colours.
      */
-    public void runTournamentRound(){
-        Board boardToPlayRoundOn = antWorlds.get(boardToPlayIndex);
-        
-        for (Pair pair : pairs) {
-            runGame(pair.one, pair.two, boardToPlayRoundOn);
-            runGame(pair.two, pair.one, boardToPlayRoundOn);
-        }
+    public boolean runTournamentRound(){
+        boolean finished = false;
         
         if(boardToPlayIndex < antWorlds.size()){
+            Board boardToPlayRoundOn = antWorlds.get(boardToPlayIndex);
+            
+            for (Pair pair : pairs) {
+                runGame(pair.one, pair.two, boardToPlayRoundOn);
+                runGame(pair.two, pair.one, boardToPlayRoundOn);
+            }
+            
             boardToPlayIndex++;
-        } else {
+        }
+        
+        if (boardToPlayIndex == antWorlds.size()) {
             System.out.println("gameComplete");
+            finished = true;
         }
         
         // sort the ant brain list so in order of points
         Collections.sort(antBrains);
+        return finished;
     }
     
     /**
@@ -166,6 +172,7 @@ public class AntGameTournament {
         antBrains = new ArrayList<>();
         pairs = new ArrayList<>();
         currentGame = null;
+        boardToPlayIndex = 0;
     }
     
      /**
