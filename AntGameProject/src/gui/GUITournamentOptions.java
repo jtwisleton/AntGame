@@ -192,6 +192,7 @@ public class GUITournamentOptions extends BasicGameState {
                 currentStartTournament = startTournamentHover;
                 if(gc.getInput().isMouseButtonDown(0)){
                     tournament.createTournament();
+                    sbg.getState(6).init(gc, sbg);
                     sbg.enterState(6);
                 }
             }
