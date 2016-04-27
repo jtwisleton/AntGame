@@ -8,16 +8,13 @@ package gui;
 import antgameproject.AntBrainLoader;
 import antgameproject.AntGameTournament;
 import antgameproject.AntWorldLoader;
-import java.awt.Component;
 import java.awt.FileDialog;
 import java.awt.Frame;
-import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -137,7 +134,11 @@ public class GUISingleGameOptions extends BasicGameState {
             if(antBrainOne != null && antBrainTwo != null && antWorldFile != null){
                 curStart = startHover;
                 if(gc.getInput().isMouseButtonDown(0)){
+                    antBrainOne = null;
+                    antBrainTwo = null;
+                    antWorldFile = null;
                     tournament.runGame();
+                    sbg.getState(7).init(gc, sbg);
                     sbg.enterState(7);
                 }
             }
@@ -254,16 +255,6 @@ public class GUISingleGameOptions extends BasicGameState {
     }
     
     private File fileLoader(){
-        /*
-        JFileChooser fileChooser = new JFileChooser();
-        int returnValue = fileChooser.showOpenDialog(null);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            return selectedFile;
-        }
-        return null;
-        */
-        
         String osName = System.getProperty("os.name");
         File selectedFile = null;
         
