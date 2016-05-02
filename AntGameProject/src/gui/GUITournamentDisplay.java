@@ -72,7 +72,7 @@ public class GUITournamentDisplay extends BasicGameState{
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        gameFont = new AngelCodeFont("resources/fontalt.fnt", "resources/fontAlt_0.png");
+        gameFont = new AngelCodeFont("resources/moreAdded.fnt", "resources/moreAdded_0.png");
         pageTitle = new Image("resources/tournamentLogo.png");
         playNextRound = new Image("resources/playNextRound.png");
         playNextRoundHover = new Image("resources/playNextRoundHover.png");
@@ -218,6 +218,10 @@ public class GUITournamentDisplay extends BasicGameState{
                 scoresShown = true;
             }
         }
+        
+        // print the number of rounds played
+        gameFont.drawString(25, 1010, "Rounds played " + tournament.getTournamentRoundNumber() 
+                + " / " + tournament.getListOfAntWorlds().size());
     }
     
     private int setListBottom(List listToSetBottomOf, int listTopPos){

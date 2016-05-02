@@ -203,4 +203,8 @@ public class AntGameTournament {
         }
     }
     
+    public int getTournamentRoundNumber(){
+        return boardToPlayIndex;
+    }
+    
 }
