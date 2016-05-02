@@ -18,12 +18,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.gui.MouseOverArea;
@@ -79,6 +81,8 @@ public class GUISingleGameDisplay extends BasicGameState {
     private int blackAntsAlive;
     private boolean gameOverMessageShown;
     private boolean exiting;
+    private boolean firstRender;
+    private GUICamera cam;
     
     public GUISingleGameDisplay(AntGameTournament tournament){
         this.tournament = tournament;
@@ -125,13 +129,18 @@ public class GUISingleGameDisplay extends BasicGameState {
         slowDownMO = new MouseOverArea(gc, slowDownButton, divide+113, 115);
         pauseMO = new MouseOverArea(gc, pauseButton, divide+170, 15);
         skipMO = new MouseOverArea(gc, skipToEndButton, divide+284, 15);
-        
+        firstRender = true;
         gameOverMessageShown = false;
         exiting = false;
+
     }
     
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+        if(firstRender){
+            createCamera();
+            firstRender = false;
+        }
         if(exitMO.isMouseOver()){
             currentExitButton = exitButtonHover;
             if(gc.getInput().isMouseButtonDown(0)) {
@@ -223,12 +232,67 @@ public class GUISingleGameDisplay extends BasicGameState {
             numBlackBaseFood = game.getPlayerTwoScore();
             redAntsAlive = game.getRedAntsAlive();
             blackAntsAlive = game.getBlackAntsAlive();
+            int mouseScroll = Mouse.getDWheel();
+            if(mouseScroll > 0 || gc.getInput().isKeyPressed(Input.KEY_EQUALS)){
+                cam.incrementZoom();
+            } else if(mouseScroll < 0 || gc.getInput().isKeyPressed(Input.KEY_MINUS)){
+                cam.decrementZoom();
+            }
+           
+            
+            if(Mouse.getX() < 200 && Mouse.getX() > 0){
+                cam.incrementXPos();
+            }
+            
+            if(Mouse.getX() > 1200 && Mouse.getX() < 1400){
+                cam.decrementXPos();
+            }
+            
+            if(Mouse.getY() > 0 && Mouse.getY() < 200 && Mouse.getX() < 1400){
+                cam.decrementYPos();
+            }
+            
+            if(Mouse.getY() > 880 && Mouse.getY() < 1080 && Mouse.getX() < 1400){
+                cam.incrementYPos();
+            }
+          
         }
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
         grphcs.scale(scale, scale);
+        
+        cam.setBoardZoom();
+        
+        grphcs.scale(cam.getZoom(), cam.getZoom());
+        grphcs.translate(cam.getXPos(), cam.getYPos());
+        tiles.startUse();
+        for(int i = 0; i < board.length; i++){   //use board size
+                for(int j = 0; j < board[0].length; j++){   // use board size
+                        Pos spritePosition = calculateSpritePosition(j,i);
+                        if(i % 2 == 0){
+                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+128*j, 50+100*i, 128, 128);
+                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+16*j, 50+12*i, 16, 16);
+                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(16*j, 12*i, 16, 16);
+                        }else{
+                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+64+128*j, 50+100f*i, 128, 128);
+                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+8+16*j, 50+12f*i, 16, 16);
+                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(8+16*j, 12f*i, 16, 16);
+                        }
+                }
+        }	
+        tiles.endUse();
+        cam.setMenuZoom();
+        grphcs.translate(-cam.getXPos(), -cam.getYPos());
+        grphcs.scale(cam.getZoom(), cam.getZoom());
+        
+        // draw blocking rectangle so board doesn't run over controls
+        grphcs.setColor(new Color(33, 252, 172));
+        grphcs.fillRect(1400, 0, 520, 1080);
+        
+        // draw graph frames
+        grphcs.setColor(Color.white);
         grphcs.setLineWidth(4);
         grphcs.drawLine(divide, 0, divide, 1080);
         grphcs.drawRoundRect(divide + 20, 250, 480, 350, 10);
@@ -236,6 +300,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         gameFont.drawString(divide+40, 260, "Ants alive");
         gameFont.drawString(divide+40, 630, "Food in base");
         
+        // claculate and draw graph bars
         int redAnts = 200;
         int blueAnts = 190;
         int redFood = 150;
@@ -253,7 +318,6 @@ public class GUISingleGameDisplay extends BasicGameState {
         grphcs.drawLine(divide+70, 690, divide+70, 920);
         grphcs.drawLine(divide+70, 920, divide+430, 920);
         
-        
         grphcs.drawImage(logo, 1800, 990);
         grphcs.drawImage(currentExitButton, divide+20, 985);
         
@@ -262,22 +326,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         grphcs.drawImage(currentSlowDownButton, divide+113, 115);
         grphcs.drawImage(currentSkipToEndButton, divide+284, 15);
 
-        grphcs.scale(0.5f, 0.5f);
-        tiles.startUse();
-        for(int i = 0; i < board.length; i++){   //use board size
-                for(int j = 0; j < board[0].length; j++){   // use board size
-                        Pos spritePosition = calculateSpritePosition(j,i);
-                        if(i % 2 == 0){
-                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+128*j, 50+100*i, 128, 128);
-                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+16*j, 50+12*i, 16, 16);
-                        }else{
-                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+64+128*j, 50+100f*i, 128, 128);
-                                tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+8+16*j, 50+12f*i, 16, 16);
-                        }
-                }
-        }	
-        tiles.endUse();
-        grphcs.scale(2, 2);
+        
         //grphcs.scale(2, 2);
     }
 
@@ -355,6 +404,34 @@ public class GUISingleGameDisplay extends BasicGameState {
     private void showMessage(String message, String errorType){
         JOptionPane.showMessageDialog(new JFrame(), message,
         errorType, JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void createCamera() {
+        BoardTile[][] gameBoard = tournament.getCurrentGame().getGameBoard().getBoard();
+        
+        float zoomBoard = 1;
+        float zoomControl = 1;
+        int tilesWide = gameBoard.length * 16;
+        int tilesTall = gameBoard[0].length * 12;
+        if(tilesWide > 1400 || tilesTall > 1080){
+            while(tilesWide * zoomBoard > 1400 && tilesTall * zoomBoard > 1080){
+                zoomBoard = zoomBoard / 2;
+                zoomControl = zoomControl * 2;
+            }
+        } else {
+            zoomBoard = 8;
+            zoomControl = 0.125f;
+            while(tilesWide * zoomBoard < 1400 && tilesTall * zoomBoard > 1080){
+                zoomBoard = zoomBoard / 2;
+                zoomControl = zoomControl * 2;
+            }
+            zoomBoard = zoomBoard / 2;
+            zoomControl = zoomControl * 2;
+        }
+        
+        cam = new GUICamera(1080, 1400, zoomBoard, zoomControl, -tilesWide/2, -tilesTall/2);
+        //cam = new GUICamera(1080, 1400, 0.5f, 2, -1200, -900);
+        //cam = new GUICamera(1080, 1400, 4f, 0.25f, -80, -60);
     }
     
 }
