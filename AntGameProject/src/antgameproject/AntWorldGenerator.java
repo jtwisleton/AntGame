@@ -1,7 +1,7 @@
 package antgameproject;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -13,10 +13,15 @@ public class AntWorldGenerator {
     private int blackAnthillX;
     private int blackAnthillY;
     private int redAnthillX;
-    private int redAnthillY;    
-    
+    private int redAnthillY;
+    private final int avgRockSize;
+
     public static void main(String[] args) {
-        AntWorldGenerator awg = new AntWorldGenerator();
+        AntWorldGenerator awg = new AntWorldGenerator(10);
+    }
+
+    public AntWorldGenerator(int avgRockSize) {
+        this.avgRockSize = avgRockSize;
     }
 
     /*
@@ -26,6 +31,9 @@ public class AntWorldGenerator {
     public Board generateWorld() {
         BoardTile[][] b = placeBordersAndGrass();
         b = placeAnthills(b);
+        b = placeFood(b);
+        b = placeRocks(b);
+        b = createGaps(b);
 
         return new Board(b, "testworld");
     }
@@ -72,10 +80,10 @@ public class AntWorldGenerator {
         int blackBaseX = 0;
         int blackBaseY = 0;
         while (!finished) {
-            redBaseX = r.nextInt(129) + 10;
-            redBaseY = r.nextInt(129) + 10;
-            blackBaseX = r.nextInt(129) + 10;
-            blackBaseY = r.nextInt(129) + 10;
+            redBaseX = r.nextInt(129) + 12;
+            redBaseY = r.nextInt(129) + 12;
+            blackBaseX = r.nextInt(129) + 12;
+            blackBaseY = r.nextInt(129) + 12;
             if (Math.abs(redBaseX - blackBaseX) > 13 && Math.abs(redBaseY - blackBaseY) > 13) {
                 finished = true;
             }
@@ -151,153 +159,284 @@ public class AntWorldGenerator {
         return boardWithAnthills;
     }
 
-    public BoardTile[][] placeFood(BoardTile[][] boardWithAnthills) {
-
-        List<Integer> foodXcoords = new ArrayList<>();
-        List<Integer> foodYcoords = new ArrayList<>();
+    public BoardTile[][] placeFood(BoardTile[][] anthills) {
 
         /*
-         Iterate 11 times to create 11 food blob X coordinates.
+         Create ArrayLists to put x and y coordinates of food piles into.
          */
+        ArrayList<Integer> xcoords = new ArrayList<>();
+        ArrayList<Integer> ycoords = new ArrayList<>();
         Random r = new Random();
+
+        /*
+         Iterate 11 times to make 11 food blobs top left coordinates.
+         */
         for (int i = 0; i < 12; i++) {
 
             /*
-             Pick random X coordinate for food pile to create. Keep selecting 
-             new random X coordinate until certain criteria are reached.
+             Iterate until valid x and y coordinates for current food are found.
              */
-            Boolean finished = false;
+            boolean finished = false;
             while (!finished) {
-                int currentFoodX = r.nextInt(129) + 10;
+
+                /*                
+                 Generate a random number for top left of food blob (as food 
+                 blobs are 5x5, top left of blob must be between 2 and 144 so as 
+                 to be within the grid).
+                 */
+                int currentxcoord = r.nextInt(140) + 3;
+                int currentycoord = r.nextInt(140) + 3;
 
                 /*
-                 Check that the selected food pile coordinates wont conflict
-                 with the anthills.
+                 Check the created food coordinates don't conflict with the anthills.
                  */
-                if (Math.abs(redAnthillX - currentFoodX) > 15
-                        && Math.abs(blackAnthillX - currentFoodX) > 15) {
+                if ((Math.abs(currentxcoord - redAnthillX) > 11)
+                        && (Math.abs(currentxcoord - blackAnthillX) > 11)) {
+                    if ((Math.abs(currentycoord - redAnthillY) > 11)
+                            && (Math.abs(currentycoord - blackAnthillY) > 11)) {
 
-                    /*
-                     Check that the current food pile wont conflict with the previous
-                     food piles X coordinates.
-                     */
-                    boolean foodConflicts = false;
-
-                    for (int foodXCoord : foodXcoords) {
-                        if (Math.abs(foodXCoord - currentFoodX) < 6) {
-                            foodConflicts = true;
+                        /*
+                         Check the current x coordinate doesn't conflict with
+                         any of the food piles in the xcoords ArrayList.
+                         */
+                        boolean conflicts = false;
+                        for (int xcoord : xcoords) {
+                            if (Math.abs(currentxcoord - xcoord) < 6) {
+                                conflicts = true;
+                            }
                         }
-                    }
 
-                    /*
-                     Add food pile X coordinate to arraylist if no conflict.
-                     */
-                    if (!foodConflicts) {
-                        foodXcoords.add(currentFoodX);
-                        finished = true;
+                        /*
+                         Check the current y coordinate doesn't conflict with
+                         any of the food piles in the ycoords ArrayList.
+                         */
+                        for (int ycoord : ycoords) {
+                            if (Math.abs(currentycoord - ycoord) < 6) {
+                                conflicts = true;
+                            }
+                        }
+
+                        /*
+                         If there are no conflicts between established x and y 
+                         coordinates and those generated in this loop iteration,
+                         add these coordinates to the established list and exit
+                         the loop.
+                         */
+                        if (conflicts == false) {
+                            finished = true;
+                            xcoords.add(currentxcoord);
+                            ycoords.add(currentycoord);
+                        }
                     }
                 }
             }
         }
 
+        /*
+         now that x and y coordinates have been created for all 11 food piles,
+         place the food onto the world.
+         */
         for (int i = 0; i < 12; i++) {
-
-            /*
-             Pick random Y coordinate for food pile to create. Keep selecting 
-             new random Y coordinate until certain criteria are reached.
-             */
-            Boolean finished = false;
-            while (!finished) {
-                int currentFoodY = r.nextInt(129) + 10;
-
-                /*
-                 Check that the selected food pile coordinates wont conflict
-                 with the anthills.
-                 */
-                if (Math.abs(redAnthillY - currentFoodY) > 15
-                        && Math.abs(blackAnthillY - currentFoodY) > 15) {
-
-                    /*
-                     Check that the current food pile wont conflict with the previous
-                     food piles X coordinates.
-                     */
-                    boolean foodConflicts = false;
-
-                    for (int foodYCoord : foodYcoords) {
-                        if (Math.abs(foodYCoord - currentFoodY) < 6) {
-                            foodConflicts = true;
+            Boolean firstCoordinateIsEven = false;
+            if (ycoords.get(i) % 2 == 0) {
+                firstCoordinateIsEven = true;
+            }
+            for (int j = 0; j < 6; j++) {
+                for (int k = 0; k < 6; k++) {
+                    if (firstCoordinateIsEven) {
+                        if ((ycoords.get(i) + j) % 2 == 0) {
+                            anthills[(ycoords.get(i) + j)][xcoords.get(i) + k + 1] = new BoardTile(5, Terrain.GRASS);
+                        } else {
+                            anthills[(ycoords.get(i) + j)][xcoords.get(i) + k] = new BoardTile(5, Terrain.GRASS);
                         }
-                    }
-
-                    /*
-                     Add food pile X coordinate to arraylist if no conflict.
-                     */
-                    if (!foodConflicts) {
-                        foodYcoords.add(currentFoodY);
-                        finished = true;
+                    } else {
+                        if ((ycoords.get(i) + j) % 2 != 0) {
+                            anthills[(ycoords.get(i) + j)][xcoords.get(i) + k - 1] = new BoardTile(5, Terrain.GRASS);
+                        } else {
+                            anthills[(ycoords.get(i) + j)][xcoords.get(i) + k] = new BoardTile(5, Terrain.GRASS);
+                        }
                     }
                 }
             }
         }
 
-        return null;
-
+        return anthills;
     }
 
-    public BoardTile[][] placeRocks(BoardTile[][] boardWithAnthills, int numberOfRocks, int avgRockSize) {
+    public BoardTile[][] placeRocks(BoardTile[][] anthillsFood) {
+
+        ArrayList<Pos> rockPositions = new ArrayList<>();
+        Random r = new Random();
 
         /*
-         Iterate 14 times to make 14 rocks.
+         Iterate 14 times to create 14 rocks.
          */
-        Random r = new Random();
-        for (int i = 0; i < numberOfRocks; i++) {
+        ArrayList<Pos> currentRockPositions = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
 
             /*
-             Generate random X and Y coordinates - check they're grass on the
-             board, keep generating until they are.
+             Generate random numbers within world range for the current rocks
+             initial x and y coordinates - check that it isn't adjacent to any
+             other rocks or on a food tile, keep generating until this is the case.
              */
             int currentRockX = 0;
             int currentRockY = 0;
-            Boolean finished = false;
+            boolean finished = false;
             while (!finished) {
                 currentRockX = r.nextInt(129) + 2;
                 currentRockY = r.nextInt(129) + 2;
-                if (boardWithAnthills[currentRockY][currentRockX].getCellTerrain() == Terrain.GRASS) {
-                    finished = true;
+                if (anthillsFood[currentRockY][currentRockX].getCellTerrain() == Terrain.GRASS
+                        && anthillsFood[currentRockY][currentRockX].getFoodInTile() == 0) {
+                    if (!rockPositions.contains(new Pos(currentRockX, currentRockY))
+                            && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY))
+                            && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY))
+                            && !rockPositions.contains(new Pos(currentRockX, currentRockY + 1))
+                            && !rockPositions.contains(new Pos(currentRockX, currentRockY - 1))
+                            && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY - 1))
+                            && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY + 1))
+                            && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY - 1))
+                            && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY + 1))) {
+
+                        /*
+                         Add generated initial x and y coordinates for current rock
+                         to currentRockPositions.
+                         */
+                        currentRockPositions.add(new Pos(currentRockX, currentRockY));
+                        finished = true;
+                    }
                 }
             }
 
             /*
-             For each rock, iterate up to avgRockSize making randomly selected
-             adjacent coordinates ROCK terrain if they're grass.
-             */            
+             Iterate from 0 to avgRockSize.
+             */
             for (int j = 0; j < avgRockSize; j++) {
-                boardWithAnthills[currentRockX][currentRockY] = new BoardTile(0, Terrain.ROCK);
-                int flipAcoin = r.nextInt(2);
-                if (flipAcoin == 0) {
-                    if (boardWithAnthills[currentRockX + 1][currentRockY].getCellTerrain() == Terrain.GRASS) {
-                        boardWithAnthills[currentRockX + 1][currentRockY] = new BoardTile(0, Terrain.ROCK);
+
+                /*
+                 Generate a random number from 0 to 7 to decide which direction
+                 to place next rock piece.                    
+                 */
+                int direction = r.nextInt(8);
+
+                int savedCurrentRockX = currentRockX;
+                int savedCurrentRockY = currentRockY;
+                switch (direction) {
+                    case 0:
                         currentRockX++;
-                        
-                    } else {
-                        if (boardWithAnthills[currentRockX - 1][currentRockY].getCellTerrain() == Terrain.GRASS) {
-                            boardWithAnthills[currentRockX - 1][currentRockY] = new BoardTile(0, Terrain.ROCK);
-                            currentRockX--;
-                        }
-                    }
-                } else {
-                    if (boardWithAnthills[currentRockX][currentRockY + 1].getCellTerrain() == Terrain.GRASS) {
-                        boardWithAnthills[currentRockX][currentRockY + 1] = new BoardTile(0, Terrain.ROCK);
+                    case 1:
+                        currentRockX--;
+                    case 2:
                         currentRockY++;
-                    } else {
-                        if (boardWithAnthills[currentRockX][currentRockY - 1].getCellTerrain() == Terrain.GRASS) {
-                            boardWithAnthills[currentRockX][currentRockY - 1] = new BoardTile(0, Terrain.ROCK);
-                            currentRockY--;
-                        }
+                    case 3:
+                        currentRockY--;
+                    case 4:
+                        currentRockX++;
+                        currentRockY++;
+                    case 5:
+                        currentRockX--;
+                        currentRockY--;
+                    case 6:
+                        currentRockX++;
+                        currentRockY--;
+                    case 7:
+                        currentRockX--;
+                        currentRockY++;
+                }
+
+                /*
+                 If the random next piece of the current rock is not adjacent
+                 to any existing rocks, or outside of the world range, or on a 
+                 base or food tile, add it to the currentRockPositions ArrayList. 
+                 If it is, revert back to the previous currentRockX and 
+                 currentRockY and reduce increment (try again).
+                 */
+                if (!rockPositions.contains(new Pos(currentRockX, currentRockY))
+                        && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY))
+                        && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY))
+                        && !rockPositions.contains(new Pos(currentRockX, currentRockY + 1))
+                        && !rockPositions.contains(new Pos(currentRockX, currentRockY - 1))
+                        && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY - 1))
+                        && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY + 1))
+                        && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY - 1))
+                        && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY + 1))
+                        && (currentRockX < 150) && (currentRockX > 0) && (currentRockY < 150) && (currentRockY > 0)
+                        && anthillsFood[currentRockX][currentRockY].getCellTerrain() != Terrain.BLACKBASE
+                        && anthillsFood[currentRockX][currentRockY].getCellTerrain() != Terrain.REDBASE
+                        && anthillsFood[currentRockX][currentRockY].getFoodInTile() == 0) {
+                    currentRockPositions.add(new Pos(currentRockX, currentRockY));
+                } else {
+                    j--;
+                    currentRockX = savedCurrentRockX;
+                    currentRockY = savedCurrentRockY;
+                }
+            }
+
+            /*
+             At the end of the loop, add all current rock positions to overall
+             rock positions ArrayList.
+             */
+            rockPositions.addAll(currentRockPositions);
+            currentRockPositions.clear();
+        }
+
+        /*
+         Iterate over rockPosition ArrayList, adding rocks to world.
+         */
+        for (Pos rockPosition : rockPositions) {
+            int currentPosX = rockPosition.getPosX();
+            int currentPosY = rockPosition.getPosY();
+            anthillsFood[currentPosX][currentPosY] = new BoardTile(0, Terrain.ROCK);
+        }
+
+        return anthillsFood;
+    }
+
+    public BoardTile[][] createGaps(BoardTile[][] anthillsFoodRocks) {
+        for (int i = 0; i < anthillsFoodRocks.length; i++) {
+            for (int j = 0; j < anthillsFoodRocks[i].length; j++) {
+
+                /*
+                 If a piece of terrain adjacent to a base is ROCK, make it GRASS.
+                 */
+                if (anthillsFoodRocks[i][j].getCellTerrain() == Terrain.BLACKBASE
+                        || anthillsFoodRocks[i][j].getCellTerrain() == Terrain.REDBASE) {
+
+                    if (anthillsFoodRocks[i][j + 1].getCellTerrain() == Terrain.ROCK) {
+                        anthillsFoodRocks[i][j + 1] = new BoardTile(0, Terrain.GRASS);
                     }
+
+                    if (anthillsFoodRocks[i][j - 1].getCellTerrain() == Terrain.ROCK) {
+                        anthillsFoodRocks[i][j - 1] = new BoardTile(0, Terrain.GRASS);
+                    }
+
+                    if (anthillsFoodRocks[i + 1][j].getCellTerrain() == Terrain.ROCK) {
+                        anthillsFoodRocks[i + 1][j] = new BoardTile(0, Terrain.GRASS);
+                    }
+
+                    if (anthillsFoodRocks[i - 1][j].getCellTerrain() == Terrain.ROCK) {
+                        anthillsFoodRocks[i - 1][j] = new BoardTile(0, Terrain.GRASS);
+                    }
+
+                    if (anthillsFoodRocks[i - 1][j - 1].getCellTerrain() == Terrain.ROCK) {
+                        anthillsFoodRocks[i - 1][j - 1] = new BoardTile(0, Terrain.GRASS);
+                    }
+
+                    if (anthillsFoodRocks[i + 1][j + 1].getCellTerrain() == Terrain.ROCK) {
+                        anthillsFoodRocks[i + 1][j + 1] = new BoardTile(0, Terrain.GRASS);
+                    }
+
+                    if (anthillsFoodRocks[i + 1][j - 1].getCellTerrain() == Terrain.ROCK) {
+                        anthillsFoodRocks[i + 1][j - 1] = new BoardTile(0, Terrain.GRASS);
+                    }
+
+                    if (anthillsFoodRocks[i - 1][j + 1].getCellTerrain() == Terrain.ROCK) {
+                        anthillsFoodRocks[i - 1][j + 1] = new BoardTile(0, Terrain.GRASS);
+                    }
+
                 }
             }
         }
-        return boardWithAnthills;
+
+        return anthillsFoodRocks;
     }
 }
