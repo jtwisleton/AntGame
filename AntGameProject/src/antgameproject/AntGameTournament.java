@@ -42,7 +42,7 @@ public class AntGameTournament {
         // Update scores with 2 points for a win and 1 point for a draw
         int playerOneScore = currentGame.getPlayerOneScore();
         int playerTwoScore = currentGame.getPlayerTwoScore();
-                
+        System.out.println(one.toString() + " " + playerOneScore + " " + playerTwoScore + " " + two.toString());
         one.incrementGamesPlayedIn();
         two.incrementGamesPlayedIn();
         one.setTotalFoodInBase(one.getTotalFoodInBase() + playerOneScore);
@@ -99,15 +99,16 @@ public class AntGameTournament {
             Board boardToPlayRoundOn = antWorlds.get(boardToPlayIndex);
             
             for (Pair pair : pairs) {
-                runGame(pair.one, pair.two, boardToPlayRoundOn);
-                runGame(pair.two, pair.one, boardToPlayRoundOn);
+                Board boardToPlayRoundOneOn = boardToPlayRoundOn.copy();
+                Board boardToPlayRoundTwoOn = boardToPlayRoundOn.copy();
+                runGame(pair.one, pair.two, boardToPlayRoundOneOn);
+                runGame(pair.two, pair.one, boardToPlayRoundTwoOn);
             }
             
             boardToPlayIndex++;
         }
         
         if (boardToPlayIndex == antWorlds.size()) {
-            System.out.println("gameComplete");
             finished = true;
         }
         
@@ -180,7 +181,7 @@ public class AntGameTournament {
      * @param <X> Type of the first entry.
      * @param <Y> Type of the second entry.
      */
-    public static class Pair<X, Y> {
+    public class Pair<X, Y> {
 
         /**
          * The first ant brain in the pair.

@@ -291,5 +291,15 @@ public class Board {
     public BoardTile[][] getBoard() {
         return board;
     }
+
+    public Board copy() {
+        BoardTile[][] copyBoard = new BoardTile[board.length][board[0].length];
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                copyBoard[i][j] = new BoardTile(board[i][j].getFoodInTile(), board[i][j].getCellTerrain());
+            }
+        }
+        return new Board(copyBoard, "copyBoard");
+    }
     
 }
