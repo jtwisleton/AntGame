@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package antGameTesting;
 
 import antgameproject.AntWorldGenerator;
@@ -38,7 +33,7 @@ public class WorldGenTest {
 
     @Test
     public void placeBordersAndGrass() {
-        AntWorldGenerator wg = new AntWorldGenerator();
+        AntWorldGenerator wg = new AntWorldGenerator(10);
         BoardTile[][] bt = wg.placeBordersAndGrass();
         Board board = new Board(bt, "borders and grass");
         System.out.println("-----\nTest: placeBordersAndGrass\n-----");
@@ -47,7 +42,7 @@ public class WorldGenTest {
 
     @Test
     public void placeAnthills() {
-        AntWorldGenerator wg = new AntWorldGenerator();
+        AntWorldGenerator wg = new AntWorldGenerator(10);
         BoardTile[][] bt = wg.placeBordersAndGrass();
         bt = wg.placeAnthills(bt);
         Board board = new Board(bt, "borders and grass and anthills");
@@ -55,28 +50,52 @@ public class WorldGenTest {
         board.printBoardToASCII();
     }
 
-//    @Test
-//    public void placeFood() {
-//        AntWorldGenerator wg = new AntWorldGenerator();
-//        BoardTile[][] bt = wg.placeBordersAndGrass();
-//        bt = wg.placeAnthills(bt);
-//        bt = wg.placeFood(bt);
-//        Board board = new Board(bt, "borders and grass and anthills and food");
-//        System.out.println("\n-----\nTest: placeFood\n-----\n");
-//        board.printBoardToASCII();
-//    }
-
     @Test
-    public void placeRocks(){
-        AntWorldGenerator wg = new AntWorldGenerator();
+    public void placeFood() {
+        AntWorldGenerator wg = new AntWorldGenerator(10);
         BoardTile[][] bt = wg.placeBordersAndGrass();
         bt = wg.placeAnthills(bt);
-        bt = wg.placeRocks(bt,14,20);
+        bt = wg.placeFood(bt);
+        Board board = new Board(bt, "borders and grass and anthills and food");
+        System.out.println("\n-----\nTest: placeFood\n-----\n");
+        board.printBoardToASCII();
+    }
+
+    @Test
+    public void placeRocks() {
+        AntWorldGenerator wg = new AntWorldGenerator(10);
+        BoardTile[][] bt = wg.placeBordersAndGrass();
+        bt = wg.placeAnthills(bt);
+        bt = wg.placeRocks(bt);
         Board board = new Board(bt, "borders and grass and anthills and rocks");
         System.out.println("\n-----\nTest: placeRocks\n-----\n");
         board.printBoardToASCII();
     }
+
+    @Test
+    public void createGaps() {
+        AntWorldGenerator wg = new AntWorldGenerator(30);
+
+        BoardTile[][] bt = wg.placeBordersAndGrass();
+
+        bt = wg.placeAnthills(bt);
+        bt = wg.placeFood(bt);
+
+        bt = wg.placeRocks(bt);
+        bt = wg.createGaps(bt);
+
+        Board board = new Board(bt, "whole thing");
+        System.out.println("\n-----\nTest: borders and grass and anthills and food and rocks with spaces\n-----\n");
+        board.printBoardToASCII();
+    }
     
+    @Test
+    public void createWorld(){
+        AntWorldGenerator wg = new AntWorldGenerator(30);
+        Board b = wg.generateWorld();
+        b.printBoardToASCII();
+    }
+
     @After
     public void tearDown() {
     }
