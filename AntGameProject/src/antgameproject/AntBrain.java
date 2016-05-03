@@ -115,6 +115,7 @@ public class AntBrain implements Comparable<AntBrain> {
      */
     public void incrementGamesWon() {
         gamesWon++;
+        points += 2;
     }
 
     /**
@@ -129,6 +130,7 @@ public class AntBrain implements Comparable<AntBrain> {
      */
     public void incrementGamesLost() {
         gamesLost++;
+        points += 1;
     }
 
     /**
@@ -157,14 +159,8 @@ public class AntBrain implements Comparable<AntBrain> {
         return points;
     }
 
-    /**
-     * Sets the number of points this ant brain has.
-     * @param points new number of points to set.
-     */
-    public void setPoints(int points) {
-        this.points = points;
-    }
 
+    // comparable method so ant brains can be ordered for tournamanet.
     @Override
     public int compareTo(AntBrain o) {
         if(o.points == this.points){

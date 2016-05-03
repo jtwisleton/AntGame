@@ -59,16 +59,12 @@ public class AntGameTournament {
         if (playerOneScore > playerTwoScore) {
             one.incrementGamesWon();
             two.incrementGamesLost();
-            one.setPoints(one.getPoints() + 2);
         } else if (playerTwoScore > playerOneScore) {
             one.incrementGamesLost();
             two.incrementGamesWon();
-            two.setPoints(two.getPoints() + 2);
         } else {
             one.incrementGamesDrawn();
             two.incrementGamesDrawn();
-            one.setPoints(one.getPoints() + 1);
-            two.setPoints(two.getPoints() + 1);
         }
         
     }
