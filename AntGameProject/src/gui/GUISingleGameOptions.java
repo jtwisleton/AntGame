@@ -135,6 +135,10 @@ public class GUISingleGameOptions extends BasicGameState {
                     antBrainOne = null;
                     antBrainTwo = null;
                     antWorldFile = null;
+                    selectTick.setAlpha(0);
+                    selectTick2.setAlpha(0);
+                    worldTick.setAlpha(0);
+                    generatedAntWorld = false;
                     TimeUnit.MILLISECONDS.sleep(250);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
