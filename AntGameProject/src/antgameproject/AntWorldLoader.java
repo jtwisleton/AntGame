@@ -25,109 +25,249 @@ public class AntWorldLoader {
         }
     }
 
-    public Boolean tournamentReady(BoardTile[][] b) {
-
-        return null;
-    }
-
-    public Boolean validAnthills(Board board) throws AntWorldLoaderException {
-        int blackBaseCount = 0;
-        int redBaseCount = 0;
-        BoardTile[][] b = board.getBoard();
-
-        /*
-         Check there are the right amount of ant hill board tiles, throw exception
-         if not.
-         */
-        for (BoardTile[] b2 : b) {
-            for (BoardTile b1 : b2) {
-                if (b1.getCellTerrain() == Terrain.BLACKBASE) {
-                    blackBaseCount++;
-                }
-                if (b1.getCellTerrain() == Terrain.REDBASE) {
-                    redBaseCount++;
-                }
-            }
-        }
-        if (blackBaseCount != 163 || redBaseCount != 163) {
-            throw new AntWorldLoaderException("wrong amount of red or black ant hill board tiles.");
-        }
-
-        /*
-         Check the anthills are the right shape: find the first black and red
-         tiles to begin with.
-         */
-        Boolean finishedFindingFirstBlack = false;
-        Pos firstBlackPosition = null;
-        while (!finishedFindingFirstBlack) {
-            for (int i = 0; i < b.length; i++) {
-                for (int j = 0; j < b[i].length; j++) {
-                    if (b[i][j].getCellTerrain() == Terrain.BLACKBASE) {
-                        finishedFindingFirstBlack = true;
-                        firstBlackPosition = new Pos(i, j);
-                        i = b.length - 1;
-                        j = b[i].length - 1;
-                    }
-                }
-
-            }
-        }
-        Boolean finishedFindingFirstRed = false;
-        Pos firstRedPosition = null;
-        while (!finishedFindingFirstRed) {
-            for (int i = 0; i < b.length; i++) {
-                for (int j = 0; j < b[i].length; j++) {
-                    if (b[i][j].getCellTerrain() == Terrain.REDBASE) {
-                        finishedFindingFirstRed = true;
-                        firstRedPosition = new Pos(i, j);
-                        i = b.length - 1;
-                        j = b[i].length - 1;
-                    }
-                }
-            }
-        }
-
-        int blackPositionX = firstBlackPosition.getPosX();
-        int blackPositionY = firstBlackPosition.getPosY();
-        int redPositionX = firstRedPosition.getPosX();
-        int redPositionY = firstRedPosition.getPosY();
-
-        /*
-         check the black base shape
-         */
-        Boolean correctBlackShape = true;
-        int count = 0;
-//        for (int i = 0; i < 8; i++) {
-//            for (int j = blackPositionX - i; j < blackPositionX + 7 + i; i++) {
-//                
-//                if (b[j][blackPositionY+count].getCellTerrain() != Terrain.BLACKBASE) {
-//                    correctBlackShape = false;
-//                }
-//            }
-//            count++;
-//
-//        }
-
-        for (int i = blackPositionX; i < blackPositionX + 6; i++) {
-            if (b[i][blackPositionY].getCellTerrain() != Terrain.BLACKBASE) {
-                correctBlackShape = false;
-            }
-
-        }
-        if (correctBlackShape) {
+    private Boolean tournamentReady(BoardTile[][] boardToTest) {
+        if(boardToTest.length == 150 && boardToTest[0].length == 150 && 
+                boardHasValidAntHills(boardToTest) && validFood(boardToTest) &&
+                validRocks(boardToTest)){
             return true;
-        } else {
-            throw new AntWorldLoaderException("black anthill wrong shape");
+        }
+        return false;
+    }
+
+    //public Boolean validAnthills(Board board) throws AntWorldLoaderException {
+    private boolean boardHasValidAntHills(BoardTile[][] boardToTest){
+        Pos blackAntHillStart = findAntHillStart(boardToTest, Terrain.BLACKBASE);
+        Pos redAntHillStart = findAntHillStart(boardToTest, Terrain.REDBASE);
+        if(validAntHillForm(boardToTest, blackAntHillStart, Terrain.BLACKBASE) && 
+                validAntHillForm(boardToTest, redAntHillStart, Terrain.REDBASE)){
+            return true;
+        }
+        return false;
+    }
+    
+    private Pos findAntHillStart(BoardTile[][] boardToTestBaseOn, Terrain baseTerrain){
+        boolean found = false;
+        int i = 0;
+        Pos colourBasePosition = null;
+        while(i < 150 && !found){
+            int j = 0;
+            while(j < 150 && !found){
+                if(boardToTestBaseOn[i][j].getCellTerrain() == baseTerrain){
+                    colourBasePosition = new Pos(j, i);
+                    found = true;
+                }
+                j++;
+            }
+            i++;
         }
 
+        return colourBasePosition;
+    }
+    
+    private boolean validAntHillForm(BoardTile[][] boardToCheck, Pos positionToStartCheck,
+            Terrain baseTerrain){
+        int startX = positionToStartCheck.getPosX();
+        int startY = positionToStartCheck.getPosY();
+        int currentRow = 0;
+        int extraBlocks = 0;
+        int currentColumn = 0;
+        boolean errorFound = false;
+        while(currentRow < 13 && !errorFound){
+            while(currentColumn < 7 + extraBlocks && !errorFound){
+                if(boardToCheck[startY+currentRow][startX+currentColumn].getCellTerrain() !=
+                        baseTerrain){
+                    errorFound = true;
+                }
+                int edgeNo = isEdgeCase(currentColumn, currentRow, 6+extraBlocks, 12);
+                if(isAnErrorAtEdge(boardToCheck, new Pos(startX+currentColumn, startY+currentRow), edgeNo)){
+                    errorFound = true;
+                }
+                currentColumn++;
+            }
+            
+            if(currentRow < 6){
+                extraBlocks++;
+                if((currentRow+positionToStartCheck.getPosY()) % 2 != 0){
+                    currentColumn = 0;
+                } else {
+                    startX--;
+                    currentColumn = 0;
+                }
+            } else {
+                extraBlocks--;
+                if((currentRow+positionToStartCheck.getPosY()) % 2 != 0){
+                    startX++;
+                    currentColumn = 0;
+                } else {
+                    currentColumn = 0;
+                }
+            }
+            currentRow++;
+            
+        }
+        return !errorFound;
+    }
+    
+    private int isEdgeCase(int currentColumn, int currentRow, int maxColumn, int maxRow) {
+        int edgeCaseNo = 0;
+        if(currentColumn == 0 && currentRow == 0){
+            edgeCaseNo = 1;
+        } else if(currentColumn == maxColumn && currentRow == 0){
+            edgeCaseNo = 2;
+        } else if(currentColumn == 0 && currentRow == maxRow){
+            edgeCaseNo = 3;
+        } else if(currentColumn == maxColumn && currentRow == maxRow){
+            edgeCaseNo = 4;
+        } else if(currentRow == 0){
+            edgeCaseNo = 5;
+        } else if(currentRow == maxRow){
+            edgeCaseNo = 6;
+        } else if(currentColumn == 0){
+            edgeCaseNo = 7;
+        } else if(currentColumn == maxRow){
+            edgeCaseNo = 8;
+        }
+        return edgeCaseNo;
+    }
+    
+    private boolean isAnErrorAtEdge(BoardTile[][] boardToCheck, Pos pos, int edgeNo) {
+        boolean edgeError = false;
+        int posX = pos.getPosX();
+        int posY = pos.getPosY();
+        switch (edgeNo) {
+            case 1: edgeError = !((boardToCheck[posY-1][posX-1].getCellTerrain() == Terrain.GRASS 
+                    && boardToCheck[posY-1][posX-1].getFoodInTile() == 0));
+                break;
+            case 2: edgeError = !((boardToCheck[posY-1][posX+1].getCellTerrain() == Terrain.GRASS 
+                    && boardToCheck[posY-1][posX+1].getFoodInTile() == 0));
+                break;
+            case 3: edgeError = !((boardToCheck[posY+1][posX-1].getCellTerrain() == Terrain.GRASS 
+                    && boardToCheck[posY+1][posX-1].getFoodInTile() == 0));
+                break;
+            case 4: edgeError = !((boardToCheck[posY+1][posX+1].getCellTerrain() == Terrain.GRASS 
+                    && boardToCheck[posY+1][posX+1].getFoodInTile() == 0));
+                break;
+            default: 
+                break;
+        }
+        
+        if(edgeError){
+            return edgeError;
+        }
+        
+        if(edgeNo == 5 || edgeNo == 1 || edgeNo == 2){
+            edgeError = !(boardToCheck[posY-1][posX].getCellTerrain() == Terrain.GRASS 
+                && boardToCheck[posY-1][posX].getFoodInTile() == 0);
+        } else if(edgeNo == 6 || edgeNo == 3|| edgeNo == 4){
+            edgeError = !(boardToCheck[posY+1][posX].getCellTerrain() == Terrain.GRASS 
+                && boardToCheck[posY+1][posX].getFoodInTile() == 0);    
+        } 
+        
+        if(edgeError){
+            return edgeError;
+        }
+            
+        if(edgeNo == 7 || edgeNo == 1 || edgeNo == 3){
+            edgeError = !(boardToCheck[posY][posX-1].getCellTerrain() == Terrain.GRASS 
+                && boardToCheck[posY][posX-1].getFoodInTile() == 0);
+        } else if(edgeNo == 8 || edgeNo == 2|| edgeNo == 4){
+            edgeError = !(boardToCheck[posY][posX+1].getCellTerrain() == Terrain.GRASS 
+                && boardToCheck[posY][posX+1].getFoodInTile() == 0);
+        }
+        
+        return edgeError;
+    }
+    
+    private boolean checkSurroundedByGrass(Pos position, BoardTile[][] board) {
+        int positionY = position.getPosY();
+        int positionX = position.getPosX();
+        for(int i = positionY-1; i < positionY+2; i++){
+            for(int j = positionX-1; j < positionX+2; j++){
+                if(!(board[i][j].getCellTerrain() == Terrain.GRASS  && 
+                        board[i][j].getFoodInTile() == 0) || (positionY == i && positionX == j)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    private Boolean validFood(BoardTile[][] boardToFindFoodOn) {
+        int blobsOfFoodFound = 0;
+        boardToFindFoodOn = new Board(boardToFindFoodOn, "").copy().getBoard();
+        for(int i = 1; i < 149 ; i++){
+            for(int j = 1; j < 149; j++){
+                if(boardToFindFoodOn[i][j].getFoodInTile() > 0){
+                    if(i % 2 == 0){
+                        if(boardToFindFoodOn[i+1][j+4].getFoodInTile() > 0){
+                            int[] offset = {0, 1, 0, 1, 0};
+                            testFoodBlock(new Pos(j, i), boardToFindFoodOn, offset);
+                        } else if(boardToFindFoodOn[i+1][j-1].getFoodInTile() > 0){
+                            int[] offset = {-1, 0, -1, 0, 0};
+                            testFoodBlock(new Pos(j, i), boardToFindFoodOn, offset);
+                        }
+                    } else {
+                        if(boardToFindFoodOn[i+1][j+5].getFoodInTile() > 0){
+                            int[] offset = {1, 0, 1, 0, 0};
+                            testFoodBlock(new Pos(j, i), boardToFindFoodOn, offset);
+                        } else if(boardToFindFoodOn[i+1][j].getFoodInTile() > 0){
+                            int[] offset = {0, -1, 0, -1, 0};
+                            testFoodBlock(new Pos(j, i), boardToFindFoodOn, offset);
+                        }
+                    }    
+                    blobsOfFoodFound++;
+                }
+            }
+        }
+        for(int i = 0; i < 149; i++){
+            for(int j = 0; j < 149; j++){
+                if(boardToFindFoodOn[i][j].getFoodInTile() > 0){
+                    return false;
+                }
+            }
+        }
+        
+        return blobsOfFoodFound == 11;
+    }
+    
+    private boolean testFoodBlock(Pos pos, BoardTile[][] boardToFindFoodOn, int[] offsets) {
+        int posX = pos.getPosX();
+        int posY = pos.getPosY();
+        int i = 0;
+        boolean errorFound = false;
+        while(i < 5 && !errorFound){
+            int j = 0;
+            while(j < 5 && !errorFound){
+                if(boardToFindFoodOn[posY+i][posX+j].getCellTerrain() != Terrain.GRASS ||
+                        boardToFindFoodOn[posY+i][posX+j].getFoodInTile() != 5){
+                    errorFound = true;
+                }
+                int edgeNo = isEdgeCase(i, j, 5, 5);
+                if(isAnErrorAtEdge(boardToFindFoodOn, new Pos(posX+j, posY+i), edgeNo)){
+                    errorFound = true;
+                }
+                boardToFindFoodOn[posY+i][posX+j] = new BoardTile(0, Terrain.GRASS);
+                j++;  
+            }
+            posX += offsets[i];
+            i++;    
+        }
+        return errorFound;
     }
 
-    public Boolean validFood(BoardTile[][] b) {
-        return null;
-    }
-
-    public Boolean validRocks(BoardTile[][] b) {
-        return null;
+    private Boolean validRocks(BoardTile[][] boardToFindRocksOn) {
+        int rockCount = 0;
+        for(int i = 1; i < 149 ; i++){
+            for(int j = 1; j < 149; j++){
+                if(boardToFindRocksOn[i][j].getCellTerrain() == Terrain.ROCK){
+                    if(checkSurroundedByGrass(new Pos(j, i), boardToFindRocksOn)){
+                        return false;
+                    }
+                    rockCount++;
+                }
+            }
+        }
+        return rockCount == 14;
     }
 
     /*
