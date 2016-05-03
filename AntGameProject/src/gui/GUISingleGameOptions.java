@@ -113,11 +113,15 @@ public class GUISingleGameOptions extends BasicGameState {
             if(antBrainOne != null && antBrainTwo != null && antWorldFile != null){
                 curStart = startHover;
                 if(gc.getInput().isMouseButtonDown(0)){
-                    antBrainOne = null;
-                    antBrainTwo = null;
-                    antWorldFile = null;
-                    tournament.runGame();
-                    sbg.getState(7).init(gc, sbg);
+                    try {
+                        antBrainOne = null;
+                        antBrainTwo = null;
+                        antWorldFile = null;
+                        tournament.runGame();
+                        TimeUnit.MILLISECONDS.sleep(250); 
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     sbg.enterState(7);
                 }
             }
@@ -133,7 +137,6 @@ public class GUISingleGameOptions extends BasicGameState {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //sbg.getState(2).init(gc, sbg);
                 sbg.enterState(2);    
             }
         } else if(select1MO.isMouseOver()){
@@ -274,7 +277,7 @@ public class GUISingleGameOptions extends BasicGameState {
 
     private void loadResources() throws SlickException {
         pageTitle = new Image("resources/game_setup_screen.png");
-        gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
+        gameFont = new AngelCodeFont("resources/moreAdded.fnt", "resources/moreAdded_0.png");
         select = new Image("resources/select.png");
         selectHover = new Image("resources/selectHover.png");
         worldGen = new Image("resources/generateAntWorld.png");
