@@ -10,10 +10,8 @@ public class Game {
     private final AntBrain playerOne;
     private final AntBrain playerTwo;
     private final Board gameBoard;
+    private final RandomNumber randomNumberGen;
     private int step;
-    private int playerOneScore;
-    private int playerTwoScore;
-    private RandomNumber randomNumberGen;
     
     /**
      * Constructor for the game class
@@ -21,12 +19,12 @@ public class Game {
      * @param playerTwo the AntBrain for player two.
      * @param gameBoard the Board to play the game on.
      */
-    public Game(AntBrain playerOne, AntBrain playerTwo, Board gameBoard){
+    public Game(AntBrain playerOne, AntBrain playerTwo, Board gameBoard, int randomSeed){
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.gameBoard = gameBoard;
         step = 0;
-        randomNumberGen = new RandomNumber(12345);
+        randomNumberGen = new RandomNumber(randomSeed);
     }
     
     /**

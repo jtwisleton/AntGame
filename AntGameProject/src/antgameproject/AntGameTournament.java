@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Class to represent a tournament of ant games.
@@ -17,8 +18,9 @@ public class AntGameTournament {
     private List<Pair<AntBrain, AntBrain>> pairs;
     private Game currentGame;
     private int boardToPlayIndex;
-    private int maxNumberOfAntBrains;
-    private int maxNumberOfAntWorlds;
+    private final int maxNumberOfAntBrains;
+    private final int maxNumberOfAntWorlds;
+    private Random seedGenerator;
 
     /**
      * Empty constructor for creating an ant game tournament.
@@ -30,6 +32,7 @@ public class AntGameTournament {
         boardToPlayIndex = 0;
         maxNumberOfAntBrains = 16;
         maxNumberOfAntWorlds = 16;
+        seedGenerator = new Random();
     }
    
     /**
@@ -40,7 +43,7 @@ public class AntGameTournament {
      */
     private void runGame(AntBrain one, AntBrain two, Board world) {
         // Update current game and run it
-        currentGame = new Game(one, two, world);
+        currentGame = new Game(one, two, world, seedGenerator.nextInt(1000));
         currentGame.run();
         
         // Update scores with 2 points for a win and 1 point for a draw
@@ -76,7 +79,8 @@ public class AntGameTournament {
      */
     public void runGame(){
         if(antBrains.size() == 2 && antWorlds.size() == 1){
-            currentGame = new Game(antBrains.get(0), antBrains.get(1), antWorlds.get(0));
+            currentGame = new Game(antBrains.get(0), antBrains.get(1), antWorlds.get(0), 
+                    seedGenerator.nextInt(1000));
         }
     }
 
