@@ -115,6 +115,9 @@ public class GUISingleGameDisplay extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         if(firstRender){
             createCamera();
+            game = tournament.getCurrentGame();
+            gameBoard = game.getGameBoard();
+            board = gameBoard.getBoard();
             firstRender = false;
         }
         if(exitMO.isMouseOver()){
@@ -179,11 +182,11 @@ public class GUISingleGameDisplay extends BasicGameState {
             currentSkipToEndButton = skipToEndButton;
         }
         
+        
         if (!exiting) {
             game = tournament.getCurrentGame();
             gameBoard = game.getGameBoard();
             board = gameBoard.getBoard();
-
             // Check if the game has finished & the winning message has not already been shown
             if ((!gameOverMessageShown) && (game.runRounds(steps))) {
                 // Game finished, show winning screen
