@@ -204,8 +204,9 @@ public class GUITournamentDisplay extends BasicGameState{
                 scoresShown = true;
             }
         }
-        
-        // print the number of rounds played
+           
+        // print the number of rounds played and warning
+        gameFont.drawString(25, 550, "Warning running rounds\ntakes time and your\ncomputer may appear to\nhave froze.");
         gameFont.drawString(25, 1010, "Rounds played " + tournament.getTournamentRoundNumber() 
                 + " / " + tournament.getListOfAntWorlds().size());
     }
