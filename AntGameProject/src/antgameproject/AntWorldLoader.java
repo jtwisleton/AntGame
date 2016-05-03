@@ -23,18 +23,48 @@ public class AntWorldLoader {
         public AntWorldLoaderException(String message) {
             super(message);
         }
+    }   
+
+    public Boolean tournamentReady(BoardTile[][] b) {
+
+        return null;
     }
 
-    public static void main(String[] args) throws FileNotFoundException, IOException, AntWorldLoaderException {
-        String fn = "src//antgameproject//1.world";
-        Board b = loadWorld(fn, "1", false);
-        b.printBoardToASCII();
-    }
-
-    public static Boolean tournamentReady(BoardTile[][] b) {
-        for (int i = 3; i < b.length; i++) {
-
+    public Boolean validAnthills(BoardTile[][] b) throws AntWorldLoaderException {
+        int blackBaseCount = 0;
+        int redBaseCount = 0;
+        
+        /*
+        Check there are the right amount of ant hill board tiles, throw exception
+        if not.
+        */
+        for (BoardTile[] b2 : b) {
+            for (BoardTile b1 : b2) {
+                if (b1.getCellTerrain() == Terrain.BLACKBASE) {
+                    blackBaseCount++;
+                }
+                if (b1.getCellTerrain() == Terrain.REDBASE) {
+                    redBaseCount++;
+                }
+            }        
         }
+        
+        if(blackBaseCount!=163||redBaseCount!=163){
+            throw new AntWorldLoaderException("wrong amount of red or black ant hill board tiles.");
+        }else{
+            return true;
+        }
+        
+        
+        
+        
+    }
+
+    public Boolean validFood(BoardTile[][] b) {
+        return null;
+    }
+
+    public Boolean validRocks(BoardTile[][] b) {
         return null;
     }
 
@@ -42,7 +72,7 @@ public class AntWorldLoader {
      Calls the checkWorldSyntax method, then uses the lines ArrayList to create
      a board from the given world file if checkWorldSyntax returns true.
      */
-    public static Board loadWorld(String fileName, String name, boolean tournamentReady) throws AntWorldLoaderException, IOException {
+    public Board loadWorld(String fileName, String name, boolean tournamentReady) throws AntWorldLoaderException, IOException {
 
         /*
          If the world is syntactically correct
@@ -130,7 +160,7 @@ public class AntWorldLoader {
      Returns true is a world is syntactically correct, or throws an exception.
      Also loads given world into lines ArrayList.
      */
-    public static Boolean checkWorldSyntax(String fileName) throws FileNotFoundException, IOException, AntWorldLoaderException {
+    public Boolean checkWorldSyntax(String fileName) throws FileNotFoundException, IOException, AntWorldLoaderException {
 
         /*
          Read the world from a file into a String, removing all whitespace.
