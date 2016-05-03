@@ -17,6 +17,8 @@ public class AntGameTournament {
     private List<Pair<AntBrain, AntBrain>> pairs;
     private Game currentGame;
     private int boardToPlayIndex;
+    private int maxNumberOfAntBrains;
+    private int maxNumberOfAntWorlds;
 
     /**
      * Empty constructor for creating an ant game tournament.
@@ -26,6 +28,8 @@ public class AntGameTournament {
         antBrains = new ArrayList<>();
         pairs = new ArrayList<>();
         boardToPlayIndex = 0;
+        maxNumberOfAntBrains = 16;
+        maxNumberOfAntWorlds = 16;
     }
    
     /**
@@ -126,7 +130,9 @@ public class AntGameTournament {
      */
     public void loadAntWorld(String antWorldFilePath, String antWorldName) 
             throws AntWorldLoaderException, IOException {
-        antWorlds.add(AntWorldLoader.loadWorld(antWorldFilePath, antWorldName, false));    // change back to true as some point
+        if(antWorlds.size() < maxNumberOfAntWorlds){
+            antWorlds.add(AntWorldLoader.loadWorld(antWorldFilePath, antWorldName, false));    // change back to true as some point
+        }
     }
     
     /**
@@ -138,7 +144,9 @@ public class AntGameTournament {
      */
     public void loadAntBrain(String antBrainFilePath, String name) 
             throws AntBrainLoaderException, IOException{
-        antBrains.add(AntBrainLoader.loadBrain(antBrainFilePath, name));
+        if(antBrains.size() < maxNumberOfAntBrains){
+            antBrains.add(AntBrainLoader.loadBrain(antBrainFilePath, name));
+        }
     }
     
     /**
