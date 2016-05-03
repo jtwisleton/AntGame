@@ -6,15 +6,9 @@
 package gui;
 
 import antgameproject.AntGameTournament;
-import java.io.File;
-import javax.swing.JFileChooser;
-import org.lwjgl.input.Cursor;
-import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.gui.MouseOverArea;
 import org.newdawn.slick.state.BasicGameState;
@@ -31,7 +25,6 @@ public class GUIMenuScreen extends BasicGameState{
     private Image singlePButton;
     private Image tournamentButton;
     private Image exitButton;
-    //private Image mouseOver;
     private Image currentSP;
     private Image currentExit;
     private Image currentTourn;
@@ -44,17 +37,19 @@ public class GUIMenuScreen extends BasicGameState{
     private MouseOverArea singleGameMO;
     private MouseOverArea tournamentGameMO;
     private MouseOverArea exitMO;
+    private float screenScale;
 
+    
+    public GUIMenuScreen(AntGameTournament tournament, float screenScale){
+        this.screenScale = screenScale;
+        this.tournament = tournament;
+    }
     
     @Override
     public int getID() {
         return 2;
     }
 
-    public GUIMenuScreen(AntGameTournament tournament){
-        this.tournament = tournament;
-    }
-    
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         title = new Image("resources/menu_screen1.png");
@@ -70,10 +65,14 @@ public class GUIMenuScreen extends BasicGameState{
         buttonPosX = 960 - 480;
         buttonStartPosY = 500;
         offset = 190;
-        singleGameMO = new MouseOverArea(gc, singlePButton, buttonPosX, buttonStartPosY);
-        tournamentGameMO = new MouseOverArea(gc, tournamentButton, buttonPosX, buttonStartPosY + offset);
-        exitMO = new MouseOverArea(gc, exitButton, buttonPosX, buttonStartPosY + 2 * offset);
-        //singleGameMO.setMouseOverImage(singleGButtonHover);
+        //singleGameMO = new MouseOverArea(gc, singlePButton, buttonPosX, buttonStartPosY);
+
+        singleGameMO = new MouseOverArea(gc, singlePButton, (int)(buttonPosX*screenScale), (int)(buttonStartPosY*screenScale), 
+                (int)(singlePButton.getWidth()*screenScale), (int)(singlePButton.getHeight()*screenScale));
+        tournamentGameMO = new MouseOverArea(gc, tournamentButton, (int)(buttonPosX*screenScale), (int)((buttonStartPosY + offset)*screenScale),
+                (int)(tournamentButton.getWidth()*screenScale), (int)(tournamentButton.getHeight()*screenScale));
+        exitMO = new MouseOverArea(gc, exitButton, (int)(buttonPosX*screenScale), (int)((buttonStartPosY + 2 * offset)*screenScale),
+                (int)(exitButton.getWidth()*screenScale), (int)(exitButton.getHeight()*screenScale));
     }
     
     @Override
@@ -105,6 +104,7 @@ public class GUIMenuScreen extends BasicGameState{
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+        grphcs.scale(screenScale, screenScale);
         grphcs.drawImage(title, 0, 0);
         grphcs.drawImage(currentSP, buttonPosX, buttonStartPosY);
         grphcs.drawImage(currentTourn, buttonPosX, buttonStartPosY + offset);

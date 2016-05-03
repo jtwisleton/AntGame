@@ -73,12 +73,14 @@ public class GUISingleGameOptions extends BasicGameState {
     private File antBrainOne;
     private File antBrainTwo;
     private File antWorldFile;
+    private float screenScale;
     
-    public GUISingleGameOptions(AntGameTournament tournament){
+    public GUISingleGameOptions(AntGameTournament tournament, float screenScale){
         this.tournament = tournament;
         UIManager UI=new UIManager();
         UI.put("OptionPane.background",new ColorUIResource(33, 252, 172));
         UI.put("Panel.background",new ColorUIResource(33, 252, 172));
+        this.screenScale = screenScale;
     }
     
     @Override
@@ -88,44 +90,21 @@ public class GUISingleGameOptions extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        pageTitle = new Image("resources/game_setup_screen.png");
-        gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
-        select = new Image("resources/select.png");
-        selectHover = new Image("resources/selectHover.png");
+        loadResources();
+        
         currentSelect = select;
         currentSelect2 = select;
-        worldGen = new Image("resources/generateAntWorld.png");
-        worldGenHover = new Image("resources/generateAntWorldHover.png");
         currentWorldGen = worldGen;
-        worldLoad = new Image("resources/loadAntWorldCenter.png");
-        worldLoadHover = new Image("resources/loadAntWorldCenterHover.png");
         curWorldLoad = worldLoad;
-        start = new Image("resources/startGame.png");
-        startHover = new Image("resources/startGameHover.png");
-        startUnavailable = new Image("resources/startGameUnavailable.png");
         curStart = startUnavailable;
-        mainMenu = new Image("resources/mainMenu.png");
-        mainMenuHover = new Image("resources/mainMenuHover.png");
         curMainMenu = mainMenu;
-        
-        selectTick = new Image("resources/tick.png");
-        selectTick2 = new Image("resources/tick.png");
-        worldTick = new Image("resources/tick.png");
-        selectTick.setAlpha(0);
-        selectTick2.setAlpha(0);
-        worldTick.setAlpha(0);
-        
+       
         rightMargin = 1920 - 350;
         leftMargin = 350;
         offset = 115;
         topButton = pageTitle.getHeight() + 80;
-        
-        select1MO = new MouseOverArea(gc, select, rightMargin - currentSelect.getWidth(), topButton);
-        select2MO = new MouseOverArea(gc, select, rightMargin - currentSelect.getWidth(), topButton + offset);
-        startMO = new MouseOverArea(gc, start, rightMargin - curStart.getWidth(), topButton + 4 * offset);
-        worldLoadMO = new MouseOverArea(gc, worldLoad, leftMargin, topButton + 2 * offset);
-        worldGenMO = new MouseOverArea(gc, worldGen, rightMargin - worldGen.getWidth(), topButton + 2 * offset);
-        mainMenuMO = new MouseOverArea(gc, mainMenu, rightMargin - mainMenu.getWidth(), topButton + 3 * offset);
+
+        createMouseOverAreas(gc);
     }
     
     @Override
@@ -226,6 +205,7 @@ public class GUISingleGameOptions extends BasicGameState {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+        grphcs.scale(screenScale, screenScale);
         grphcs.setLineWidth(3);
         grphcs.setFont(gameFont);
         
@@ -290,6 +270,43 @@ public class GUISingleGameOptions extends BasicGameState {
         } else {
             return startUnavailable;
         }
+    }
+
+    private void loadResources() throws SlickException {
+        pageTitle = new Image("resources/game_setup_screen.png");
+        gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
+        select = new Image("resources/select.png");
+        selectHover = new Image("resources/selectHover.png");
+        worldGen = new Image("resources/generateAntWorld.png");
+        worldGenHover = new Image("resources/generateAntWorldHover.png");
+        worldLoad = new Image("resources/loadAntWorldCenter.png");
+        worldLoadHover = new Image("resources/loadAntWorldCenterHover.png");
+        start = new Image("resources/startGame.png");
+        startHover = new Image("resources/startGameHover.png");
+        startUnavailable = new Image("resources/startGameUnavailable.png");
+        mainMenu = new Image("resources/mainMenu.png");
+        mainMenuHover = new Image("resources/mainMenuHover.png");
+        selectTick = new Image("resources/tick.png");
+        selectTick2 = new Image("resources/tick.png");
+        worldTick = new Image("resources/tick.png");
+        selectTick.setAlpha(0);
+        selectTick2.setAlpha(0);
+        worldTick.setAlpha(0);
+    }
+
+    private void createMouseOverAreas(GameContainer gc) {
+        select1MO = new MouseOverArea(gc, select, (int)((rightMargin - currentSelect.getWidth())*screenScale), (int)(topButton*screenScale),
+                (int)(select.getWidth()*screenScale), (int)(select.getHeight()*screenScale));
+        select2MO = new MouseOverArea(gc, select, (int)((rightMargin - currentSelect.getWidth())*screenScale), (int)((topButton + offset)*screenScale),
+                (int)(select.getWidth()*screenScale), (int)(select.getHeight()*screenScale));
+        startMO = new MouseOverArea(gc, start, (int)((rightMargin - curStart.getWidth())*screenScale), (int)((topButton + 4 * offset)*screenScale),
+                (int)(start.getWidth()*screenScale), (int)(start.getHeight()*screenScale));
+        worldLoadMO = new MouseOverArea(gc, worldLoad, (int)(leftMargin*screenScale), (int)((topButton + 2 * offset)*screenScale),
+                (int)(worldLoad.getWidth()*screenScale), (int)(worldLoad.getHeight()*screenScale));
+        worldGenMO = new MouseOverArea(gc, worldGen, (int)((rightMargin - worldGen.getWidth())*screenScale), (int)((topButton + 2 * offset)*screenScale),
+                (int)(worldGen.getWidth()*screenScale), (int)(worldGen.getHeight()*screenScale));
+        mainMenuMO = new MouseOverArea(gc, mainMenu, (int)((rightMargin - mainMenu.getWidth())*screenScale), (int)((topButton + 3 * offset)*screenScale),
+                (int)(mainMenu.getWidth()*screenScale), (int)(mainMenu.getHeight()*screenScale));
     }
     
 }

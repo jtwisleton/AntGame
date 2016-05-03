@@ -24,6 +24,11 @@ public class GUITitleScreen extends BasicGameState {
     
     private Image titleScreen;
     private boolean firstVisit;
+    private float screenScale;
+    
+    public GUITitleScreen(float screenScale){
+        this.screenScale = screenScale;
+    }
 
     @Override
     public int getID() {
@@ -53,6 +58,7 @@ public class GUITitleScreen extends BasicGameState {
     
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+        grphcs.scale(screenScale, screenScale);
         grphcs.drawImage(titleScreen, 0, 0);
     }
 

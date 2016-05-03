@@ -8,12 +8,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /**
  *
@@ -22,7 +19,12 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 public class GUITeamScreen extends BasicGameState {
     
     private Image teamLogo;
+    private float screenScale;
 
+    public GUITeamScreen(float screenScale){
+        this.screenScale = screenScale;
+    }
+    
     @Override
     public int getID() {
         return 0;
@@ -45,6 +47,7 @@ public class GUITeamScreen extends BasicGameState {
     
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+        grphcs.scale(screenScale, screenScale);
         grphcs.setBackground(new Color(33, 252, 172));
         grphcs.drawImage(teamLogo, 0, 0); 
     }

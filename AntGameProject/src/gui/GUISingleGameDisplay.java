@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui;
 
 import antgameproject.AntGameTournament;
@@ -34,12 +30,11 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  *
- * @author wilki
  */
 public class GUISingleGameDisplay extends BasicGameState {
     
     private Font gameFont;
-    private AntGameTournament tournament;
+    private final AntGameTournament tournament;
     private SpriteSheet tiles;
     private Image tileset;
     private int divide;
@@ -47,7 +42,7 @@ public class GUISingleGameDisplay extends BasicGameState {
     private float scale;
     private Game game;
     private HashMap<String, Pos> spritePositions;
-    private Board gameBoard;// = createTestBoard();
+    private Board gameBoard;
     private Image exitButton;
     private Image exitButtonHover;
     private Image currentExitButton;
@@ -83,9 +78,11 @@ public class GUISingleGameDisplay extends BasicGameState {
     private boolean exiting;
     private boolean firstRender;
     private GUICamera cam;
+    private final float screenScale;
     
-    public GUISingleGameDisplay(AntGameTournament tournament){
+    public GUISingleGameDisplay(AntGameTournament tournament, float screenScale){
         this.tournament = tournament;
+        this.screenScale = screenScale;
     }
     
     @Override
@@ -98,37 +95,16 @@ public class GUISingleGameDisplay extends BasicGameState {
         scale = 1f;
         divide = 1400;
         steps = 14;
-        
-        gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
-        tileset = new Image("resources/sprite.png");
-	tiles = new SpriteSheet(tileset, 64, 64);
-        spritePositions = new HashMap<>();
-        createSpritePositions();
-        exitButton = new Image("resources/exitButton.png");
-        exitButtonHover = new Image("resources/exitButtonHover.png");
+        loadResources();
+        createMouseOverAreas(gc);
+       
         currentExitButton = exitButton;
-        exitMO = new MouseOverArea(gc, exitButton, Math.round((divide+20)*scale), Math.round(985*scale));
-        logo = new Image("resources/smallLogo.png");
-        speedUpButton = new Image("resources/FFButton.png");
-        speedUpButtonHover = new Image("resources/FFButtonHover.png");
         currentSpeedUp = speedUpButton;
-        slowDownButton = new Image("resources/RWButton.png");
-        slowDownButtonHover = new Image("resources/RWButtonHover.png");
         currentSlowDownButton = slowDownButton;
-        pauseButton = new Image("resources/pauseButton.png");
-        pauseButtonHover = new Image("resources/pauseButtonHover.png");
-        playButton = new Image("resources/playButton.png");
-        playButtonHover = new Image("resources/playButtonHover.png");
         currentPauseButton = pauseButton;
         currentPauseButtonHover = pauseButtonHover;
         currentButton = currentPauseButton;
-        skipToEndButton = new Image("resources/SFButton.png");
-        skipToEndButtonHover = new Image("resources/SFButtonHover.png");
         currentSkipToEndButton = skipToEndButton;
-        speedUpMO = new MouseOverArea(gc, speedUpButton, divide+227, 115);
-        slowDownMO = new MouseOverArea(gc, slowDownButton, divide+113, 115);
-        pauseMO = new MouseOverArea(gc, pauseButton, divide+170, 15);
-        skipMO = new MouseOverArea(gc, skipToEndButton, divide+284, 15);
         firstRender = true;
         gameOverMessageShown = false;
         exiting = false;
@@ -240,19 +216,13 @@ public class GUISingleGameDisplay extends BasicGameState {
             }
            
             
-            if(Mouse.getX() < 200 && Mouse.getX() > 0){
+            if(Mouse.getX() < 200*screenScale && Mouse.getX() > 0){
                 cam.incrementXPos();
-            }
-            
-            if(Mouse.getX() > 1200 && Mouse.getX() < 1400){
+            } else if(Mouse.getX() > 1200*screenScale && Mouse.getX() < 1400*screenScale){
                 cam.decrementXPos();
-            }
-            
-            if(Mouse.getY() > 0 && Mouse.getY() < 200 && Mouse.getX() < 1400){
+            } else if(Mouse.getY() > 0 && Mouse.getY() < 200*screenScale && Mouse.getX() < 1400*screenScale){
                 cam.decrementYPos();
-            }
-            
-            if(Mouse.getY() > 880 && Mouse.getY() < 1080 && Mouse.getX() < 1400){
+            } else if(Mouse.getY() > 880*screenScale && Mouse.getY() < 1080*screenScale && Mouse.getX() < 1400*screenScale){
                 cam.incrementYPos();
             }
           
@@ -261,7 +231,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
-        grphcs.scale(scale, scale);
+        grphcs.scale(screenScale, screenScale);
         
         cam.setBoardZoom();
         
@@ -272,12 +242,8 @@ public class GUISingleGameDisplay extends BasicGameState {
                 for(int j = 0; j < board[0].length; j++){   // use board size
                         Pos spritePosition = calculateSpritePosition(j,i);
                         if(i % 2 == 0){
-                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+128*j, 50+100*i, 128, 128);
-                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+16*j, 50+12*i, 16, 16);
                                 tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(16*j, 12*i, 16, 16);
                         }else{
-                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+64+128*j, 50+100f*i, 128, 128);
-                                //tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(50+8+16*j, 50+12f*i, 16, 16);
                                 tiles.getSubImage(spritePosition.getPosX(), spritePosition.getPosY()).drawEmbedded(8+16*j, 12f*i, 16, 16);
                         }
                 }
@@ -326,13 +292,10 @@ public class GUISingleGameDisplay extends BasicGameState {
         grphcs.drawImage(currentSlowDownButton, divide+113, 115);
         grphcs.drawImage(currentSkipToEndButton, divide+284, 15);
 
-        
-        //grphcs.scale(2, 2);
     }
 
     private Pos calculateSpritePosition(int x, int y){
         String key;
-        //Board gameBoard = game.getGameBoard();
         Pos somePos = new Pos(x, y);
         if(gameBoard.antInPosition(somePos)){
             key  = gameBoard.getTerrainAtPosition(somePos).toString()+gameBoard.antAt(somePos).getAntColour()
@@ -343,7 +306,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         return spritePositions.get(key);
     }
 
-    private void createSpritePositions() {
+    private void createSpriteDictionairy() {
         int j = 0;
         boolean food = false;
  
@@ -373,22 +336,6 @@ public class GUISingleGameDisplay extends BasicGameState {
             j++;
         }
         spritePositions.put(Terrain.ROCK.toString()+false, new Pos(0, 6));
-    }
-
-    private Board createTestBoard() {
-        BoardTile[][] board = new BoardTile[150][150];
-        for(int i = 0; i < 150; i++){
-            for(int j = 0; j < 150; j++){
-                if((i == 0) || (i == 149) || (j == 0) || (j == 149)){
-                    board[i][j] = new BoardTile(0, Terrain.ROCK);
-                } else {
-                    board[i][j] = new BoardTile(0, Terrain.GRASS);
-                }
-            }
-            board[5][5] = new BoardTile(5, Terrain.REDBASE);
-            board[15][15] = new BoardTile(0, Terrain.BLACKBASE);
-        }
-        return new Board(board, "test board");
     }
     
     private void switchButtons() {
@@ -430,8 +377,40 @@ public class GUISingleGameDisplay extends BasicGameState {
         }
         
         cam = new GUICamera(1080, 1400, zoomBoard, zoomControl, -tilesWide/2, -tilesTall/2);
-        //cam = new GUICamera(1080, 1400, 0.5f, 2, -1200, -900);
-        //cam = new GUICamera(1080, 1400, 4f, 0.25f, -80, -60);
+    }
+
+    private void loadResources() throws SlickException {
+        gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
+        tileset = new Image("resources/sprite.png");
+        exitButton = new Image("resources/exitButton.png");
+        exitButtonHover = new Image("resources/exitButtonHover.png");
+        logo = new Image("resources/smallLogo.png");
+        speedUpButton = new Image("resources/FFButton.png");
+        speedUpButtonHover = new Image("resources/FFButtonHover.png");
+        slowDownButton = new Image("resources/RWButton.png");
+        slowDownButtonHover = new Image("resources/RWButtonHover.png");
+        pauseButton = new Image("resources/pauseButton.png");
+        pauseButtonHover = new Image("resources/pauseButtonHover.png");
+        playButton = new Image("resources/playButton.png");
+        playButtonHover = new Image("resources/playButtonHover.png");
+        skipToEndButton = new Image("resources/SFButton.png");
+        skipToEndButtonHover = new Image("resources/SFButtonHover.png");
+        tiles = new SpriteSheet(tileset, 64, 64);
+        spritePositions = new HashMap<>();
+        createSpriteDictionairy();
+    }
+
+    private void createMouseOverAreas(GameContainer gc) {
+        speedUpMO = new MouseOverArea(gc, speedUpButton, (int)((divide+227)*screenScale), (int)(115*screenScale),
+                (int)(speedUpButton.getWidth()*screenScale), (int)(speedUpButton.getHeight()*screenScale));
+        slowDownMO = new MouseOverArea(gc, slowDownButton, (int)((divide+113)*screenScale), (int)(115*screenScale),
+                (int)(slowDownButton.getWidth()*screenScale), (int)(slowDownButton.getHeight()*screenScale));
+        pauseMO = new MouseOverArea(gc, pauseButton, (int)((divide+170)*screenScale), (int)(15*screenScale),
+                (int)(pauseButton.getWidth()*screenScale), (int)(pauseButton.getHeight()*screenScale));
+        skipMO = new MouseOverArea(gc, skipToEndButton, (int)((divide+284)*screenScale), (int)(15*screenScale),
+                (int)(skipToEndButton.getWidth()*screenScale), (int)(skipToEndButton.getHeight()*screenScale));
+        exitMO = new MouseOverArea(gc, exitButton, (int)((divide+20)*screenScale), (int)(985*screenScale),
+                (int)(exitButton.getWidth()*screenScale), (int)(exitButton.getHeight()*screenScale));
     }
     
 }

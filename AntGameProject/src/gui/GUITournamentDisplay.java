@@ -60,9 +60,11 @@ public class GUITournamentDisplay extends BasicGameState{
     private boolean finished;
     private boolean gameOverMessageShown;
     private boolean scoresShown;
+    private float screenScale;
     
-    public GUITournamentDisplay(AntGameTournament tournament){
+    public GUITournamentDisplay(AntGameTournament tournament, float screenScale){
         this.tournament = tournament;
+        this.screenScale = screenScale;
     }
     
     @Override
@@ -72,31 +74,14 @@ public class GUITournamentDisplay extends BasicGameState{
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        gameFont = new AngelCodeFont("resources/moreAdded.fnt", "resources/moreAdded_0.png");
-        pageTitle = new Image("resources/tournamentLogo.png");
-        playNextRound = new Image("resources/playNextRound.png");
-        playNextRoundHover = new Image("resources/playNextRoundHover.png");
-        playNextRoundUnavailable = new Image("resources/playNextRoundUnavailable.png");
+        loadResources();
+        createMouseOverAreas(gc);
+        
         currentPlayNextRound = playNextRound;
-        skipToEnd = new Image("resources/skipToEnd.png");
-        skipToEndHover = new Image("resources/skipToEndHover.png");
-        skipToEndUnavailable  = new Image("resources/skipToEndUnavailable.png");
         currentSkipToEnd = skipToEnd;
-        exit = new Image("resources/exitalt.png");
-        exitHover = new Image("resources/exitAltHover.png");
         currentExit = exit;
-        up = new Image("resources/up.png");
-        upHover = new Image("resources/upHover.png");
-        down = new Image("resources/down.png");
-        downHover = new Image("resources/downHover.png");
         currentUp = up;
         currentDown = down;
-        
-        playNextRoundMO = new MouseOverArea(gc, playNextRound, 25, pageTitle.getHeight() + 40);
-        skipToEndMO = new MouseOverArea(gc, skipToEnd, 25, pageTitle.getHeight() + 140);
-        exitMO = new MouseOverArea(gc, exit, 25, pageTitle.getHeight() + 240);
-        upMO = new MouseOverArea(gc, up, 1850, 580);
-        downMO = new MouseOverArea(gc, down, 1850, 650);
         
         topOfAntBrainList = 0;
         finished = false;
@@ -156,6 +141,7 @@ public class GUITournamentDisplay extends BasicGameState{
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+        grphcs.scale(screenScale, screenScale);
         grphcs.setLineWidth(3);
         
         grphcs.drawImage(pageTitle, 1920/2 - pageTitle.getWidth()/2, 20);
@@ -262,6 +248,36 @@ public class GUITournamentDisplay extends BasicGameState{
         } else {
             return skipToEnd;
         }
+    }
+
+    private void loadResources() throws SlickException {
+        gameFont = new AngelCodeFont("resources/moreAdded.fnt", "resources/moreAdded_0.png");
+        pageTitle = new Image("resources/tournamentLogo.png");
+        playNextRound = new Image("resources/playNextRound.png");
+        playNextRoundHover = new Image("resources/playNextRoundHover.png");
+        playNextRoundUnavailable = new Image("resources/playNextRoundUnavailable.png");
+        skipToEnd = new Image("resources/skipToEnd.png");
+        skipToEndHover = new Image("resources/skipToEndHover.png");
+        skipToEndUnavailable  = new Image("resources/skipToEndUnavailable.png");
+        exit = new Image("resources/exitalt.png");
+        exitHover = new Image("resources/exitAltHover.png");
+        up = new Image("resources/up.png");
+        upHover = new Image("resources/upHover.png");
+        down = new Image("resources/down.png");
+        downHover = new Image("resources/downHover.png");
+    }
+
+    private void createMouseOverAreas(GameContainer gc) {
+        playNextRoundMO = new MouseOverArea(gc, playNextRound, (int)(25*screenScale), (int)((pageTitle.getHeight() + 40)*screenScale),
+                (int)(playNextRound.getWidth()*screenScale), (int)(playNextRound.getHeight()*screenScale));
+        skipToEndMO = new MouseOverArea(gc, skipToEnd, (int)(25*screenScale), (int)((pageTitle.getHeight() + 140)*screenScale),
+                (int)(skipToEnd.getWidth()*screenScale), (int)(playNextRound.getHeight()*screenScale));
+        exitMO = new MouseOverArea(gc, exit, (int)(25*screenScale), (int)((pageTitle.getHeight() + 240)*screenScale),
+                (int)(exit.getWidth()*screenScale), (int)(exit.getHeight()*screenScale));
+        upMO = new MouseOverArea(gc, up, (int)(1850*screenScale), (int)(580*screenScale),
+                (int)(up.getWidth()*screenScale), (int)(up.getHeight()*screenScale));
+        downMO = new MouseOverArea(gc, down, (int)(1850*screenScale), (int)(650*screenScale),
+                (int)(down.getWidth()*screenScale), (int)(down.getHeight()*screenScale));
     }
 
 }

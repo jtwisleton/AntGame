@@ -25,14 +25,26 @@ public class GUI extends StateBasedGame {
 	   
     @Override
     public void initStatesList(GameContainer container) throws SlickException {
-        //container.setMouseCursor(new Image("resources/hand_cursor.png"), 0, 0);
-        this.addState(new GUITeamScreen());
-        this.addState(new GUITitleScreen());
-        this.addState(new GUIMenuScreen(tournament));
-        this.addState(new GUITournamentOptions(tournament));
-        this.addState(new GUISingleGameOptions(tournament));
-        this.addState(new GUITournamentDisplay(tournament));
-        this.addState(new GUISingleGameDisplay(tournament));
+        float scale = getScale(container);
+        System.out.println(scale);
+        this.addState(new GUITeamScreen(scale));
+        this.addState(new GUITitleScreen(scale));
+        this.addState(new GUIMenuScreen(tournament, scale));
+        this.addState(new GUITournamentOptions(tournament, scale));
+        this.addState(new GUISingleGameOptions(tournament, scale));
+        this.addState(new GUITournamentDisplay(tournament, scale));
+        this.addState(new GUISingleGameDisplay(tournament, scale));
+    }
+
+    private float getScale(GameContainer container) {
+        System.out.println(container.getWidth());
+        if(container.getWidth() == 1920){
+            return 1;
+        } else if(container.getWidth() == 1440){
+            return 0.75f;
+        } else {
+            return 0.5f;
+        }
     }
     
 }

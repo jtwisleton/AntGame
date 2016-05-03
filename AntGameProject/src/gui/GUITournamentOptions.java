@@ -31,12 +31,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  *
- * @author wilki
  */
 public class GUITournamentOptions extends BasicGameState {
 
     private AntGameTournament tournament;
-    // private Font gameFont;
     private Font headerFont;
     private Font fileFont;
     private Image pageTitle;
@@ -79,10 +77,12 @@ public class GUITournamentOptions extends BasicGameState {
     private int bottomOfAntWorldList;
     private List antBrainList;
     private List antWorldList;
+    private final float screenScale;
     
     
-    public GUITournamentOptions(AntGameTournament tournament){
+    public GUITournamentOptions(AntGameTournament tournament, float screenScale){
         this.tournament = tournament;
+        this.screenScale = screenScale;
     }
     
     @Override
@@ -92,45 +92,20 @@ public class GUITournamentOptions extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        // gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
-        headerFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
-        fileFont = new AngelCodeFont("resources/fontAlt.fnt", "resources/fontAlt_0.png");
-        pageTitle = new Image("resources/tournament_setup.png");
-        genAntWorld = new Image("resources/generateAntWorld.png");
-        genAntWorldHover = new Image("resources/generateAntWorldHover.png");
+        loadResources();
+        
         curGenWorld = genAntWorld;
-        up = new Image("resources/up.png");
-        upHover = new Image("resources/upHover.png");
-        down = new Image("resources/down.png");
-        downHover = new Image("resources/downHover.png");
         currentUp1 = up;
         currentUp2 = up;
         currentDown1 = down;
         currentDown2 = down;
-        loadAntBrain = new Image("resources/loadAntBrain.png");
-        loadAntBrainHover = new Image("resources/loadAntBrainHover.png");;
         currentLoadAntBrain = loadAntBrain;
-        loadAntWorld = new Image("resources/loadAntWorldCenter.png");
-        loadAntWorldHover = new Image("resources/loadAntWorldCenterHover.png");;
         currentLoadAntWorld = loadAntWorld;
-        startTournament = new Image("resources/startTourn.png");
-        startTournamentHover = new Image("resources/startTournHover.png");
-        startTournamentUnavailable = new Image("resources/startTournUnavailable.png");
         currentStartTournament = startTournamentUnavailable;
-        mainMenu = new Image("resources/mainMenu.png");
-        mainMenuHover = new Image("resources/mainMenuHover.png");
         currentMainMenu = mainMenu;
         
-        up1MO = new MouseOverArea(gc, up, genAntWorld.getWidth()+630, 600);
-        down1MO = new MouseOverArea(gc, down, genAntWorld.getWidth()+630, 680);
-        up2MO = new MouseOverArea(gc, up, 1280+530, 600);
-        down2MO = new MouseOverArea(gc, down, 1280+530, 680);
-        loadAntBrainMO = new MouseOverArea(gc, loadAntBrain, 50, 330);
-        loadAntWorldMO = new MouseOverArea(gc, loadAntWorld, 50, 430);
-        genAntWorldMO = new MouseOverArea(gc, genAntWorld, 50, 530);
-        mainMenuMO = new MouseOverArea(gc, mainMenu, 50, 630);
-        startTournMO = new MouseOverArea(gc, startTournament, 50, 730);
-        
+        createMouseOverAreas(gc);
+     
         topOfAntBrainList = 0;
         topOfAntWorldList = 0;
         antBrainList = tournament.getListOfAntBrains();
@@ -264,6 +239,8 @@ public class GUITournamentOptions extends BasicGameState {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+        grphcs.scale(screenScale, screenScale);
+        
         grphcs.setLineWidth(3);
         
         grphcs.drawImage(pageTitle, 1920/2 - pageTitle.getWidth()/2, 20);
@@ -362,5 +339,47 @@ public class GUITournamentOptions extends BasicGameState {
             filename = filename.substring(0, filename.lastIndexOf("."));
         }
         return filename;
+    }
+
+    private void createMouseOverAreas(GameContainer gc) {
+        up1MO = new MouseOverArea(gc, up, (int)((genAntWorld.getWidth()+630)* screenScale), (int)(600*screenScale),
+                (int)(up.getWidth()*screenScale), (int)(up.getHeight()*screenScale));
+        down1MO = new MouseOverArea(gc, down, (int)((genAntWorld.getWidth()+630)* screenScale), (int)(680*screenScale),
+                (int)(down.getWidth()*screenScale), (int)(down.getHeight()*screenScale));
+        up2MO = new MouseOverArea(gc, up, (int)((1280+530)*screenScale), (int)(600*screenScale),
+                (int)(up.getWidth()*screenScale), (int)(up.getHeight()*screenScale));
+        down2MO = new MouseOverArea(gc, down, (int)((1280+530)*screenScale), (int)(680*screenScale),
+                (int)(down.getWidth()*screenScale), (int)(down.getHeight()*screenScale));
+        loadAntBrainMO = new MouseOverArea(gc, loadAntBrain, (int)(50*screenScale), (int)(330*screenScale),
+                (int)(loadAntBrain.getWidth()*screenScale), (int)(loadAntBrain.getHeight()*screenScale));
+        loadAntWorldMO = new MouseOverArea(gc, loadAntWorld, (int)(50*screenScale), (int)(430*screenScale),
+                (int)(loadAntWorld.getWidth()*screenScale), (int)(loadAntWorld.getHeight()*screenScale));       
+        genAntWorldMO = new MouseOverArea(gc, genAntWorld, (int)(50*screenScale), (int)(530*screenScale),
+                (int)(genAntWorld.getWidth()*screenScale), (int)(genAntWorld.getHeight()*screenScale));
+        mainMenuMO = new MouseOverArea(gc, mainMenu, (int)(50*screenScale), (int)(630*screenScale),
+                (int)(mainMenu.getWidth()*screenScale), (int)(mainMenu.getHeight()*screenScale));
+        startTournMO = new MouseOverArea(gc, startTournament, (int)(50*screenScale), (int)(730*screenScale),
+                (int)(startTournament.getWidth()*screenScale), (int)(startTournament.getHeight()*screenScale));
+    }
+
+    private void loadResources() throws SlickException {
+        headerFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
+        fileFont = new AngelCodeFont("resources/fontAlt.fnt", "resources/fontAlt_0.png");
+        pageTitle = new Image("resources/tournament_setup.png");
+        genAntWorld = new Image("resources/generateAntWorld.png");
+        genAntWorldHover = new Image("resources/generateAntWorldHover.png");
+        up = new Image("resources/up.png");
+        upHover = new Image("resources/upHover.png");
+        down = new Image("resources/down.png");
+        downHover = new Image("resources/downHover.png");
+        loadAntBrain = new Image("resources/loadAntBrain.png");
+        loadAntBrainHover = new Image("resources/loadAntBrainHover.png");
+        loadAntWorld = new Image("resources/loadAntWorldCenter.png");
+        loadAntWorldHover = new Image("resources/loadAntWorldCenterHover.png");
+        startTournament = new Image("resources/startTourn.png");
+        startTournamentHover = new Image("resources/startTournHover.png");
+        startTournamentUnavailable = new Image("resources/startTournUnavailable.png");
+        mainMenu = new Image("resources/mainMenu.png");
+        mainMenuHover = new Image("resources/mainMenuHover.png");
     }
 }
