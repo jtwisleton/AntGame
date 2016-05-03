@@ -19,20 +19,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author wilki
+ * Test class for the Game class.
  */
 public class GameJUnitTest {
     
-    @Before
-    public void setUp() {
-    }
-    
+    // tests a game against the provided test dumps that can be found at 
+    // http://users.sussex.ac.uk/~mfb21/se/project/dump/index.html
     @Test
     public void testGameCreation(){
         AntBrain antBrainOne;
@@ -52,6 +48,7 @@ public class GameJUnitTest {
                 BoardTile[][] currentBoard = testGame.getGameBoard().getBoard();
                 for(int j = 0; j < currentBoard.length; j++){
                     for(int k = 0; k < currentBoard[0].length; k++){
+                        // check that the cell matches the dump string
                         String boardTileAsString = "cell (" + k + ", " + j +"): ";
                         boardTileAsString += parseCellToDumpFileFormat(currentBoard[j][k]);
                         assertTrue(boardTileAsString.equals(testDumps.get(count)));
@@ -61,6 +58,7 @@ public class GameJUnitTest {
                 testGame.runRounds(1);
                 count +=2;
             }
+            // check the scores at the end of the game. These were manually calculated.
             assertTrue(testGame.getPlayerOneScore() == 7);
             assertTrue(testGame.getPlayerTwoScore() == 9);
             assertTrue(testGame.getRedAntsAlive() == 11);
@@ -75,6 +73,7 @@ public class GameJUnitTest {
        
     }
     
+    // loads the test dumps
     private List<String> getTestDumps(){
         ArrayList<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
@@ -89,6 +88,7 @@ public class GameJUnitTest {
         return lines;
     }
     
+    // parses a board cell to match the form of the test dumps
     private String parseCellToDumpFileFormat(BoardTile cellToParse){
         String tileRepresentation = "";
         tileRepresentation += addFood(cellToParse);
@@ -100,6 +100,7 @@ public class GameJUnitTest {
         return tileRepresentation;
     }
     
+    // converts a cell terrain to the appropriate string
     private String terrainToString(Terrain cellTerrain){
         String terrain;
         if(cellTerrain == Terrain.REDBASE){
@@ -114,6 +115,7 @@ public class GameJUnitTest {
         return terrain;
     }
     
+    // adds food to the parse string if there is food in the cell
     private String addFood(BoardTile cellToParse){
         if(cellToParse.getFoodInTile() == 0){
             return "";
@@ -121,6 +123,7 @@ public class GameJUnitTest {
         return cellToParse.getFoodInTile() + " food; ";
     }
     
+    // adds the markers in the cell to the parse string
     private String addMarkers(BoardTile cellToParse, Colour markerColour){
         String markers = "";
         if(cellToParse.getMarkers(markerColour).size() > 0){
@@ -138,6 +141,7 @@ public class GameJUnitTest {
         return markers;
     }
     
+    // adds ant and ant state to the parse string
     private String addAnt(BoardTile tileToCheckForAnt){
         String antRepresentation;
         if(tileToCheckForAnt.getAntOnTile() == null){
@@ -161,6 +165,7 @@ public class GameJUnitTest {
         return antRepresentation;
     }
 
+    // adds the food being carried by an ant to the parse string
     private String amountOfFoodCarried(Ant antToTransform) {
         if(antToTransform.getCarryingFood()){
             return " 1";
