@@ -21,48 +21,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 
 /**
  * Test class for the Game class.
  */
 public class GameJUnitTest {
+    private AntBrain antBrainOne;
+    private AntBrain antBrainTwo;
+    private Board gameBoard;
+    private Game testGame;
     
-    // tests a game against the provided test dumps that can be found at 
-    // http://users.sussex.ac.uk/~mfb21/se/project/dump/index.html
-    @Test
-    public void testGameCreation(){
-        AntBrain antBrainOne;
-        AntBrain antBrainTwo;
-        Board gameBoard;
-        Game testGame;
-        try {
-            AntWorldLoader awl = new AntWorldLoader();
-            gameBoard = awl.loadWorld("src//antgameproject//testWorld.txt", "Test project", false);
+    @Before
+    public void setUp() {
+        try { 
+            gameBoard = new AntWorldLoader().loadWorld("src//antgameproject//testWorld.txt",
+                    "Test project", false);
             antBrainOne = AntBrainLoader.loadBrain("src//antgameproject//sampleAnt.txt", "sample");
             antBrainTwo = AntBrainLoader.loadBrain("src//antgameproject//sampleAnt.txt", "sample");
-            testGame = new Game(antBrainOne, antBrainTwo, gameBoard,10);
-            List<String> testDumps = getTestDumps();
-            int count = 3;
-            int num = 0;
-            while(count < testDumps.size()){
-                BoardTile[][] currentBoard = testGame.getGameBoard().getBoard();
-                for(int j = 0; j < currentBoard.length; j++){
-                    for(int k = 0; k < currentBoard[0].length; k++){
-                        // check that the cell matches the dump string
-                        String boardTileAsString = "cell (" + k + ", " + j +"): ";
-                        boardTileAsString += parseCellToDumpFileFormat(currentBoard[j][k]);
-                        assertTrue(boardTileAsString.equals(testDumps.get(count)));
-                        count++;
-                    }
-                }
-                testGame.runRounds(1);
-                count +=2;
-            }
-            // check the scores at the end of the game. These were manually calculated.
-            assertTrue(testGame.getPlayerOneScore() == 7);
-            assertTrue(testGame.getPlayerTwoScore() == 9);
-            assertTrue(testGame.getRedAntsAlive() == 11);
-            assertTrue(testGame.getBlackAntsAlive() == 16);
+            testGame = new Game(antBrainOne, antBrainTwo, gameBoard,12345);
         } catch (IOException ex) {
             Logger.getLogger(GameJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AntBrainLoader.AntBrainLoaderException ex) {
@@ -70,7 +47,35 @@ public class GameJUnitTest {
         } catch (AntWorldLoader.AntWorldLoaderException ex) {
             Logger.getLogger(GameJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+    }
+    
+    // tests a game against the provided test dumps that can be found at 
+    // http://users.sussex.ac.uk/~mfb21/se/project/dump/index.html
+    @Test
+    public void testGameCreation(){       
+        List<String> testDumps = getTestDumps();    //load test dumps into list
+        int count = 3;
+        int num = 0;
+        while(count < testDumps.size()){
+            BoardTile[][] currentBoard = testGame.getGameBoard().getBoard();
+            for(int j = 0; j < currentBoard.length; j++){
+                for(int k = 0; k < currentBoard[0].length; k++){
+                    // check that the cell matches the dump string
+                    
+                    String boardTileAsString = "cell (" + k + ", " + j +"): ";
+                    boardTileAsString += parseCellToDumpFileFormat(currentBoard[j][k]);
+                    assertTrue(boardTileAsString.equals(testDumps.get(count)));
+                    count++;
+                }
+            }
+            testGame.runRounds(1);
+            count +=2;
+        }
+        // check the scores at the end of the game. These were manually calculated.
+        assertTrue(testGame.getPlayerOneScore() == 7);
+        assertTrue(testGame.getPlayerTwoScore() == 9);
+        assertTrue(testGame.getRedAntsAlive() == 11);
+        assertTrue(testGame.getBlackAntsAlive() == 16);
     }
     
     // loads the test dumps
@@ -172,4 +177,30 @@ public class GameJUnitTest {
         }
         return " 0";
     }
+    
+    // tests that no more rounds can be run in a game after is has reached 300000 steps
+    @Test
+    public void testGameWontRunMoreThan300000(){
+        testGame.run();
+        assertFalse(testGame.runRounds(1));
+    }
+    
+    // Test two games created with the same parameters return the same score after 
+    // completion
+    @Test
+    public void test2GamesWithSameSeedAreTheSame(){
+        testGame.run();
+        int playerOneScore = testGame.getPlayerOneScore();
+        int playerTwoScore = testGame.getPlayerTwoScore();
+        int redAntsAlive = testGame.getRedAntsAlive();
+        int blackAntsAlive = testGame.getBlackAntsAlive();
+        
+        setUp();
+        testGame.run();
+        assertTrue(playerOneScore == testGame.getPlayerOneScore());
+        assertTrue(playerTwoScore == testGame.getPlayerTwoScore());
+        assertTrue(redAntsAlive == testGame.getRedAntsAlive());
+        assertTrue(blackAntsAlive == testGame.getBlackAntsAlive());
+    }
+       
 }
