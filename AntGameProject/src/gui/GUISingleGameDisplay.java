@@ -106,7 +106,7 @@ public class GUISingleGameDisplay extends BasicGameState {
     }
 
     /**
-     * Initialize the GUIMenuScreen.
+     * Initialize the GUISingleGameDisplay.
      *
      * @param gc Game container holding the GUI.
      * @param sbg Game object.
