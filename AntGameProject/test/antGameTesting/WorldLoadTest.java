@@ -13,11 +13,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
- * @author jamestwisleton
+ * @author JTwisleton
  */
 public class WorldLoadTest {
     
@@ -45,7 +44,7 @@ public class WorldLoadTest {
         AntWorldLoader awl = new AntWorldLoader();
         String fn = "src//antgameproject//1.world";
         
-        Board b = awl.loadWorld(fn, "1", false);
+        Board b = awl.loadWorld(fn, "1", false);        
         b.printBoardToASCII();
     }
 }

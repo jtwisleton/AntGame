@@ -3,6 +3,7 @@ package antGameTesting;
 import antgameproject.AntWorldGenerator;
 import antgameproject.Board;
 import antgameproject.BoardTile;
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -96,6 +97,13 @@ public class WorldGenTest {
         b.printBoardToASCII();
     }
 
+    @Test
+    public void printToFile() throws IOException{
+        AntWorldGenerator wg = new AntWorldGenerator(30);
+        Board b = wg.generateWorld();
+        wg.toFile(b, "GeneratedWorld");
+    }
+    
     @After
     public void tearDown() {
     }
