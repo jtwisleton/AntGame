@@ -73,7 +73,8 @@ public class GUISingleGameOptions extends BasicGameState {
     private File antBrainOne;
     private File antBrainTwo;
     private File antWorldFile;
-    private float screenScale;
+    private final float screenScale;
+    private boolean generatedAntWorld;
     
     public GUISingleGameOptions(AntGameTournament tournament, float screenScale){
         this.tournament = tournament;
@@ -105,12 +106,13 @@ public class GUISingleGameOptions extends BasicGameState {
         topButton = pageTitle.getHeight() + 80;
 
         createMouseOverAreas(gc);
+        generatedAntWorld = false;
     }
     
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         if(startMO.isMouseOver()){
-            if(antBrainOne != null && antBrainTwo != null && antWorldFile != null){
+            if(antBrainOne != null && antBrainTwo != null && (antWorldFile != null || generatedAntWorld)){
                 curStart = startHover;
                 if(gc.getInput().isMouseButtonDown(0)){
                     try {
@@ -193,7 +195,12 @@ public class GUISingleGameOptions extends BasicGameState {
         } else if(worldGenMO.isMouseOver()){
             currentWorldGen = worldGenHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                //worldGenPage?
+                if(antWorldFile == null && !generatedAntWorld){
+                    System.out.println("in");
+                    tournament.generateAntWorld();
+                    worldTick.setAlpha(1);
+                    generatedAntWorld = true;
+                }
             }
         } else {
             currentSelect = select;
@@ -268,7 +275,7 @@ public class GUISingleGameOptions extends BasicGameState {
     }
     
     private Image updateStart() {
-        if (antBrainOne != null && antBrainTwo != null && antWorldFile != null) {
+        if (antBrainOne != null && antBrainTwo != null && (antWorldFile != null || generatedAntWorld)) {
             return start;
         } else {
             return startUnavailable;

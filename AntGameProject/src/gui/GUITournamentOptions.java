@@ -79,7 +79,6 @@ public class GUITournamentOptions extends BasicGameState {
     private List antWorldList;
     private final float screenScale;
     
-    
     public GUITournamentOptions(AntGameTournament tournament, float screenScale){
         this.tournament = tournament;
         this.screenScale = screenScale;
@@ -149,7 +148,14 @@ public class GUITournamentOptions extends BasicGameState {
         } else if(genAntWorldMO.isMouseOver()){
             curGenWorld = genAntWorldHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                // show gen world options?
+                try {
+                    tournament.generateAntWorld();
+                    TimeUnit.MILLISECONDS.sleep(250);
+                    antWorldList = tournament.getListOfAntWorlds();
+                    bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GUITournamentOptions.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } else if(mainMenuMO.isMouseOver()){
             currentMainMenu = mainMenuHover;
@@ -159,7 +165,6 @@ public class GUITournamentOptions extends BasicGameState {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //sbg.getState(2).init(gc, sbg);
                 sbg.enterState(2);
             }
         } else if(startTournMO.isMouseOver()){
@@ -179,7 +184,7 @@ public class GUITournamentOptions extends BasicGameState {
                     try {
                         TimeUnit.MILLISECONDS.sleep(250);
                     } catch (InterruptedException ex) {
-                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhhhhhhhhhhh");
+                        Logger.getLogger(GUITournamentOptions.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
@@ -192,7 +197,7 @@ public class GUITournamentOptions extends BasicGameState {
                     try {
                         TimeUnit.MILLISECONDS.sleep(250);
                     } catch (InterruptedException ex) {
-                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!aaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhhhhhhhhhhh");
+                        Logger.getLogger(GUITournamentOptions.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);

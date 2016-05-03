@@ -135,6 +135,12 @@ public class AntGameTournament {
         }
     }
     
+    public void generateAntWorld(){
+        if(antWorlds.size() < maxNumberOfAntWorlds){
+            antWorlds.add(new AntWorldGenerator(1).generateWorld());
+        }
+    }
+    
     /**
      * Loads an ant brain from the given file path and gives it the specified name.
      * @param antBrainFilePath file path to load ant brain from.
