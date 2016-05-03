@@ -196,7 +196,6 @@ public class GUISingleGameOptions extends BasicGameState {
             currentWorldGen = worldGenHover;
             if(gc.getInput().isMouseButtonDown(0)){
                 if(antWorldFile == null && !generatedAntWorld){
-                    System.out.println("in");
                     tournament.generateAntWorld();
                     worldTick.setAlpha(1);
                     generatedAntWorld = true;
@@ -237,7 +236,7 @@ public class GUISingleGameOptions extends BasicGameState {
         grphcs.drawImage(selectTick2, rightMargin + 20, topButton + offset);
         grphcs.drawImage(worldTick, rightMargin + 20, topButton + 2 * offset);
         
-        if (antBrainOne == null && antBrainTwo == null && antWorldFile == null) {
+        if (antBrainOne == null && antBrainTwo == null && (antWorldFile == null && !generatedAntWorld)) {
             selectTick.setAlpha(0);
             selectTick2.setAlpha(0);
             worldTick.setAlpha(0);
