@@ -107,6 +107,9 @@ public class GUITournamentDisplay extends BasicGameState{
         } else if(skipToEndMO.isMouseOver()){
             if (!finished) {
                 currentSkipToEnd = skipToEndHover;
+                while(!finished){
+                    finished = tournament.runTournamentRound();
+                }
             }
         } else if(exitMO.isMouseOver()){
             currentExit = exitHover;
