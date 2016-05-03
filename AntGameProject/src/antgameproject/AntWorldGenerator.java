@@ -33,14 +33,18 @@ public class AntWorldGenerator {
      Takes an int that determines average rock size, generates tournament ready 
      world, saves to a file and returns Board.
      */
-    public Board generateWorld() {
+    public Board generateWorld() throws IOException {
         BoardTile[][] b = placeBordersAndGrass();
         b = placeAnthills(b);
         b = placeFood(b);
         b = placeRocks(b);
-        b = createGaps(b);
-
-        return new Board(b, "testworld");
+        b = createGaps(b);           
+        int time = (int)System.currentTimeMillis();
+        String filename = "generatedWorlds/generatedWorld"+time+".world";
+        toFile(b,filename);
+        return new Board(b, "");
+        
+        
     }
 
     /**
@@ -559,25 +563,28 @@ public class AntWorldGenerator {
         return anthillsFoodRocks;
     }
 
-    public void toFile(Board board, String filename) throws FileNotFoundException, IOException {
+    public void toFile(BoardTile[][] b, String filename) throws FileNotFoundException, IOException {
         FileWriter fw = new FileWriter(filename);
         PrintWriter writer = new PrintWriter(fw);
-        BoardTile[][] b = board.getBoard();
-        for (BoardTile[] b1 : b) {
-            for (BoardTile b2 : b1) {
-                if (b2.getCellTerrain() == Terrain.ROCK) {
-                    writer.print("# ");
-                } else if (b2.getCellTerrain() == Terrain.GRASS) {
-                    writer.print(". ");
-                } else if (b2.getCellTerrain() == Terrain.BLACKBASE) {
-                    writer.print("- ");
-                } else if (b2.getCellTerrain() == Terrain.REDBASE) {
-                    writer.print("+ ");
+        writer.println(b.length);
+        writer.println(b[0].length);
+        for (int i = 0; i < b.length; i++) {
+            for (int j = 0; j < b[i].length; j++) {
+                if (b[i][j].getCellTerrain() == Terrain.ROCK) {
+                    writer.print("#");
+                } else if (b[i][j].getCellTerrain() == Terrain.GRASS) {
+                    writer.print(".");
+                } else if (b[i][j].getCellTerrain() == Terrain.BLACKBASE) {
+                    writer.print("-");
+                } else if (b[i][j].getCellTerrain() == Terrain.REDBASE) {
+                    writer.print("+");
                 }
             }
             writer.print('\n');
         }
 
-    }
+        writer.close();
+        fw.close();
 
+    }
 }
