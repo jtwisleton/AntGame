@@ -140,9 +140,10 @@ public class AntGameTournament {
         }
     }
     
-    public void generateAntWorld(){
+    public void generateAntWorld() throws IOException{
         if(antWorlds.size() < maxNumberOfAntWorlds){
-            antWorlds.add(new AntWorldGenerator(30).generateWorld());
+            AntWorldGenerator awl = new AntWorldGenerator(30);
+            antWorlds.add(awl.generateWorld());
         }
     }
     
