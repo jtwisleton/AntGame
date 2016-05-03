@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package antGameTesting;
 
 import antgameproject.AntWorldLoader;
@@ -39,12 +34,21 @@ public class WorldLoadTest {
     public void tearDown() {
     }
 
+//    @Test
+//    public void checkWorldSyntaxTest() throws AntWorldLoader.AntWorldLoaderException, IOException{
+//        AntWorldLoader awl = new AntWorldLoader();
+//        String fn = "generatedWorlds//generatedWorld1998270173.world";        
+//        Board b = awl.loadWorld(fn, "1", false);                    
+//    }
+//    
     @Test
-    public void checkWorldSyntaxTest() throws AntWorldLoader.AntWorldLoaderException, IOException{
+    public void validAmountOfAntsTest() throws AntWorldLoader.AntWorldLoaderException, IOException{
         AntWorldLoader awl = new AntWorldLoader();
-        String fn = "src//antgameproject//1.world";
+        String fn = "generatedWorlds//generatedWorld1998270173.world";        
+        Board b = awl.loadWorld(fn, "1", false);                    
+        awl.validAnthills(b);
         
-        Board b = awl.loadWorld(fn, "1", false);        
-        b.printBoardToASCII();
     }
+    
+    
 }
