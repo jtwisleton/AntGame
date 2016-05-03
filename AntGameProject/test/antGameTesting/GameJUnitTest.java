@@ -40,10 +40,11 @@ public class GameJUnitTest {
         Board gameBoard;
         Game testGame;
         try {
-            gameBoard = AntWorldLoader.loadWorld("src//antgameproject//testWorld.txt", "Test project", false);
+            AntWorldLoader awl = new AntWorldLoader();
+            gameBoard = awl.loadWorld("src//antgameproject//testWorld.txt", "Test project", false);
             antBrainOne = AntBrainLoader.loadBrain("src//antgameproject//sampleAnt.txt", "sample");
             antBrainTwo = AntBrainLoader.loadBrain("src//antgameproject//sampleAnt.txt", "sample");
-            testGame = new Game(antBrainOne, antBrainTwo, gameBoard);
+            testGame = new Game(antBrainOne, antBrainTwo, gameBoard,10);
             List<String> testDumps = getTestDumps();
             int count = 3;
             int num = 0;

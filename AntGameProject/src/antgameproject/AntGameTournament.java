@@ -142,7 +142,7 @@ public class AntGameTournament {
     
     public void generateAntWorld(){
         if(antWorlds.size() < maxNumberOfAntWorlds){
-            antWorlds.add(new AntWorldGenerator(1).generateWorld());
+            antWorlds.add(new AntWorldGenerator(30).generateWorld());
         }
     }
     

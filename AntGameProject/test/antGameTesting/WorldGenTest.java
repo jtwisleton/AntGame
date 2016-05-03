@@ -31,63 +31,63 @@ public class WorldGenTest {
 
     }
 
-    @Test
-    public void placeBordersAndGrass() {
-        AntWorldGenerator wg = new AntWorldGenerator(10);
-        BoardTile[][] bt = wg.placeBordersAndGrass();
-        Board board = new Board(bt, "borders and grass");
-        System.out.println("-----\nTest: placeBordersAndGrass\n-----");
-        board.printBoardToASCII();
-    }
-
-    @Test
-    public void placeAnthills() {
-        AntWorldGenerator wg = new AntWorldGenerator(10);
-        BoardTile[][] bt = wg.placeBordersAndGrass();
-        bt = wg.placeAnthills(bt);
-        Board board = new Board(bt, "borders and grass and anthills");
-        System.out.println("\n-----\nTest: placeAnthills\n-----\n");
-        board.printBoardToASCII();
-    }
-
-    @Test
-    public void placeFood() {
-        AntWorldGenerator wg = new AntWorldGenerator(10);
-        BoardTile[][] bt = wg.placeBordersAndGrass();
-        bt = wg.placeAnthills(bt);
-        bt = wg.placeFood(bt);
-        Board board = new Board(bt, "borders and grass and anthills and food");
-        System.out.println("\n-----\nTest: placeFood\n-----\n");
-        board.printBoardToASCII();
-    }
-
-    @Test
-    public void placeRocks() {
-        AntWorldGenerator wg = new AntWorldGenerator(10);
-        BoardTile[][] bt = wg.placeBordersAndGrass();
-        bt = wg.placeAnthills(bt);
-        bt = wg.placeRocks(bt);
-        Board board = new Board(bt, "borders and grass and anthills and rocks");
-        System.out.println("\n-----\nTest: placeRocks\n-----\n");
-        board.printBoardToASCII();
-    }
-
-    @Test
-    public void createGaps() {
-        AntWorldGenerator wg = new AntWorldGenerator(30);
-
-        BoardTile[][] bt = wg.placeBordersAndGrass();
-
-        bt = wg.placeAnthills(bt);
-        bt = wg.placeFood(bt);
-
-        bt = wg.placeRocks(bt);
-        bt = wg.createGaps(bt);
-
-        Board board = new Board(bt, "whole thing");
-        System.out.println("\n-----\nTest: borders and grass and anthills and food and rocks with spaces\n-----\n");
-        board.printBoardToASCII();
-    }
+//    @Test
+//    public void placeBordersAndGrass() {
+//        AntWorldGenerator wg = new AntWorldGenerator(10);
+//        BoardTile[][] bt = wg.placeBordersAndGrass();
+//        Board board = new Board(bt, "borders and grass");
+//        System.out.println("-----\nTest: placeBordersAndGrass\n-----");
+//        board.printBoardToASCII();
+//    }
+//
+//    @Test
+//    public void placeAnthills() {
+//        AntWorldGenerator wg = new AntWorldGenerator(10);
+//        BoardTile[][] bt = wg.placeBordersAndGrass();
+//        bt = wg.placeAnthills(bt);
+//        Board board = new Board(bt, "borders and grass and anthills");
+//        System.out.println("\n-----\nTest: placeAnthills\n-----\n");
+//        board.printBoardToASCII();
+//    }
+//
+//    @Test
+//    public void placeFood() {
+//        AntWorldGenerator wg = new AntWorldGenerator(10);
+//        BoardTile[][] bt = wg.placeBordersAndGrass();
+//        bt = wg.placeAnthills(bt);
+//        bt = wg.placeFood(bt);
+//        Board board = new Board(bt, "borders and grass and anthills and food");
+//        System.out.println("\n-----\nTest: placeFood\n-----\n");
+//        board.printBoardToASCII();
+//    }
+//
+//    @Test
+//    public void placeRocks() {
+//        AntWorldGenerator wg = new AntWorldGenerator(10);
+//        BoardTile[][] bt = wg.placeBordersAndGrass();
+//        bt = wg.placeAnthills(bt);
+//        bt = wg.placeRocks(bt);
+//        Board board = new Board(bt, "borders and grass and anthills and rocks");
+//        System.out.println("\n-----\nTest: placeRocks\n-----\n");
+//        board.printBoardToASCII();
+//    }
+//
+//    @Test
+//    public void createGaps() {
+//        AntWorldGenerator wg = new AntWorldGenerator(30);
+//
+//        BoardTile[][] bt = wg.placeBordersAndGrass();
+//
+//        bt = wg.placeAnthills(bt);
+//        bt = wg.placeFood(bt);
+//
+//        bt = wg.placeRocks(bt);
+//        bt = wg.createGaps(bt);
+//
+//        Board board = new Board(bt, "whole thing");
+//        System.out.println("\n-----\nTest: borders and grass and anthills and food and rocks with spaces\n-----\n");
+//        board.printBoardToASCII();
+//    }
     
     @Test
     public void createWorld(){
