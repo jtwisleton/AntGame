@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import antgameproject.AntBrain;
@@ -24,8 +19,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- *
- * @author wilki
+ * Class to represent a tournament GUI display.
+ * 
+ * @author team18
  */
 public class GUITournamentDisplay extends BasicGameState{
 
@@ -62,40 +58,73 @@ public class GUITournamentDisplay extends BasicGameState{
     private boolean scoresShown;
     private float screenScale;
     
+    /**
+     * Construct a new GUITournamentDisplay object.
+     * 
+     * @param tournament AntGameTournament being displayed.
+     * @param screenScale Scale of the screen.
+     */
     public GUITournamentDisplay(AntGameTournament tournament, float screenScale){
         this.tournament = tournament;
         this.screenScale = screenScale;
     }
     
+    /**
+     * Get the ID of this state.
+     *
+     * @return This state's ID.
+     */
     @Override
     public int getID() {
         return 6;
     }
 
+    /**
+     * Initialize the GUITournamentDisplay.
+     *
+     * @param gc Game container holding the GUI.
+     * @param sbg Game object.
+     * @throws SlickException if problem initialising mouse over areas.
+     */
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+        // Load resources and set mouse over areas
         loadResources();
         createMouseOverAreas(gc);
         
+        // Set buttons to their current state
         currentPlayNextRound = playNextRound;
         currentSkipToEnd = skipToEnd;
         currentExit = exit;
         currentUp = up;
         currentDown = down;
         
+        // Boolean variables indicate stage of display
         topOfAntBrainList = 0;
         finished = false;
         gameOverMessageShown = false;
         scoresShown = false;
     }
     
+    /**
+     * Update the game logic.
+     *
+     * @param gc Game container holding the GUI.
+     * @param sbg Game object.
+     * @param i Delta (unused).
+     * @throws SlickException if problem entering states.
+     */
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         antBrainList = tournament.getListOfAntBrains();
+        
+        // Mouse over play next round button
         if(playNextRoundMO.isMouseOver()){
             if (!finished) {
+                // If game isn't finished
                 currentPlayNextRound = playNextRoundHover;
                 if (gc.getInput().isMouseButtonDown(0)) {
+                    // Clicked play next round button 
                     finished = tournament.runTournamentRound();
                     try {
                         TimeUnit.MILLISECONDS.sleep(250);
@@ -104,35 +133,52 @@ public class GUITournamentDisplay extends BasicGameState{
                     }
                 }
             }
+            
+        // Mouse over skip to end button
         } else if(skipToEndMO.isMouseOver()){
             if (!finished) {
+                // If game not finished
                 currentSkipToEnd = skipToEndHover;
                 while(!finished){
+                    // Run rounds until game finished
                     finished = tournament.runTournamentRound();
                 }
             }
+            
+        // Mouse over exit button
         } else if(exitMO.isMouseOver()){
             currentExit = exitHover;
             if(gc.getInput().isMouseButtonDown(0)){
-                tournament.reset(); //probably need to reset some variables here
+                // Clicked exit button
+                tournament.reset();
                 sbg.enterState(2);
             }
+            
+        // Mouse over up button
         } else if(upMO.isMouseOver()){
             currentUp = upHover;
             if(gc.getInput().isMouseButtonDown(0)){
+                // Clicked up button
                 if(antBrainList.size() > 10 && topOfAntBrainList > 0){
+                    // If space, move up ant brain list
                     topOfAntBrainList++;
                 }
                 bottomOfAntBrainList = setListBottom(antBrainList, bottomOfAntBrainList);
             }
+            
+        // Mouse over down button
         } else if(downMO.isMouseOver()){
             currentDown = downHover;
             if(gc.getInput().isMouseButtonDown(0)){
+                // Clicked down button
                 if(antBrainList.size() > 10 && topOfAntBrainList + 10 < antBrainList.size()){
+                    // If space, move down ant brain list
                     topOfAntBrainList--;
                 }
                 bottomOfAntBrainList = setListBottom(antBrainList, bottomOfAntBrainList);
             }
+            
+        // Mouse not over any specified areas
         } else {
             currentPlayNextRound = updatePlayNextRound();
             currentSkipToEnd = updateSkipToEnd();
@@ -142,11 +188,21 @@ public class GUITournamentDisplay extends BasicGameState{
         }
     }
 
+    /**
+     * Render the games screen.
+     * 
+     * @param gc Game container holding the GUI.
+     * @param sbg Game object.
+     * @param grphcs The graphics context.
+     * @throws SlickException if problem when drawing images.
+     */
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+        // Set up screen
         grphcs.scale(screenScale, screenScale);
         grphcs.setLineWidth(3);
         
+        // Place buttons on screen
         grphcs.drawImage(pageTitle, 1920/2 - pageTitle.getWidth()/2, 20);
         grphcs.drawImage(currentPlayNextRound, 25, pageTitle.getHeight() + 40);
         grphcs.drawImage(currentSkipToEnd, 25, pageTitle.getHeight() + 140);
@@ -154,6 +210,7 @@ public class GUITournamentDisplay extends BasicGameState{
         grphcs.drawImage(currentUp, 1850, 580);
         grphcs.drawImage(currentDown, 1850, 650);
         
+        // Write table headings
         int topMargin = pageTitle.getHeight() + 40;
         gameFont.drawString(exit.getWidth()+60, topMargin+4, "Ant brain");
         gameFont.drawString(exit.getWidth()+800, topMargin+4, "S");
@@ -163,6 +220,8 @@ public class GUITournamentDisplay extends BasicGameState{
         gameFont.drawString(exit.getWidth()+1159, topMargin+4, "L");
         gameFont.drawString(exit.getWidth()+1235, topMargin+4, "PF");
         gameFont.drawString(exit.getWidth()+1325, topMargin+4, "PA");
+        
+        // Draw table
         grphcs.drawRoundRect(exit.getWidth()+50, pageTitle.getHeight() + 40, 1350, 800, 10);
         grphcs.drawLine(exit.getWidth()+50, pageTitle.getHeight() + 100, exit.getWidth()+1400, pageTitle.getHeight() + 100);
         for(int i = 0; i < 7; i++){
@@ -170,7 +229,7 @@ public class GUITournamentDisplay extends BasicGameState{
             grphcs.drawLine(yLinePosition, topMargin, yLinePosition, topMargin+800);
         }
         
-        //add printing of teams scores
+        // Add printing of teams scores
         for(int i = 0 ; i < antBrainList.size(); i++){  //no size control at moment
             AntBrain currentAntBrain = antBrainList.get(i);
             topMargin += 60;
@@ -214,6 +273,13 @@ public class GUITournamentDisplay extends BasicGameState{
                 + " / " + tournament.getListOfAntWorlds().size());
     }
     
+    /**
+     * Set the bottom of the list.
+     * 
+     * @param listToSetBottomOf List to set the bottom of.
+     * @param listTopPos Position of top of list.
+     * @return Bottom position.
+     */
     private int setListBottom(List listToSetBottomOf, int listTopPos){
         int listBottom = 0;
         if(listToSetBottomOf.size() > 0){
@@ -226,11 +292,23 @@ public class GUITournamentDisplay extends BasicGameState{
        return listBottom;
     }
     
+    /**
+     * Show pop up message.
+     * 
+     * @param message Message contents.
+     * @param errorType Type of error.
+     */
     private void showMessage(String message, String errorType){
         JOptionPane.showMessageDialog(new JFrame(), message,
         errorType, JOptionPane.PLAIN_MESSAGE);
     }
     
+    /**
+     * Remove file extension.
+     * 
+     * @param filename Filename to remove extension from.
+     * @return New filename.
+     */
     private String removeExtension(String filename) {
         if (filename.indexOf(".") > 0) {
             filename = filename.substring(0, filename.lastIndexOf("."));
@@ -238,6 +316,11 @@ public class GUITournamentDisplay extends BasicGameState{
         return filename;
     }
     
+    /**
+     * Update play next round button.
+     * 
+     * @return New button.
+     */
     private Image updatePlayNextRound() {
         if (finished) {
             return playNextRoundUnavailable;
@@ -246,6 +329,11 @@ public class GUITournamentDisplay extends BasicGameState{
         }
     }
     
+    /**
+     * Update skip to end button.
+     * 
+     * @return New button.
+     */
     private Image updateSkipToEnd() {
         if (finished) {
             return skipToEndUnavailable;
@@ -254,6 +342,11 @@ public class GUITournamentDisplay extends BasicGameState{
         }
     }
 
+    /**
+     * Load the resources.
+     * 
+     * @throws SlickException if problem loading Images
+     */
     private void loadResources() throws SlickException {
         gameFont = new AngelCodeFont("resources/moreAdded.fnt", "resources/moreAdded_0.png");
         pageTitle = new Image("resources/tournamentLogo.png");
@@ -271,6 +364,11 @@ public class GUITournamentDisplay extends BasicGameState{
         downHover = new Image("resources/downHover.png");
     }
 
+    /**
+     * Create the mouse over areas.
+     * 
+     * @param gc Game container holding the GUI.
+     */
     private void createMouseOverAreas(GameContainer gc) {
         playNextRoundMO = new MouseOverArea(gc, playNextRound, (int)(25*screenScale), (int)((pageTitle.getHeight() + 40)*screenScale),
                 (int)(playNextRound.getWidth()*screenScale), (int)(playNextRound.getHeight()*screenScale));
