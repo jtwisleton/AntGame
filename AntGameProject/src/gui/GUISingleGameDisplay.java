@@ -77,6 +77,7 @@ public class GUISingleGameDisplay extends BasicGameState {
     private boolean gameOverMessageShown;
     private boolean exiting;
     private boolean firstRender;
+    private boolean mouseHasBeenInCenter;
     private GUICamera cam;
     private final float screenScale;
     
@@ -107,6 +108,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         currentSkipToEndButton = skipToEndButton;
         firstRender = true;
         gameOverMessageShown = false;
+        mouseHasBeenInCenter = false;
         exiting = false;
 
     }
@@ -220,13 +222,23 @@ public class GUISingleGameDisplay extends BasicGameState {
            
             
             if(Mouse.getX() < 200*screenScale && Mouse.getX() > 0){
-                cam.incrementXPos();
+                if(mouseHasBeenInCenter){
+                    cam.incrementXPos();
+                }
             } else if(Mouse.getX() > 1200*screenScale && Mouse.getX() < 1400*screenScale){
-                cam.decrementXPos();
+                if(mouseHasBeenInCenter){
+                    cam.decrementXPos();
+                }
             } else if(Mouse.getY() > 0 && Mouse.getY() < 200*screenScale && Mouse.getX() < 1400*screenScale){
-                cam.decrementYPos();
+                if(mouseHasBeenInCenter){
+                    cam.decrementYPos();
+                }
             } else if(Mouse.getY() > 880*screenScale && Mouse.getY() < 1080*screenScale && Mouse.getX() < 1400*screenScale){
-                cam.incrementYPos();
+                if(mouseHasBeenInCenter){
+                    cam.incrementYPos();
+                }
+            } else {
+                mouseHasBeenInCenter = true;
             }
           
         }
