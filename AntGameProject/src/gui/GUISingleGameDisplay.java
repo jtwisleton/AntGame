@@ -80,6 +80,8 @@ public class GUISingleGameDisplay extends BasicGameState {
     private boolean mouseHasBeenInCenter;
     private GUICamera cam;
     private final float screenScale;
+    private int aliveBarScale;
+    private int foodBarScale;
     
     public GUISingleGameDisplay(AntGameTournament tournament, float screenScale){
         this.tournament = tournament;
@@ -120,6 +122,8 @@ public class GUISingleGameDisplay extends BasicGameState {
             game = tournament.getCurrentGame();
             gameBoard = game.getGameBoard();
             board = gameBoard.getBoard();
+            aliveBarScale = 230/game.getBlackAntsAlive();
+            foodBarScale = 20;
             firstRender = false;
         }
         if(exitMO.isMouseOver()){
@@ -240,6 +244,11 @@ public class GUISingleGameDisplay extends BasicGameState {
             } else {
                 mouseHasBeenInCenter = true;
             }
+            
+            if(game.getPlayerOneScore()*foodBarScale >= 230 || 
+                    game.getPlayerTwoScore()*foodBarScale >= 230){
+                foodBarScale = foodBarScale / 2;
+            }
           
         }
     }
@@ -248,8 +257,8 @@ public class GUISingleGameDisplay extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
         grphcs.scale(screenScale, screenScale);
         
+        // draw game board
         cam.setBoardZoom();
-        
         grphcs.scale(cam.getZoom(), cam.getZoom());
         grphcs.translate(cam.getXPos(), cam.getYPos());
         tiles.startUse();
@@ -281,18 +290,20 @@ public class GUISingleGameDisplay extends BasicGameState {
         gameFont.drawString(divide+40, 260, "Ants alive");
         gameFont.drawString(divide+40, 630, "Food in base");
         
-        // claculate and draw graph bars
-        int redAnts = 200;
-        int blueAnts = 190;
-        int redFood = 150;
-        int blueFood = 66;
-        grphcs.setColor(new Color(231, 76, 60));
-        grphcs.fillRect(divide+120, 550-redAntsAlive, 100, redAntsAlive);
-        grphcs.fillRect(divide+120, 920-numRedBaseFood*2, 100, numRedBaseFood*2);
-        grphcs.setColor(new Color(52, 73, 94));
-        grphcs.fillRect(divide+270, 550-blackAntsAlive, 100, blackAntsAlive);
-        grphcs.fillRect(divide+270, 920-numBlackBaseFood*2, 100, numBlackBaseFood*2);
+        grphcs.scale(0.5f, 0.5f);
+        gameFont.drawString(2*(divide+25), 620, ""+230/aliveBarScale);
+        gameFont.drawString(2*(divide+25), 1360, ""+230/foodBarScale);
+        grphcs.scale(2, 2);
         
+        // claculate and draw graph bars
+        grphcs.setColor(new Color(231, 76, 60));
+        grphcs.fillRect(divide+120, 550-redAntsAlive*aliveBarScale, 100, redAntsAlive*aliveBarScale);
+        grphcs.fillRect(divide+120, 920-numRedBaseFood*foodBarScale, 100, numRedBaseFood*foodBarScale);
+        grphcs.setColor(new Color(52, 73, 94));
+        grphcs.fillRect(divide+270, 550-blackAntsAlive*aliveBarScale, 100, blackAntsAlive*aliveBarScale);
+        grphcs.fillRect(divide+270, 920-numBlackBaseFood*foodBarScale, 100, numBlackBaseFood*foodBarScale);
+        
+        // draw graph axis
         grphcs.setColor(Color.white);
         grphcs.drawLine(divide+70, 320, divide+70, 550);
         grphcs.drawLine(divide+70, 550, divide+430, 550);
@@ -302,6 +313,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         grphcs.drawImage(logo, 1800, 990);
         grphcs.drawImage(currentExitButton, divide+20, 985);
         
+        // draw control buttons
         grphcs.drawImage(currentButton, divide+170, 15);
         grphcs.drawImage(currentSpeedUp, divide+227, 115);
         grphcs.drawImage(currentSlowDownButton, divide+113, 115);
@@ -395,7 +407,7 @@ public class GUISingleGameDisplay extends BasicGameState {
     }
 
     private void loadResources() throws SlickException {
-        gameFont = new AngelCodeFont("resources/hugeFont.fnt", "resources/hugeFont_0.png");
+        gameFont = new AngelCodeFont("resources/moreAdded.fnt", "resources/moreAdded_0.png");
         tileset = new Image("resources/sprite.png");
         exitButton = new Image("resources/exitButton.png");
         exitButtonHover = new Image("resources/exitButtonHover.png");
