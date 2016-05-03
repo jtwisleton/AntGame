@@ -496,7 +496,6 @@ public class AntWorldGenerator {
              rock positions ArrayList.
              */
             rockPositions.addAll(currentRockPositions);
-            currentRockPositions.clear();
         }
 
         /*
@@ -512,8 +511,8 @@ public class AntWorldGenerator {
     }
 
     public BoardTile[][] createGaps(BoardTile[][] anthillsFoodRocks) {
-        for (int i = 0; i < anthillsFoodRocks.length; i++) {
-            for (int j = 0; j < anthillsFoodRocks[i].length; j++) {
+        for (int i = 1; i < anthillsFoodRocks.length; i++) {
+            for (int j = 1; j < anthillsFoodRocks[i].length; j++) {
 
                 /*
                  If a piece of terrain adjacent to a base is ROCK, make it GRASS.
@@ -560,17 +559,23 @@ public class AntWorldGenerator {
         return anthillsFoodRocks;
     }
 
-    public void toFile(BoardTile[][] b, String filename) throws FileNotFoundException, IOException {
+    public void toFile(Board board, String filename) throws FileNotFoundException, IOException {
         FileWriter fw = new FileWriter(filename);
         PrintWriter writer = new PrintWriter(fw);
-
+        BoardTile[][] b = board.getBoard();
         for (BoardTile[] b1 : b) {
             for (BoardTile b2 : b1) {
-                switch (b2.getCellTerrain()) {
-
+                if (b2.getCellTerrain() == Terrain.ROCK) {
+                    writer.print("# ");
+                } else if (b2.getCellTerrain() == Terrain.GRASS) {
+                    writer.print(". ");
+                } else if (b2.getCellTerrain() == Terrain.BLACKBASE) {
+                    writer.print("- ");
+                } else if (b2.getCellTerrain() == Terrain.REDBASE) {
+                    writer.print("+ ");
                 }
-
             }
+            writer.print('\n');
         }
 
     }
