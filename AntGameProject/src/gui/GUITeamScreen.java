@@ -1,4 +1,3 @@
-
 package gui;
 
 import java.util.concurrent.TimeUnit;
@@ -13,28 +12,54 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- *
- * @author wilki
+ * Class to represent a team screen.
+ * 
+ * @author team18
  */
 public class GUITeamScreen extends BasicGameState {
     
     private Image teamLogo;
     private float screenScale;
 
+    /**
+     * Construct a new GUITeamScreen object
+     * 
+     * @param screenScale Scale of the screen.
+     */
     public GUITeamScreen(float screenScale){
         this.screenScale = screenScale;
     }
     
+    /**
+     * Get the ID of this state.
+     *
+     * @return This state's ID.
+     */
     @Override
     public int getID() {
         return 0;
     }
 
+    /**
+     * Initialize the GUITeamScreen.
+     *
+     * @param gc Game container holding the GUI.
+     * @param sbg Game object.
+     * @throws SlickException if problem initialising mouse over areas.
+     */
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         teamLogo = new Image("resources/team_18_game.png");
     }
 
+    /**
+     * Update the game logic.
+     *
+     * @param container Game container holding the GUI.
+     * @param sbg Game object.
+     * @param i Delta (unused).
+     * @throws SlickException if problem entering states.
+     */
     @Override
     public void update(GameContainer container, StateBasedGame sbg, int i) throws SlickException {
         try {
@@ -45,6 +70,14 @@ public class GUITeamScreen extends BasicGameState {
         sbg.enterState(1);
     }
     
+    /**
+     * Render the games screen.
+     * 
+     * @param gc Game container holding the GUI.
+     * @param sbg Game object.
+     * @param grphcs The graphics context.
+     * @throws SlickException if problem when drawing images.
+     */
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
         grphcs.scale(screenScale, screenScale);
