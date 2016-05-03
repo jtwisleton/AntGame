@@ -135,7 +135,8 @@ public class AntGameTournament {
     public void loadAntWorld(String antWorldFilePath, String antWorldName) 
             throws AntWorldLoaderException, IOException {
         if(antWorlds.size() < maxNumberOfAntWorlds){
-            antWorlds.add(AntWorldLoader.loadWorld(antWorldFilePath, antWorldName, false));    // change back to true as some point
+            AntWorldLoader awl = new AntWorldLoader();
+            antWorlds.add(awl.loadWorld(antWorldFilePath, antWorldName, false));    // change back to true as some point
         }
     }
     

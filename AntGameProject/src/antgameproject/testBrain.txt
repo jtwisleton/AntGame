@@ -1,6 +1,6 @@
 Sense Ahead 1 3 Food
 Move 2 0
-Pickup 8 0
+PickUp 8 0
 
 Flip 3 4 5
 Turn Left 0

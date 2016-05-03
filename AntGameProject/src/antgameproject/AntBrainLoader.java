@@ -64,6 +64,7 @@ public class AntBrainLoader {
          Read the brain from a file into a String.
          */
         String brainString = "";
+        int lineCount=0;
         List<String> instructionStrings = new ArrayList<>();
         List<Instruction> instructions = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
@@ -71,6 +72,7 @@ public class AntBrainLoader {
             String line;
             while ((line = br.readLine()) != null) {
                 brainString += line;
+                lineCount++;
             }
         }
 
@@ -141,6 +143,11 @@ public class AntBrainLoader {
                     if(instructionString.matches(senseMarkerPattern.pattern())){
                         markerNo = Integer.parseInt(splitInstruction[5].trim());
                     }
+                    
+                    if(nextStateIfConditionTrue>lineCount||nextStateIfConditionFalse>lineCount||markerNo>5){
+                        throw new AntBrainLoaderException("State in loaded instruction beyond limits of brain.");
+                    }
+                    
                     String condition = splitInstruction[4].trim();
                     Condition c = null;
                     SenseDirection d = null;

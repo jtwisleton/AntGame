@@ -1,7 +1,11 @@
 package antgameproject;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -439,4 +443,20 @@ public class AntWorldGenerator {
 
         return anthillsFoodRocks;
     }
+
+    public void toFile(BoardTile[][] b, String filename) throws FileNotFoundException, IOException {
+        FileWriter fw = new FileWriter(filename);
+        PrintWriter writer = new PrintWriter(fw);
+        
+        for(BoardTile[] b1:b){
+            for(BoardTile b2:b1){
+                switch(b2.getCellTerrain()){
+                    
+                }
+                    
+            }
+        }
+
+    }
+
 }
