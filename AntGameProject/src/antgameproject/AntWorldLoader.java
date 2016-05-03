@@ -23,21 +23,22 @@ public class AntWorldLoader {
         public AntWorldLoaderException(String message) {
             super(message);
         }
-    }   
+    }
 
     public Boolean tournamentReady(BoardTile[][] b) {
 
         return null;
     }
 
-    public Boolean validAnthills(BoardTile[][] b) throws AntWorldLoaderException {
+    public Boolean validAnthills(Board board) throws AntWorldLoaderException {
         int blackBaseCount = 0;
         int redBaseCount = 0;
-        
+        BoardTile[][] b = board.getBoard();
+
         /*
-        Check there are the right amount of ant hill board tiles, throw exception
-        if not.
-        */
+         Check there are the right amount of ant hill board tiles, throw exception
+         if not.
+         */
         for (BoardTile[] b2 : b) {
             for (BoardTile b1 : b2) {
                 if (b1.getCellTerrain() == Terrain.BLACKBASE) {
@@ -46,18 +47,79 @@ public class AntWorldLoader {
                 if (b1.getCellTerrain() == Terrain.REDBASE) {
                     redBaseCount++;
                 }
-            }        
+            }
         }
-        
-        if(blackBaseCount!=163||redBaseCount!=163){
+        if (blackBaseCount != 163 || redBaseCount != 163) {
             throw new AntWorldLoaderException("wrong amount of red or black ant hill board tiles.");
-        }else{
-            return true;
         }
-        
-        
-        
-        
+
+        /*
+         Check the anthills are the right shape: find the first black and red
+         tiles to begin with.
+         */
+        Boolean finishedFindingFirstBlack = false;
+        Pos firstBlackPosition = null;
+        while (!finishedFindingFirstBlack) {
+            for (int i = 0; i < b.length; i++) {
+                for (int j = 0; j < b[i].length; j++) {
+                    if (b[i][j].getCellTerrain() == Terrain.BLACKBASE) {
+                        finishedFindingFirstBlack = true;
+                        firstBlackPosition = new Pos(i, j);
+                        i = b.length - 1;
+                        j = b[i].length - 1;
+                    }
+                }
+
+            }
+        }
+        Boolean finishedFindingFirstRed = false;
+        Pos firstRedPosition = null;
+        while (!finishedFindingFirstRed) {
+            for (int i = 0; i < b.length; i++) {
+                for (int j = 0; j < b[i].length; j++) {
+                    if (b[i][j].getCellTerrain() == Terrain.REDBASE) {
+                        finishedFindingFirstRed = true;
+                        firstRedPosition = new Pos(i, j);
+                        i = b.length - 1;
+                        j = b[i].length - 1;
+                    }
+                }
+            }
+        }
+
+        int blackPositionX = firstBlackPosition.getPosX();
+        int blackPositionY = firstBlackPosition.getPosY();
+        int redPositionX = firstRedPosition.getPosX();
+        int redPositionY = firstRedPosition.getPosY();
+
+        /*
+         check the black base shape
+         */
+        Boolean correctBlackShape = true;
+        int count = 0;
+//        for (int i = 0; i < 8; i++) {
+//            for (int j = blackPositionX - i; j < blackPositionX + 7 + i; i++) {
+//                
+//                if (b[j][blackPositionY+count].getCellTerrain() != Terrain.BLACKBASE) {
+//                    correctBlackShape = false;
+//                }
+//            }
+//            count++;
+//
+//        }
+
+        for (int i = blackPositionX; i < blackPositionX + 6; i++) {
+            if (b[i][blackPositionY].getCellTerrain() != Terrain.BLACKBASE) {
+                correctBlackShape = false;
+            }
+
+        }
+        if (correctBlackShape) {
+            return true;
+        } else {
+            throw new AntWorldLoaderException("black anthill wrong shape");
+        }
+
     }
 
     public Boolean validFood(BoardTile[][] b) {
