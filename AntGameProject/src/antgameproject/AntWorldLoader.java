@@ -66,7 +66,7 @@ public class AntWorldLoader {
      *
      * @param boardToTestBaseOn board to find first anthill position on.
      * @param baseTerrain type of anthill to look for.
-     * @return
+     * @return  the position at the top left of the base of the given colour.
      */
     private Pos findAntHillStart(BoardTile[][] boardToTestBaseOn, Terrain baseTerrain) {
         boolean found = false;
@@ -144,11 +144,13 @@ public class AntWorldLoader {
      * Checks if a given position is the edge of a food blob or ant hill, and if
      * so then what type of edge.
      *
-     * @param currentColumn
-     * @param currentRow
-     * @param maxColumn
-     * @param maxRow
-     * @return
+     * @param currentColumn the current column position
+     * @param currentRow the current row position
+     * @param maxColumn the maximum column value
+     * @param maxRow the maximum row value
+     * @return an int that represents if the cell given as an argument is an edge or not
+     * 0 indicates not an edge. 1 ,2 ,3 and 4 are corners 5, 6, 7 and 8 are are non
+     * corner edges.
      */
     private int isEdgeCase(int currentColumn, int currentRow, int maxColumn, int maxRow) {
         int edgeCaseNo = 0;
@@ -173,13 +175,13 @@ public class AntWorldLoader {
     }
 
     /**
-     * Checks if a food or anthill is surrounded by grass with no food on it,
-     * returns true if not, false if so.
-     *
-     * @param boardToCheck
-     * @param pos
-     * @param edgeNo
-     * @return
+     * Checks if an edge given by an edge number has grass with no food in the applicable
+     * direction. 
+     * @param boardToCheck is the board to perform the check on
+     * @param pos is the position that the check will take place
+     * @param edgeNo indicate what type of edge this position is. Can be found using isEdgeCase method
+     * @return true if there is a bad cell in the applicable position on the board for the given 
+     * edge number and false otherwise.
      */
     private boolean isAnErrorAtEdge(BoardTile[][] boardToCheck, Pos pos, int edgeNo) {
         boolean edgeError = false;
@@ -234,12 +236,11 @@ public class AntWorldLoader {
     }
 
     /**
-     * Checks if a position is surrounded by grass, returns true if so false if
+     * Checks if a position is surrounded by grass without food, returns true if so false if
      * not.
-     *
-     * @param position
-     * @param board
-     * @return
+     * @param position the position to check is surrounded by grass
+     * @param board the board to perform the check on
+     * @return true if the position is surrounded by grass without food and false otherwise.
      */
     private boolean checkSurroundedByGrass(Pos position, BoardTile[][] board) {
         int positionY = position.getPosY();
@@ -259,8 +260,8 @@ public class AntWorldLoader {
      * Checks if a world has valid food blocks on it, returns true if so false
      * if not.
      *
-     * @param boardToFindFoodOn
-     * @return
+     * @param boardToFindFoodOn the board to check if it has valid food placed.
+     * @return true if the board has valid food placed and false otherwise.
      */
     private Boolean validFood(BoardTile[][] boardToFindFoodOn) {
         int blobsOfFoodFound = 0;
@@ -301,12 +302,12 @@ public class AntWorldLoader {
     }
 
     /**
-     * Tests individual blocks of food to check they're valid.
-     *
-     * @param pos
-     * @param boardToFindFoodOn
-     * @param offsets
-     * @return
+     * Tests an individual blocks of food to check they're valid i.e. each being
+     * a 5 x 5 rectangle all with 5 food on each.
+     * @param pos is the position of the top left food blob in a block
+     * @param boardToFindFoodOn the board to perform the check on
+     * @param offsets the offset of the food block
+     * @return returns false if not error is found and true if an error is found.
      */
     private boolean testFoodBlock(Pos pos, BoardTile[][] boardToFindFoodOn, int[] offsets) {
         int posX = pos.getPosX();
@@ -334,10 +335,9 @@ public class AntWorldLoader {
     }
 
     /**
-     * Checks if a world has valid rocks on it.
-     *
-     * @param boardToFindRocksOn
-     * @return
+     * Checks if a world has 14 valid rocks in it.
+     * @param boardToFindRocksOn the board to check for rocks on
+     * @return true if there are 14 valid rocks and false otherwise
      */
     private Boolean validRocks(BoardTile[][] boardToFindRocksOn) {
         int rockCount = 0;
