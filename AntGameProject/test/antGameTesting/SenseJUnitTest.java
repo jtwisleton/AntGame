@@ -38,6 +38,7 @@ public class SenseJUnitTest {
     private int nextStateIfConditionFalse;
     private RandomNumber randomNumberGen;
 
+    // Set up ants and board for testing
     @Before
     public void setUp() {
         nextStateIfConditionTrue = 22;
@@ -68,7 +69,7 @@ public class SenseJUnitTest {
         randomNumberGen = new RandomNumber(1);
     }
 
-    // tests sense here and ahead and home and foe home
+    // Tests sense here and ahead and home and foe home
     @Test
     public void senseDirectionHere() {
         Sense senseHome = new Sense(SenseDirection.HERE, new Home(),
@@ -90,7 +91,7 @@ public class SenseJUnitTest {
         assertTrue(testAnt.getCurrentBrainState() == nextStateIfConditionFalse);
     }
 
-    // test sense left ahead and right ahead, foe and food
+    // Test sense left ahead and right ahead, foe and food
     @Test
     public void senseDirectionAhead() {
         Sense senseFoeLeftAhead = new Sense(SenseDirection.LEFTAHEAD, new Foe(),
@@ -113,7 +114,7 @@ public class SenseJUnitTest {
 
     }
 
-    // test sense friend true and false
+    // Test sense friend true and false
     @Test
     public void senseFriend() {
         Ant friend = new Ant(Colour.RED, 5, new Pos(6, 5));
@@ -128,7 +129,7 @@ public class SenseJUnitTest {
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionFalse);
     }
 
-    // test sense friends with food true and false
+    // Test sense friends with food true and false
     @Test
     public void senseFriendWithFood() {
         Ant friend = new Ant(Colour.RED, 5, new Pos(6, 5));
@@ -144,7 +145,7 @@ public class SenseJUnitTest {
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionTrue);
     }
 
-    // test sense foe with food true and false
+    // Test sense foe with food true and false
     @Test
     public void senseFoeWithFood() {
         Ant foe = new Ant(Colour.BLACK, 5, new Pos(6, 5));
@@ -160,7 +161,7 @@ public class SenseJUnitTest {
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionTrue);
     }
 
-    // test sense rock true and false
+    // Test sense rock true and false
     @Test
     public void senseRock() {
         new Sense(SenseDirection.LEFTAHEAD, new Rock(), nextStateIfConditionTrue,
@@ -172,7 +173,7 @@ public class SenseJUnitTest {
         assertTrue(blackAnt.getCurrentBrainState() == nextStateIfConditionFalse);
     }
 
-    // test sense foe marker true and false
+    // Test sense foe marker true and false
     @Test
     public void senseFoeMarker() {
         new Sense(SenseDirection.AHEAD, new FoeMarker(), nextStateIfConditionTrue,
@@ -185,7 +186,7 @@ public class SenseJUnitTest {
         assertTrue(secondAnt.getCurrentBrainState() == nextStateIfConditionTrue);
     }
 
-    // test sense marker true false for different markers
+    // Test sense marker true false for different markers
     @Test
     public void senseMarker() {
         for (int i = 0; i < 6; i++) {
