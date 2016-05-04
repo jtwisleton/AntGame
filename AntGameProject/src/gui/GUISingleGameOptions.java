@@ -152,6 +152,7 @@ public class GUISingleGameOptions extends BasicGameState {
                     } catch (InterruptedException ex) {
                         Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    sbg.getState(7).init(gc, sbg);
                     sbg.enterState(7);
                 }
             }
