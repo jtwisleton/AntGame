@@ -424,6 +424,9 @@ public class GUISingleGameOptions extends BasicGameState {
                 (int) (mainMenu.getWidth() * screenScale), (int) (mainMenu.getHeight() * screenScale));
     }
     
+    /**
+     * Reset all the files and ticks.
+     */
     private void setFilesAndTicksToNull(){
         antBrainOne = null;
         antBrainTwo = null;
