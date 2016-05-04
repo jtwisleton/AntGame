@@ -3,11 +3,7 @@ package antGameTesting;
 import antgameproject.AntWorldLoader;
 import antgameproject.Board;
 import java.io.IOException;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -17,32 +13,15 @@ import org.junit.Test;
  */
 public class AntWorldLoaderJUnitTest {
 
-    public AntWorldLoaderJUnitTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
+    // Test that the world syntax is checked correctly
     @Test
     public void checkWorldSyntaxTest() throws AntWorldLoader.AntWorldLoaderException, IOException {
         AntWorldLoader awl = new AntWorldLoader();
         String fn = "generatedWorlds//generatedWorld1998270173.world";
-        Assert.assertEquals(true, awl.checkWorldSyntax(fn));
+        Assert.assertTrue(awl.checkWorldSyntax(fn));
     }
 
+    // Test that a world is loaded correctly
     @Test
     public void loadWorldTest() throws AntWorldLoader.AntWorldLoaderException, IOException {
         AntWorldLoader awl = new AntWorldLoader();
