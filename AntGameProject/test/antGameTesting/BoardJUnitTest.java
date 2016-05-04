@@ -24,6 +24,8 @@ public class BoardJUnitTest {
     private Pos[] blackBasePositions = {new Pos(13, 10), new Pos(14, 10), new Pos(12, 11),
         new Pos(13, 11), new Pos(14, 11), new Pos(13, 12), new Pos(14, 12)};
 
+    
+    // Create a new board for testing
     @Before
     public void setUp() {
         BoardTile[][] board = new BoardTile[20][20];
@@ -38,6 +40,7 @@ public class BoardJUnitTest {
             }
         }
 
+        // Add anthills
         for (int i = 0; i < redBasePositions.length; i++) {
             board[redBasePositions[i].getPosY()][redBasePositions[i].getPosX()]
                     = new BoardTile(0, Terrain.REDBASE);
@@ -51,6 +54,7 @@ public class BoardJUnitTest {
         //testBoard.printBoardToASCII();
     }
 
+    // Test that a board is created correctly
     @Test
     public void testBoardCreation() {
         assertTrue(testBoard.getNumberOfAntsAlive(Colour.RED) == redBasePositions.length);
@@ -65,11 +69,13 @@ public class BoardJUnitTest {
 
     }
 
+    // Test that an ant is at a certain cell
     @Test
     public void testAntInPosition() {
         assertTrue(testBoard.antInPosition(redBasePositions[0]));
     }
 
+    // Test that ant can be placed and that it is in the right position
     @Test
     public void testSetAntAtAndAntAt() {
         Pos antPos = new Pos(9, 9);
@@ -79,12 +85,14 @@ public class BoardJUnitTest {
         assertTrue(testBoard.antAt(antPos) == placedAnt);
     }
 
+    // Test that ant is in right position
     @Test
     public void testAntPosition() {
         assertTrue(testBoard.getAntPosition(0).getPosX() == redBasePositions[0].getPosX());
         assertTrue(testBoard.getAntPosition(0).getPosY() == redBasePositions[0].getPosY());
     }
 
+    // Test that ant can be removed from position
     @Test
     public void testClearAntAt() {
         Ant antInPositionToBeCleared = testBoard.antAt(blackBasePositions[0]);
@@ -93,6 +101,7 @@ public class BoardJUnitTest {
         assertTrue(antInPositionToBeCleared.getBoardPosition() == null);
     }
 
+    // Test that ant can be killed at a position
     @Test
     public void testKillAntAt() {
         Ant antToKill = testBoard.antAt(blackBasePositions[0]);
@@ -103,10 +112,12 @@ public class BoardJUnitTest {
         assertFalse(testBoard.antInPosition(blackBasePositions[0]));
     }
 
+    
     @Test
     public void testNumberOfFoodAt() {
         testBoard.numberOfFoodAt(new Pos(16, 16));
     }
+    
     /*
                     
      public void setFoodAt(Pos foodPosition, int amountOfFood){
