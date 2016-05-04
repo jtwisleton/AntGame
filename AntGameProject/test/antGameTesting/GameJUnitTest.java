@@ -34,6 +34,7 @@ public class GameJUnitTest {
     private Board gameBoard;
     private Game testGame;
 
+    // Set up a new game for testing
     @Before
     public void setUp() {
         try {
@@ -51,7 +52,7 @@ public class GameJUnitTest {
         }
     }
 
-    // tests a game against the provided test dumps that can be found at 
+    // Tests a game against the provided test dumps that can be found at 
     // http://users.sussex.ac.uk/~mfb21/se/project/dump/index.html
     @Test
     public void testGameCreation() {
@@ -80,7 +81,7 @@ public class GameJUnitTest {
         assertTrue(testGame.getBlackAntsAlive() == 16);
     }
 
-    // loads the test dumps
+    // Loads the test dumps
     private List<String> getTestDumps() {
         ArrayList<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
@@ -95,7 +96,7 @@ public class GameJUnitTest {
         return lines;
     }
 
-    // parses a board cell to match the form of the test dumps
+    // Parses a board cell to match the form of the test dumps
     private String parseCellToDumpFileFormat(BoardTile cellToParse) {
         String tileRepresentation = "";
         tileRepresentation += addFood(cellToParse);
@@ -107,7 +108,7 @@ public class GameJUnitTest {
         return tileRepresentation;
     }
 
-    // converts a cell terrain to the appropriate string
+    // Converts a cell terrain to the appropriate string
     private String terrainToString(Terrain cellTerrain) {
         String terrain;
         if (cellTerrain == Terrain.REDBASE) {
@@ -122,7 +123,7 @@ public class GameJUnitTest {
         return terrain;
     }
 
-    // adds food to the parse string if there is food in the cell
+    // Adds food to the parse string if there is food in the cell
     private String addFood(BoardTile cellToParse) {
         if (cellToParse.getFoodInTile() == 0) {
             return "";
@@ -130,7 +131,7 @@ public class GameJUnitTest {
         return cellToParse.getFoodInTile() + " food; ";
     }
 
-    // adds the markers in the cell to the parse string
+    // Adds the markers in the cell to the parse string
     private String addMarkers(BoardTile cellToParse, Colour markerColour) {
         String markers = "";
         if (cellToParse.getMarkers(markerColour).size() > 0) {
@@ -148,7 +149,7 @@ public class GameJUnitTest {
         return markers;
     }
 
-    // adds ant and ant state to the parse string
+    // Adds ant and ant state to the parse string
     private String addAnt(BoardTile tileToCheckForAnt) {
         String antRepresentation;
         if (tileToCheckForAnt.getAntOnTile() == null) {
@@ -172,7 +173,7 @@ public class GameJUnitTest {
         return antRepresentation;
     }
 
-    // adds the food being carried by an ant to the parse string
+    // Adds the food being carried by an ant to the parse string
     private String amountOfFoodCarried(Ant antToTransform) {
         if (antToTransform.getCarryingFood()) {
             return " 1";
@@ -180,7 +181,7 @@ public class GameJUnitTest {
         return " 0";
     }
 
-    // tests that no more rounds can be run in a game after is has reached 300000 steps
+    // Tests that no more rounds can be run in a game after is has reached 300000 steps
     @Test
     public void testGameWontRunMoreThan300000() {
         testGame.run();
