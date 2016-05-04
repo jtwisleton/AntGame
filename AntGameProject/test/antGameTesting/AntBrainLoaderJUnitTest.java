@@ -6,10 +6,6 @@ import antgameproject.AntBrainLoader.AntBrainLoaderException;
 import static antgameproject.AntBrainLoader.loadBrain;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -19,25 +15,7 @@ import org.junit.Test;
  */
 public class AntBrainLoaderJUnitTest {
 
-    public AntBrainLoaderJUnitTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
+    // Test that a valid ant brain is loaded correctly
     @Test
     public void loadBrainTest() throws IOException, FileNotFoundException, AntBrainLoader.AntBrainLoaderException {
         //String fn = "src//antgameproject//testBrain.txt";
@@ -48,6 +26,7 @@ public class AntBrainLoaderJUnitTest {
         }
     }
 
+    // Test that an invalid brain throws an exception when loaded
     @Test
     public void loadInvalidBrainTest() throws IOException, FileNotFoundException, AntBrainLoader.AntBrainLoaderException {
         String fn = "src//antgameproject//invalidBrain.txt";
