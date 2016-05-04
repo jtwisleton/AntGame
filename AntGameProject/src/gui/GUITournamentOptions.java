@@ -184,8 +184,12 @@ public class GUITournamentOptions extends BasicGameState {
             if(gc.getInput().isMouseButtonDown(0)){
                 // Clicked generate world button
                 try {
-                    // Generate ant world
-                    tournament.generateAntWorld();
+                    try {
+                        // Generate ant world
+                        tournament.generateAntWorld();
+                    } catch (IOException ex) {
+                        Logger.getLogger(GUITournamentOptions.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     TimeUnit.MILLISECONDS.sleep(250);
                     antWorldList = tournament.getListOfAntWorlds();
                     bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
