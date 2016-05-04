@@ -20,6 +20,7 @@ public class BoardTileJUnitTest {
     private BoardTile redBaseTile;
     private int foodOnGrassTile;
 
+    // Create board tiles for testing
     @Before
     public void setUp() {
         foodOnGrassTile = 5;
@@ -29,6 +30,7 @@ public class BoardTileJUnitTest {
         redBaseTile = new BoardTile(0, Terrain.REDBASE);
     }
 
+    // Test that board tiles are created correctly
     @Test
     public void testBoardTileCreation() {
         assertTrue(rockTile.getCellTerrain() == Terrain.ROCK);
@@ -37,12 +39,13 @@ public class BoardTileJUnitTest {
         assertTrue(redBaseTile.getCellTerrain() == Terrain.REDBASE);
     }
 
+    // Test that markers and set and retrieved correctly
     @Test
     public void testSettingAndGettingMarkers() {
         int blackMarkerToSet = 3;
         int redMarkerToSet = 2;
-        assertTrue(grassTile.getMarkers(Colour.BLACK).size() == 0);
-        assertTrue(grassTile.getMarkers(Colour.RED).size() == 0);
+        assertTrue(grassTile.getMarkers(Colour.BLACK).isEmpty());
+        assertTrue(grassTile.getMarkers(Colour.RED).isEmpty());
         grassTile.setMarker(Colour.BLACK, blackMarkerToSet);
         grassTile.setMarker(Colour.RED, redMarkerToSet);
         assertTrue(grassTile.getMarkers(Colour.BLACK).contains(blackMarkerToSet));
@@ -51,6 +54,7 @@ public class BoardTileJUnitTest {
         assertTrue(grassTile.getMarkers(Colour.RED).size() == 1);
     }
 
+    // Test that the board tiles are displayed correctly as a string
     @Test
     public void testToStringMethod() {
         assertTrue(blackBaseTile.toString().equals("-"));
