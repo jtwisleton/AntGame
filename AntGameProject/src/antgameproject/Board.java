@@ -42,8 +42,8 @@ public class Board {
         addAnts();
     }
 
-    /*
-     * Adds ants onto the board and initialises the ants appropriatly.
+    /**
+     * Adds ants onto the board and initializes the ants appropriately.
      */
     private void addAnts() {
         for (int i = 0; i < board.length; i++) {
@@ -317,6 +317,11 @@ public class Board {
         return board;
     }
 
+    /**
+     * Create a copy of a game board.
+     * 
+     * @return Copy of the game board.
+     */
     public Board copy() {
         BoardTile[][] copyBoard = new BoardTile[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
