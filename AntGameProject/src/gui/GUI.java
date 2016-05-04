@@ -35,7 +35,7 @@ public class GUI extends StateBasedGame {
     public void initStatesList(GameContainer container) throws SlickException {
         // Get the size of the screen
         float scale = getScale(container);
-        System.out.println(scale);
+        container.setShowFPS(false);
 
         // Add all the screens as states
         this.addState(new GUITeamScreen(scale));
