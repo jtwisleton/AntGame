@@ -24,17 +24,21 @@ public class AntWorldGenerator {
         AntWorldGenerator awg = new AntWorldGenerator(10);
     }
 
-    /*
-     avgRockSize is the average size of generated rocks.
+    /**
+     *
+     * @param avgRockSize the average size of generated rocks.
      */
     public AntWorldGenerator(int avgRockSize) {
         this.avgRockSize = avgRockSize;
     }
 
-    /*
-     Runs the placeBordersAndGrass, placeAnthills, placeFood, placeRocks,
-     creareGaps methods - writes generated world to file wit toFile method, and
-     returns new Board.    
+    /**
+     * Runs the placeBordersAndGrass, placeAnthills, placeFood, placeRocks,
+     * creareGaps methods - writes generated world to file wit toFile method,
+     * and returns new Board.
+     *
+     * @return generated world in Board file.
+     * @throws IOException
      */
     public Board generateWorld() throws IOException {
         BoardTile[][] b = placeBordersAndGrass();
@@ -81,9 +85,9 @@ public class AntWorldGenerator {
 
     /**
      * places Anthills on an empty BoardTile array.
-     * 
+     *
      * @param emptyBoard empty BoardTile array (with grass and borders).
-     * @return BoardTile array with anthills. 
+     * @return BoardTile array with anthills.
      */
     public BoardTile[][] placeAnthills(BoardTile[][] emptyBoard) {
 
@@ -182,6 +186,7 @@ public class AntWorldGenerator {
 
     /**
      * Takes a BoardTile array with anthills, place Food blocks onto it
+     *
      * @param anthills a BoardTile array with borders, grass and anthills.
      * @return a BoardTile array with borders, grass anthills and food.
      */
@@ -289,134 +294,13 @@ public class AntWorldGenerator {
         return anthills;
     }
 
-    public BoardTile[][] placeRocksOld(BoardTile[][] anthillsFood) {
-
-        ArrayList<Pos> rockPositions = new ArrayList<>();
-        Random r = new Random();
-
-        /*
-         Iterate 14 times to create 14 rocks.
-         */
-        ArrayList<Pos> currentRockPositions = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-
-            /*
-             Generate random numbers within world range for the current rocks
-             initial x and y coordinates - check that it isn't adjacent to any
-             other rocks or on a food tile, keep generating until this is the case.
-             */
-            int currentRockX = 0;
-            int currentRockY = 0;
-            boolean finished = false;
-            while (!finished) {
-                currentRockX = r.nextInt(129) + 2;
-                currentRockY = r.nextInt(129) + 2;
-                if (anthillsFood[currentRockY][currentRockX].getCellTerrain() == Terrain.GRASS
-                        && anthillsFood[currentRockY][currentRockX].getFoodInTile() == 0) {
-                    if (!rockPositions.contains(new Pos(currentRockX, currentRockY))
-                            && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY))
-                            && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY))
-                            && !rockPositions.contains(new Pos(currentRockX, currentRockY + 1))
-                            && !rockPositions.contains(new Pos(currentRockX, currentRockY - 1))
-                            && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY - 1))
-                            && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY + 1))
-                            && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY - 1))
-                            && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY + 1))) {
-
-                        /*
-                         Add generated initial x and y coordinates for current rock
-                         to currentRockPositions.
-                         */
-                        currentRockPositions.add(new Pos(currentRockX, currentRockY));
-                        finished = true;
-                    }
-                }
-            }
-
-            /*
-             Iterate from 0 to avgRockSize.
-             */
-            for (int j = 0; j < avgRockSize; j++) {
-
-                /*
-                 Generate a random number from 0 to 7 to decide which direction
-                 to place next rock piece.                    
-                 */
-                int direction = r.nextInt(8);
-
-                int savedCurrentRockX = currentRockX;
-                int savedCurrentRockY = currentRockY;
-                switch (direction) {
-                    case 0:
-                        currentRockX++;
-                    case 1:
-                        currentRockX--;
-                    case 2:
-                        currentRockY++;
-                    case 3:
-                        currentRockY--;
-                    case 4:
-                        currentRockX++;
-                        currentRockY++;
-                    case 5:
-                        currentRockX--;
-                        currentRockY--;
-                    case 6:
-                        currentRockX++;
-                        currentRockY--;
-                    case 7:
-                        currentRockX--;
-                        currentRockY++;
-                }
-
-                /*
-                 If the random next piece of the current rock is not adjacent
-                 to any existing rocks, or outside of the world range, or on a 
-                 base or food tile, add it to the currentRockPositions ArrayList. 
-                 If it is, revert back to the previous currentRockX and 
-                 currentRockY and reduce increment (try again).
-                 */
-                if (!rockPositions.contains(new Pos(currentRockX, currentRockY))
-                        && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY))
-                        && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY))
-                        && !rockPositions.contains(new Pos(currentRockX, currentRockY + 1))
-                        && !rockPositions.contains(new Pos(currentRockX, currentRockY - 1))
-                        && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY - 1))
-                        && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY + 1))
-                        && !rockPositions.contains(new Pos(currentRockX + 1, currentRockY - 1))
-                        && !rockPositions.contains(new Pos(currentRockX - 1, currentRockY + 1))
-                        && (currentRockX < 150) && (currentRockX > 0) && (currentRockY < 150) && (currentRockY > 0)
-                        && anthillsFood[currentRockX][currentRockY].getCellTerrain() != Terrain.BLACKBASE
-                        && anthillsFood[currentRockX][currentRockY].getCellTerrain() != Terrain.REDBASE
-                        && anthillsFood[currentRockX][currentRockY].getFoodInTile() == 0) {
-                    currentRockPositions.add(new Pos(currentRockX, currentRockY));
-                } else {
-                    j--;
-                    currentRockX = savedCurrentRockX;
-                    currentRockY = savedCurrentRockY;
-                }
-            }
-
-            /*
-             At the end of the loop, add all current rock positions to overall
-             rock positions ArrayList.
-             */
-            rockPositions.addAll(currentRockPositions);
-            currentRockPositions.clear();
-        }
-
-        /*
-         Iterate over rockPosition ArrayList, adding rocks to world.
-         */
-        for (Pos rockPosition : rockPositions) {
-            int currentPosX = rockPosition.getPosX();
-            int currentPosY = rockPosition.getPosY();
-            anthillsFood[currentPosX][currentPosY] = new BoardTile(0, Terrain.ROCK);
-        }
-
-        return anthillsFood;
-    }
-
+    /**
+     * Takes a world with anthills and food, returns a world with anthills food
+     * and rocks.
+     *
+     * @param anthillsFood world with anthills and food.
+     * @return a world with anthills food and rocks.
+     */
     public BoardTile[][] placeRocks(BoardTile[][] anthillsFood) {
 
         ArrayList<Pos> rockPositions = new ArrayList<>();
@@ -531,6 +415,13 @@ public class AntWorldGenerator {
         return anthillsFood;
     }
 
+    /**
+     * Takes a world with anthills food and rocks, returns a world with gaps
+     * around the food and anthills.
+     *
+     * @param anthillsFoodRocks world with anthills food and rocks.
+     * @return world with gaps around anthills and food.
+     */
     public BoardTile[][] createGaps(BoardTile[][] anthillsFoodRocks) {
         for (int i = 1; i < anthillsFoodRocks.length; i++) {
             for (int j = 1; j < anthillsFoodRocks[i].length; j++) {
@@ -580,6 +471,15 @@ public class AntWorldGenerator {
         return anthillsFoodRocks;
     }
 
+    /**
+     * Takes a BoardTile array and string filename, prints BoardTile world to
+     * file.
+     *
+     * @param b BoardTile array
+     * @param filename name of file
+     * @throws FileNotFoundException if filename cannot be accessed.
+     * @throws IOException if there's a problem writing to file.
+     */
     public void toFile(BoardTile[][] b, String filename) throws FileNotFoundException, IOException {
         FileWriter fw = new FileWriter(filename);
         PrintWriter writer = new PrintWriter(fw);

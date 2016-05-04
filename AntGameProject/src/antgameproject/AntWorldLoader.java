@@ -27,10 +27,13 @@ public class AntWorldLoader {
         }
     }
 
-    /*
-     Calls boardHasValidAntHills, validFood and validRocks methods on given
-     board, checks it is the right height and width, and returns true if all
-     these conditions are met.
+    /**
+     * Calls boardHasValidAntHills, validFood and validRocks methods on given
+     * board, checks it is the right height and width, and returns true if all
+     * these conditions are met.
+     *
+     * @param boardToTest BoardTile array to check if tournament ready.
+     * @return true if BoardTile world is valid, false if not.
      */
     private Boolean tournamentReady(BoardTile[][] boardToTest) {
         if (boardToTest.length == 150 && boardToTest[0].length == 150
@@ -41,9 +44,12 @@ public class AntWorldLoader {
         return false;
     }
 
-    /*
-     Returns true if validAntHillForm method returns true on the black and red
-     bases, false if not.
+    /**
+     * Returns true if validAntHillForm method returns true on the black and red
+     * bases, false if not.
+     *
+     * @param boardToTest board to check if has valid anthills.
+     * @return true if anthills valid, false if not.
      */
     private boolean boardHasValidAntHills(BoardTile[][] boardToTest) {
         Pos blackAntHillStart = findAntHillStart(boardToTest, Terrain.BLACKBASE);
@@ -55,8 +61,12 @@ public class AntWorldLoader {
         return false;
     }
 
-    /*
-     Returns the first position of the given type of ant hill.
+    /**
+     * Returns the first position of the given type of ant hill.
+     *
+     * @param boardToTestBaseOn board to find first anthill position on.
+     * @param baseTerrain type of anthill to look for.
+     * @return
      */
     private Pos findAntHillStart(BoardTile[][] boardToTestBaseOn, Terrain baseTerrain) {
         boolean found = false;
@@ -77,8 +87,14 @@ public class AntWorldLoader {
         return colourBasePosition;
     }
 
-    /*
-     Checks that given anthill type is of the right shape.
+    /**
+     * Checks that given anthill type is of the right shape.
+     *
+     * @param boardToCheck board to check anthill are valid shape on.
+     * @param positionToStartCheck first position of anthill to check.
+     * @param baseTerrain type of anthill.
+     * @return true if given anthill type is of right shape on world, false if
+     * not.
      */
     private boolean validAntHillForm(BoardTile[][] boardToCheck, Pos positionToStartCheck,
             Terrain baseTerrain) {
@@ -124,9 +140,15 @@ public class AntWorldLoader {
         return !errorFound;
     }
 
-    /*
-     Checks if a given position is the edge of a food blob or ant hill, and if
-     so then what type of edge.
+    /**
+     * Checks if a given position is the edge of a food blob or ant hill, and if
+     * so then what type of edge.
+     *
+     * @param currentColumn
+     * @param currentRow
+     * @param maxColumn
+     * @param maxRow
+     * @return
      */
     private int isEdgeCase(int currentColumn, int currentRow, int maxColumn, int maxRow) {
         int edgeCaseNo = 0;
@@ -150,9 +172,14 @@ public class AntWorldLoader {
         return edgeCaseNo;
     }
 
-    /*
-     Checks if a food or anthill is surrounded by grass with no food on it,
-     returns true if not, false if so.
+    /**
+     * Checks if a food or anthill is surrounded by grass with no food on it,
+     * returns true if not, false if so.
+     *
+     * @param boardToCheck
+     * @param pos
+     * @param edgeNo
+     * @return
      */
     private boolean isAnErrorAtEdge(BoardTile[][] boardToCheck, Pos pos, int edgeNo) {
         boolean edgeError = false;
@@ -206,9 +233,13 @@ public class AntWorldLoader {
         return edgeError;
     }
 
-    /*
-     Checks if a position is surrounded by grass, returns true if so false if
-     not.
+    /**
+     * Checks if a position is surrounded by grass, returns true if so false if
+     * not.
+     *
+     * @param position
+     * @param board
+     * @return
      */
     private boolean checkSurroundedByGrass(Pos position, BoardTile[][] board) {
         int positionY = position.getPosY();
@@ -224,9 +255,12 @@ public class AntWorldLoader {
         return true;
     }
 
-    /*
-     Checks if a world has valid food blocks on it, returns true if so false if
-     not.
+    /**
+     * Checks if a world has valid food blocks on it, returns true if so false
+     * if not.
+     *
+     * @param boardToFindFoodOn
+     * @return
      */
     private Boolean validFood(BoardTile[][] boardToFindFoodOn) {
         int blobsOfFoodFound = 0;
@@ -266,8 +300,13 @@ public class AntWorldLoader {
         return blobsOfFoodFound == 11;
     }
 
-    /*
-     Tests individual blocks of food to check they're valid
+    /**
+     * Tests individual blocks of food to check they're valid.
+     *
+     * @param pos
+     * @param boardToFindFoodOn
+     * @param offsets
+     * @return
      */
     private boolean testFoodBlock(Pos pos, BoardTile[][] boardToFindFoodOn, int[] offsets) {
         int posX = pos.getPosX();
@@ -294,8 +333,11 @@ public class AntWorldLoader {
         return errorFound;
     }
 
-    /*
-     Checks if a world has valid rocks on it.
+    /**
+     * Checks if a world has valid rocks on it.
+     *
+     * @param boardToFindRocksOn
+     * @return
      */
     private Boolean validRocks(BoardTile[][] boardToFindRocksOn) {
         int rockCount = 0;
@@ -312,9 +354,17 @@ public class AntWorldLoader {
         return rockCount == 14;
     }
 
-    /*
-     Calls the checkWorldSyntax method, then uses the lines ArrayList to create
-     a board from the given world file if checkWorldSyntax returns true.
+    /**
+     * Calls the checkWorldSyntax method, then uses the lines ArrayList to
+     * create a board from the given world file if checkWorldSyntax returns
+     * true.
+     *
+     * @param fileName
+     * @param name
+     * @param tournamentReady
+     * @return
+     * @throws antgameproject.AntWorldLoader.AntWorldLoaderException
+     * @throws IOException
      */
     public Board loadWorld(String fileName, String name, boolean tournamentReady) throws AntWorldLoaderException, IOException {
 
@@ -400,9 +450,15 @@ public class AntWorldLoader {
         }
     }
 
-    /*
-     Returns true is a world is syntactically correct, or throws an exception.
-     Also loads given world into lines ArrayList.
+    /**
+     * Returns true is a world is syntactically correct, or throws an exception.
+     * Also loads given world into lines ArrayList.
+     *
+     * @param fileName
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws antgameproject.AntWorldLoader.AntWorldLoaderException
      */
     public Boolean checkWorldSyntax(String fileName) throws FileNotFoundException, IOException, AntWorldLoaderException {
 

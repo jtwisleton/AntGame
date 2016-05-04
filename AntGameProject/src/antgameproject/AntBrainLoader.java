@@ -109,7 +109,6 @@ public class AntBrainLoader {
         if (!"".equals(brainString)) {
             System.out.println("Unable to lex: " + brainString);
             throw new AntBrainLoaderException("Invalid brain!");
-            
         } else {
 
             /*
