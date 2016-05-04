@@ -5,10 +5,6 @@ import antgameproject.AntWorldLoader;
 import antgameproject.Board;
 import antgameproject.BoardTile;
 import java.io.IOException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -18,22 +14,7 @@ import org.junit.Test;
  */
 public class AntWorldGeneratorJUnitTest {
 
-    public AntWorldGeneratorJUnitTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-
-    }
-
+    // Test placing borders and grass
     @Test
     public void placeBordersAndGrass() {
         AntWorldGenerator wg = new AntWorldGenerator(10);
@@ -43,6 +24,7 @@ public class AntWorldGeneratorJUnitTest {
         board.printBoardToASCII();
     }
 
+    // Test placing anthills
     @Test
     public void placeAnthills() {
         AntWorldGenerator wg = new AntWorldGenerator(10);
@@ -53,6 +35,7 @@ public class AntWorldGeneratorJUnitTest {
         board.printBoardToASCII();
     }
 
+    // Test placing food
     @Test
     public void placeFood() {
         AntWorldGenerator wg = new AntWorldGenerator(10);
@@ -64,6 +47,7 @@ public class AntWorldGeneratorJUnitTest {
         board.printBoardToASCII();
     }
 
+    // Test placing rocks
     @Test
     public void placeRocks() {
         AntWorldGenerator wg = new AntWorldGenerator(10);
@@ -75,6 +59,7 @@ public class AntWorldGeneratorJUnitTest {
         board.printBoardToASCII();
     }
 
+    // Test creating gaps between objects
     @Test
     public void createGaps() {
         AntWorldGenerator wg = new AntWorldGenerator(30);
@@ -92,6 +77,7 @@ public class AntWorldGeneratorJUnitTest {
         board.printBoardToASCII();
     }
 
+    // Test generating an ant world
     @Test
     public void createWorld() throws IOException {
         AntWorldGenerator wg = new AntWorldGenerator(30);
@@ -99,6 +85,7 @@ public class AntWorldGeneratorJUnitTest {
         b.printBoardToASCII();
     }
 
+    // Test printing ant world to file
     @Test
     public void printToFile() throws IOException, AntWorldLoader.AntWorldLoaderException {
         AntWorldGenerator wg = new AntWorldGenerator(30);
@@ -111,9 +98,5 @@ public class AntWorldGeneratorJUnitTest {
 
         AntWorldLoader awl = new AntWorldLoader();
         awl.loadWorld("GeneratedWorld.world", "generatedworld", false);
-    }
-
-    @After
-    public void tearDown() {
     }
 }
