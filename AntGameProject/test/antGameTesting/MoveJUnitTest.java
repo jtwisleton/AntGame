@@ -29,6 +29,7 @@ public class MoveJUnitTest {
     private int nextStateIfAheadBlocked;
     private RandomNumber randomNumberGen;
 
+    // Create a new move for testing
     @Before
     public void setUp() {
         nextStateIfAheadClear = 22;
@@ -54,7 +55,7 @@ public class MoveJUnitTest {
         randomNumberGen = new RandomNumber(1);
     }
 
-    // test a clear move from an even y position in all directions
+    // Test a clear move from an even y position in all directions
     @Test
     public void testNormalMoveFromEvenY() {
         Pos[] expectedPositions = {new Pos(3, 2), new Pos(2, 3), new Pos(1, 3), new Pos(1, 2),
@@ -75,7 +76,7 @@ public class MoveJUnitTest {
         }
     }
 
-    // test a clear move from an odd y position in all directions
+    // Test a clear move from an odd y position in all directions
     @Test
     public void testNormalMoveFromOddY() {
         Pos[] expectedPositions = {new Pos(6, 5), new Pos(6, 6), new Pos(5, 6), new Pos(4, 5),
@@ -96,7 +97,7 @@ public class MoveJUnitTest {
         }
     }
 
-    // test rest value is reducing
+    // Test rest value is reducing
     @Test
     public void testResting() {
         Move testMove = new Move(nextStateIfAheadClear, nextStateIfAheadBlocked);
@@ -108,7 +109,7 @@ public class MoveJUnitTest {
         assertFalse(testAnt.antIsResting());
     }
 
-    // test blocked by rock
+    // Test blocked by rock
     @Test
     public void antBlockedByRock() {
         Pos antPositionBeforeMove = new Pos(1, 1);
@@ -124,7 +125,7 @@ public class MoveJUnitTest {
         assertTrue(testBoard.antAt(antPositionBeforeMove) == blockedAnt);
     }
 
-    // test blocked by ant
+    // Test blocked by ant
     @Test
     public void antBlockedByAnt() {
         Pos antPositionBeforeMove = new Pos(1, 1);
@@ -140,7 +141,7 @@ public class MoveJUnitTest {
         assertTrue(testBoard.antAt(antPositionBeforeMove) == blockedAnt);
     }
 
-    // test moving into surrounded
+    // Test moving into surrounded
     @Test
     public void testAntSurroundedAfterMove() {
         Pos antsNewPosition = new Pos(3, 2);
@@ -159,7 +160,7 @@ public class MoveJUnitTest {
         assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 3);
     }
 
-    // test moving into surrounded carrying food
+    // Test moving into surrounded carrying food
     @Test
     public void testAntSurroundedAfterMoveCarryingFood() {
         Pos antsNewPosition = new Pos(3, 2);
@@ -179,7 +180,7 @@ public class MoveJUnitTest {
         assertTrue(testBoard.numberOfFoodAt(antsNewPosition) == 4);
     }
 
-    // surrounded ant by moving
+    // Surrounded ant by moving
     @Test
     public void testAntSurroundingWithMove() {
         Pos antsNewPosition = new Pos(3, 2);
