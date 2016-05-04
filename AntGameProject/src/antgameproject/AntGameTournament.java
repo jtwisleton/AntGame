@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * @author Team18
- *
  * Class to represent a tournament of ant games.
+ *
+ * @author Team18
  */
 public class AntGameTournament {
 

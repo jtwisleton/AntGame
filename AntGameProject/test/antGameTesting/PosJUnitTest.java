@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test class for Pos class.
  * @author Team18
  */
 public class PosJUnitTest {

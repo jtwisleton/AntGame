@@ -12,6 +12,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test class for Turn class.
+ * 
  * @author Team18
  */
 public class TurnJUnitTest {

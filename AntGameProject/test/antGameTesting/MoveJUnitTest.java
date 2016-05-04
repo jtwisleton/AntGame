@@ -16,6 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Test class for Move class.
+ *
  * @author Team18
  */
 public class MoveJUnitTest {

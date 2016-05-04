@@ -5,9 +5,9 @@ import antgameproject.Board;
 import antgameproject.RandomNumber;
 
 /**
- * @author Team18
- *
  * Provides implementation to the flip instruction.
+ *
+ * @author Team18
  */
 public class Flip implements Instruction {
 

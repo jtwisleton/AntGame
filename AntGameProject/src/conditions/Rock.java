@@ -6,9 +6,9 @@ import antgameproject.Pos;
 import antgameproject.Terrain;
 
 /**
- * @author Team18
- *
  * Rock is used to sense for a rock in the given position.
+ *
+ * @author Team18
  */
 public class Rock implements Condition {
 

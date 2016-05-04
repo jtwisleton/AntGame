@@ -1,9 +1,9 @@
 package antgameproject;
 
 /**
- * @author Team18
- *
  * The Terrain enum is used to specify types of terrain for the board cells.
+ *
+ * @author Team18
  */
 public enum Terrain {
 

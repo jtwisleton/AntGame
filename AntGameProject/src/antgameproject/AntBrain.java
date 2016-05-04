@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Team18
- *
  * The AntBrain class represents an ant brain. It holds the instructions of that
  * ant brain but holds the score for that brain during a tournament.
+ *
+ * @author Team18
  */
 public class AntBrain implements Comparable<AntBrain> {
 

@@ -12,9 +12,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * @author Team18
- *
  * Class to represent a team screen.
+ *
+ * @author Team18
  */
 public class GUITeamScreen extends BasicGameState {
 

@@ -1,9 +1,9 @@
 package antgameproject;
 
 /**
- * @author Team18
- *
  * The RandomNumber class is a pseudo random number generator.
+ *
+ * @author Team18
  */
 public class RandomNumber {
 

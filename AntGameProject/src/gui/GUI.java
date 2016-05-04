@@ -6,9 +6,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * @author Team18
- *
  * Class to represent a Graphical User Interface for the Ant Game.
+ *
+ * @author Team18
  */
 public class GUI extends StateBasedGame {
 

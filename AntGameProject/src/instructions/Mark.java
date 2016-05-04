@@ -6,10 +6,12 @@ import antgameproject.Pos;
 import antgameproject.RandomNumber;
 
 /**
- * @author Team18
- *
  * Provides implementation for the mark instruction, which sets the specified
  * mark in the ants current position.
+ *
+ * @author Team18
+ *
+ *
  */
 public class Mark implements Instruction {
 

@@ -5,9 +5,11 @@ import antgameproject.Board;
 import antgameproject.RandomNumber;
 
 /**
+ * The interface that is implemented by the instruction classes.
+ *
  * @author Team18
  *
- * The interface that is implemented by the instruction classes.
+ *
  */
 public interface Instruction {
 

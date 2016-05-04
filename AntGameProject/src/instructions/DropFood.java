@@ -6,9 +6,9 @@ import antgameproject.Pos;
 import antgameproject.RandomNumber;
 
 /**
- * @author Team18
- *
  * Provides implementation to the drop food instruction.
+ *
+ * @author Team18
  */
 public class DropFood implements Instruction {
 

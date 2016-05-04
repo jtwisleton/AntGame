@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author Team18
- *
  * Represents the board in the ant game.
+ *
+ * @author Team18
  */
 public class Board {
 

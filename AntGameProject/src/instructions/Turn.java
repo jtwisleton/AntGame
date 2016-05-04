@@ -5,10 +5,11 @@ import antgameproject.Board;
 import antgameproject.RandomNumber;
 
 /**
- * @author Team18
- *
  * Provides implementation to the turn instruction that changes the direction
  * that the ant is facing.
+ *
+ * @author Team18
+ *
  */
 public class Turn extends DirectionalInstruction implements Instruction {
 

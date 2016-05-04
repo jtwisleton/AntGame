@@ -5,9 +5,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * Interface for all sense conditions.
+ *
+ * @author Team18
  */
 public interface Condition {
 

@@ -8,10 +8,10 @@ import antgameproject.RandomNumber;
 import antgameproject.Terrain;
 
 /**
- * @author Team18
- *
  * Provides implementation for the move instruction. The ant moves in the
  * direction it is currently facing if the way isn't blocked.
+ *
+ * @author Team18
  */
 public class Move extends DirectionalInstruction implements Instruction {
 

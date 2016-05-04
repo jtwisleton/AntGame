@@ -10,9 +10,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * @author Team18 
- * 
  * Class to represent the menu screen of a GUI.
+ *
+ * @author Team18
  */
 public class GUIMenuScreen extends BasicGameState {
 

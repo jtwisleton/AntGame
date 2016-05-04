@@ -6,9 +6,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * FoeWithFood is used to sense a enemy carrying food.
+ *
+ * @author Team18
  */
 public class FoeWithFood implements Condition {
 

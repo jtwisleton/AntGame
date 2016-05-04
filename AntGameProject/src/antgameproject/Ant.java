@@ -1,9 +1,9 @@
 package antgameproject;
 
 /**
- * @author Team18
- *
  * The Ant class represents an ant in the game.
+ *
+ * @author Team18
  */
 public class Ant {
 

@@ -5,9 +5,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * FoeMarker is used to sense for any marker of an enemy ant in a position.
+ *
+ * @author Team18
  */
 public class FoeMarker implements Condition {
 

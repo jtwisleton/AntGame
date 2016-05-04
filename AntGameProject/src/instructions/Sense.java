@@ -7,10 +7,10 @@ import antgameproject.Pos;
 import antgameproject.RandomNumber;
 
 /**
- * @author Team18 
- * 
- * Provides implementation to the Sense instruction that senses
- * one of the given conditions in a given direction from an ant.
+ * Provides implementation to the Sense instruction that senses one of the given
+ * conditions in a given direction from an ant.
+ *
+ * @author Team18
  */
 public class Sense extends DirectionalInstruction implements Instruction {
 

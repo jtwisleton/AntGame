@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author Team18
- *
  * Represents a board tile, which is a single cell on the game board.
+ *
+ * @author Team18
  */
 public class BoardTile {
 

@@ -7,10 +7,10 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
 /**
- * @author Team18
- *
  * AntGameProject is the start up class for the whole project. It starts an
  * instance of a tournament and links this to the GUI.
+ *
+ * @author Team18
  */
 public class AntGameProject {
 

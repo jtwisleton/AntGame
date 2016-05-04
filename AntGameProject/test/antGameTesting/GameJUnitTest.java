@@ -23,6 +23,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
+ * Test class for Game class.
+ *
  * @author Team18
  */
 public class GameJUnitTest {

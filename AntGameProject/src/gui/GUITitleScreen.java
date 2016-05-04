@@ -11,9 +11,10 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
+ * Class to represent a title screen for the GUI.
+ *
  * @author Team18
  *
- * Class to represent a title screen for the GUI.
  */
 public class GUITitleScreen extends BasicGameState {
 

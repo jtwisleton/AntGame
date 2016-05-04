@@ -28,10 +28,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * @author Team18 
- * 
  * Class to represent a single game display.
  *
+ * @author Team18
  */
 public class GUISingleGameDisplay extends BasicGameState {
 

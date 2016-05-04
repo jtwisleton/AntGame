@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * Test class for AntWorldGenerator class.
  *
  * @author Team18
  */
@@ -90,28 +91,28 @@ public class AntWorldGeneratorJUnitTest {
         System.out.println("\n-----\nTest: borders and grass and anthills and food and rocks with spaces\n-----\n");
         board.printBoardToASCII();
     }
-    
+
     @Test
-    public void createWorld() throws IOException{
+    public void createWorld() throws IOException {
         AntWorldGenerator wg = new AntWorldGenerator(30);
         Board b = wg.generateWorld();
         b.printBoardToASCII();
     }
 
     @Test
-    public void printToFile() throws IOException, AntWorldLoader.AntWorldLoaderException{
-        AntWorldGenerator wg = new AntWorldGenerator(30);        
+    public void printToFile() throws IOException, AntWorldLoader.AntWorldLoaderException {
+        AntWorldGenerator wg = new AntWorldGenerator(30);
         BoardTile[][] b = wg.placeBordersAndGrass();
         b = wg.placeAnthills(b);
         b = wg.placeFood(b);
         b = wg.placeRocks(b);
         b = wg.createGaps(b);
         wg.toFile(b, "GeneratedWorld.world");
-        
+
         AntWorldLoader awl = new AntWorldLoader();
-        awl.loadWorld("GeneratedWorld.world","generatedworld",false);
+        awl.loadWorld("GeneratedWorld.world", "generatedworld", false);
     }
-    
+
     @After
     public void tearDown() {
     }

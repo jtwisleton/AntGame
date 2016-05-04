@@ -5,9 +5,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * Marker is used to sense for a specific friendly marker at a given position.
+ *
+ * @author Team18
  */
 public class Marker implements Condition {
 

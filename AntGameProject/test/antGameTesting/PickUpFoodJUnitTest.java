@@ -13,6 +13,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test class for PickUpFood class.
+ *
  * @author Team18
  */
 public class PickUpFoodJUnitTest {

@@ -13,9 +13,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * @author Team18
- *
  * Test class for the Flip instruction.
+ * 
+ * @author Team18
  */
 public class FlipJUnitTest {
 

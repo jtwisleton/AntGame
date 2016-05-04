@@ -6,10 +6,10 @@ import antgameproject.Pos;
 import antgameproject.RandomNumber;
 
 /**
- * @author Team18
- *
  * Provides implementation for the PickUpFood instruction, that picks up food in
  * the current ants cell.
+ *
+ * @author Team18
  */
 public class PickUpFood implements Instruction {
 

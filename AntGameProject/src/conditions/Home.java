@@ -5,9 +5,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * Home is used to sense a friendly ant hill.
+ *
+ * @author Team18
  */
 public class Home implements Condition {
 

@@ -3,10 +3,10 @@ package instructions;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * DirectionalInstruction is an abstract class that has methods shared by
  * instructions that involve directions.
+ *
+ * @author Team18
  */
 public abstract class DirectionalInstruction {
 

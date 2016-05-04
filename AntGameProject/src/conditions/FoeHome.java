@@ -5,9 +5,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * FoeHome class used to sense for an enemy ant hill.
+ *
+ * @author Team18
  */
 public class FoeHome implements Condition {
 

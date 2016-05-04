@@ -14,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * Test class for Mark class.
+ *
  * @author Team18
  */
 public class MarkJUnitTest {

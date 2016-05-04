@@ -5,9 +5,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * Foe class used to to sense an enemy.
+ *
+ * @author Team18
  */
 public class Foe implements Condition {
 

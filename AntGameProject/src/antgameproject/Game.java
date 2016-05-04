@@ -3,10 +3,10 @@ package antgameproject;
 import instructions.Instruction;
 
 /**
- * @author Team18
- *
  * The Game class represents a single game between two ant brains on a single
  * world.
+ *
+ * @author Team18
  */
 public class Game {
 

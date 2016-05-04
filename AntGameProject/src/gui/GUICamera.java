@@ -1,10 +1,9 @@
 package gui;
 
 /**
- * @author Team18
- *
  * Class to represent a camera on top of the game board.
  *
+ * @author Team18
  */
 public class GUICamera {
 

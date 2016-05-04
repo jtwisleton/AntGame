@@ -6,9 +6,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
+ * FriendWithFood is used to sense for a friend carrying food.
  *
- * FreindwithFood is used to sense for a friend carrying food.
+ * @author Team18
  */
 public class FriendWithFood implements Condition {
 

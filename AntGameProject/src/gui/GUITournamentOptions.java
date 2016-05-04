@@ -25,9 +25,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * @author Team18
- *
  * Class to represent a tournament options screen.
+ *
+ * @author Team18
  */
 public class GUITournamentOptions extends BasicGameState {
 

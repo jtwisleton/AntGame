@@ -5,9 +5,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * Food is used to sense for food on the board.
+ *
+ * @author Team18
  */
 public class Food implements Condition {
 

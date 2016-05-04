@@ -5,9 +5,9 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
- * @author Team18
- *
  * Friend is used to sense a friendly ant.
+ *
+ * @author Team18
  */
 public class Friend implements Condition {
 

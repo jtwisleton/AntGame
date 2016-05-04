@@ -24,6 +24,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test class for Sense class.
+ *
  * @author Team18
  */
 public class SenseJUnitTest {

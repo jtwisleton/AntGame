@@ -1,9 +1,9 @@
 package antgameproject;
 
 /**
- * @author Team18
+ * The Pos class is a wrapper class for a two dimensional position.
  *
- * the Pos class is a wrapper class for a two dimensional position.
+ * @author Team18
  */
 public class Pos {
 

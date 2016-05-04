@@ -1,9 +1,9 @@
 package antgameproject;
 
 /**
- * @author Team18
- *
  * Colour Enum used to specify ant colours.
+ *
+ * @author Team18
  */
 public enum Colour {
 
