@@ -247,8 +247,12 @@ public class GUISingleGameOptions extends BasicGameState {
             if(gc.getInput().isMouseButtonDown(0)){
                 // World gen button clicked
                 if(antWorldFile == null && !generatedAntWorld){
-                    // Generate ant world
-                    tournament.generateAntWorld();
+                    try {
+                        // Generate ant world
+                        tournament.generateAntWorld();
+                    } catch (IOException ex) {
+                        Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     worldTick.setAlpha(1);
                     generatedAntWorld = true;
                 }
