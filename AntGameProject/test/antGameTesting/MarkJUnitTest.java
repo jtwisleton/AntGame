@@ -23,6 +23,7 @@ public class MarkJUnitTest {
     private Ant testAnt;
     private Board testBoard;
 
+    // Set up a new ant and board for testing
     @Before
     public void setUp() {
         testAnt = new Ant(Colour.RED, 1, new Pos(2, 2));
@@ -41,6 +42,7 @@ public class MarkJUnitTest {
         testBoard = new Board(board, "Board 4");
     }
 
+    // Test that exceptions are thrown when a mark is created incorrectly
     @Test
     public void testBadCreation() {
         int markValueTooBig = 6;
@@ -59,6 +61,7 @@ public class MarkJUnitTest {
 
     }
 
+    // Test that the board is updated when a mark is created
     @Test
     public void testBoardUpdated() {
         int markValue = 2;
@@ -72,6 +75,7 @@ public class MarkJUnitTest {
                 markValue));
     }
 
+    // Test that an ants state is updated when a mark is created
     @Test
     public void testAntStateUpdated() {
         int markValue = 2;
