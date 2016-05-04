@@ -40,8 +40,8 @@ public class GameJUnitTest {
         try {
             gameBoard = new AntWorldLoader().loadWorld("src//antgameproject//testWorld.txt",
                     "Test project", false);
-            antBrainOne = AntBrainLoader.loadBrain("src//antgameproject//sampleAnt.txt", "sample");
-            antBrainTwo = AntBrainLoader.loadBrain("src//antgameproject//sampleAnt.txt", "sample");
+            antBrainOne = AntBrainLoader.loadBrain("src//antgameproject//sample.htm", "sample");
+            antBrainTwo = AntBrainLoader.loadBrain("src//antgameproject//sample.htm", "sample");
             testGame = new Game(antBrainOne, antBrainTwo, gameBoard, 12345);
         } catch (IOException ex) {
             Logger.getLogger(GameJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
