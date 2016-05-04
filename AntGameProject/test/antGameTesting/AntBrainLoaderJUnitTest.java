@@ -18,8 +18,7 @@ public class AntBrainLoaderJUnitTest {
     // Test that a valid ant brain is loaded correctly
     @Test
     public void loadBrainTest() throws IOException, FileNotFoundException, AntBrainLoader.AntBrainLoaderException {
-        //String fn = "src//antgameproject//testBrain.txt";
-        String fn = "src//antgameproject//AntBrain.txt";
+        String fn = "src//antgameproject//testBrain.txt";
         AntBrain ab = loadBrain(fn, "Test Brain");
         for (int i = 0; i < 16; i++) {
             System.out.println(ab.getInstruction(i).toString());
