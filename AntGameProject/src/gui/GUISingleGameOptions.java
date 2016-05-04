@@ -144,9 +144,7 @@ public class GUISingleGameOptions extends BasicGameState {
                     // Start button clicked
                     try {
                         // Run game
-                        antBrainOne = null;
-                        antBrainTwo = null;
-                        antWorldFile = null;
+                        setFilesAndTicksToNull();
                         tournament.runGame();
                         TimeUnit.MILLISECONDS.sleep(250);
                     } catch (InterruptedException ex) {
@@ -165,13 +163,7 @@ public class GUISingleGameOptions extends BasicGameState {
                 try {
                     // Reset game
                     tournament.reset();
-                    antBrainOne = null;
-                    antBrainTwo = null;
-                    antWorldFile = null;
-                    selectTick.setAlpha(0);
-                    selectTick2.setAlpha(0);
-                    worldTick.setAlpha(0);
-                    generatedAntWorld = false;
+                    setFilesAndTicksToNull();
                     TimeUnit.MILLISECONDS.sleep(250);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GUISingleGameOptions.class.getName()).log(Level.SEVERE, null, ex);
@@ -192,6 +184,7 @@ public class GUISingleGameOptions extends BasicGameState {
                         selectTick.setAlpha(1);
                     } catch (AntBrainLoader.AntBrainLoaderException ex) {
                         showError(ex.getMessage(), "Ant brain error");
+                        antBrainOne = null;
                     } catch (IOException ex) {
                         showError(ex.getMessage(), "Error loading ant brain");
                     }
@@ -213,6 +206,7 @@ public class GUISingleGameOptions extends BasicGameState {
                         selectTick2.setAlpha(1);
                     } catch (AntBrainLoader.AntBrainLoaderException ex) {
                         showError(ex.getMessage(), "Ant brain error");
+                        antBrainTwo = null;
                     } catch (IOException ex) {
                         showError(ex.getMessage(), "Error loading ant brain");
                     }
@@ -235,6 +229,7 @@ public class GUISingleGameOptions extends BasicGameState {
                         worldTick.setAlpha(1);
                     } catch (AntWorldLoader.AntWorldLoaderException ex) {
                         showError(ex.getMessage(), "Ant world error");
+                        antWorldFile = null;
                     } catch (IOException ex) {
                         showError(ex.getMessage(), "Error loading ant world");
                     }
@@ -424,6 +419,16 @@ public class GUISingleGameOptions extends BasicGameState {
                 (int) (worldGen.getWidth() * screenScale), (int) (worldGen.getHeight() * screenScale));
         mainMenuMO = new MouseOverArea(gc, mainMenu, (int) ((rightMargin - mainMenu.getWidth()) * screenScale), (int) ((topButton + 3 * offset) * screenScale),
                 (int) (mainMenu.getWidth() * screenScale), (int) (mainMenu.getHeight() * screenScale));
+    }
+    
+    private void setFilesAndTicksToNull(){
+        antBrainOne = null;
+        antBrainTwo = null;
+        antWorldFile = null;
+        generatedAntWorld = false;
+        selectTick.setAlpha(0);
+        selectTick2.setAlpha(0);
+        worldTick.setAlpha(0);
     }
 
 }
