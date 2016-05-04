@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
  */
 public class RandomNumberJUnitTest {
 
+    // Test that random number is generated
     @Test
     public void testRandomNumber() {
         int[] providedValues = {7193, 2932, 10386, 5575, 100, 15976, 430, 9740, 9449, 1636,
