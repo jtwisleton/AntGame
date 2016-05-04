@@ -45,7 +45,7 @@ public class AntWorldGenerator {
         int time = (int) System.currentTimeMillis();
         String filename = "generatedWorlds/generatedWorld" + time + ".world";
         toFile(b, filename);
-        return new Board(b, filename);
+        return new Board(b, filename.substring(15, 30) + filename.substring(37, 40));
 
     }
 
