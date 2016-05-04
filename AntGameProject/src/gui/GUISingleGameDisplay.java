@@ -166,14 +166,19 @@ public class GUISingleGameDisplay extends BasicGameState {
         // If the user is exiting the single game display
         if (!exiting) {
             game = tournament.getCurrentGame();
-
-            // Update food bar scale
+           
+            // Check if the game has finished
+            checkIfGameFinished(game);
+            
+             // Update food bar scale
             if (game.getPlayerOneScore() * foodBarScale >= 230 || game.getPlayerTwoScore() * foodBarScale >= 230) {
                 foodBarScale = foodBarScale / 2;
             }
-
-            // Check if the game has finished
-            checkIfGameFinished(game);
+            
+            redAntsAlive = game.getRedAntsAlive();
+            blackAntsAlive = game.getBlackAntsAlive();
+            numRedBaseFood = game.getPlayerOneScore();
+            numBlackBaseFood = game.getPlayerTwoScore();
 
             // Move the camera
             moveCamera(gc);
