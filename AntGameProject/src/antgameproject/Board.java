@@ -43,7 +43,7 @@ public class Board {
     }
 
     /*
-     * Adds ants onto the board and initializses the ants appropriatly.
+     * Adds ants onto the board and initialises the ants appropriatly.
      */
     private void addAnts() {
         for (int i = 0; i < board.length; i++) {

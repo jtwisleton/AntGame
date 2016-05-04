@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
+ * Loads in a world from a file, creating a new Board from it.
  *
  * @author Team18
  */
@@ -28,21 +29,19 @@ public class AntWorldGenerator {
     }
 
     /*
-     Takes an int that determines average rock size, generates tournament ready 
-     world, saves to a file and returns Board.
-     */
+    
+    */
     public Board generateWorld() throws IOException {
         BoardTile[][] b = placeBordersAndGrass();
         b = placeAnthills(b);
         b = placeFood(b);
         b = placeRocks(b);
-        b = createGaps(b);           
-        int time = (int)System.currentTimeMillis();
-        String filename = "generatedWorlds/generatedWorld"+time+".world";
-        toFile(b,filename);
+        b = createGaps(b);
+        int time = (int) System.currentTimeMillis();
+        String filename = "generatedWorlds/generatedWorld" + time + ".world";
+        toFile(b, filename);
         return new Board(b, "");
-        
-        
+
     }
 
     /**

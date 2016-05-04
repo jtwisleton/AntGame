@@ -8,7 +8,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * 
+ * Class that loads in a description of an AntWorld from a file, checking if it
+ * is syntactically correct and conforms to the tournament world parameters.
+ *
  * @author Team18
  */
 public class AntWorldLoader {
@@ -25,6 +27,11 @@ public class AntWorldLoader {
         }
     }
 
+    /*
+     Calls boardHasValidAntHills, validFood and validRocks methods on given
+     board, checks it is the right height and width, and returns true if all
+     these conditions are met.
+     */
     private Boolean tournamentReady(BoardTile[][] boardToTest) {
         if (boardToTest.length == 150 && boardToTest[0].length == 150
                 && boardHasValidAntHills(boardToTest) && validFood(boardToTest)
@@ -34,6 +41,10 @@ public class AntWorldLoader {
         return false;
     }
 
+    /*
+     Returns true if validAntHillForm method returns true on the black and red
+     bases, false if not.
+     */
     private boolean boardHasValidAntHills(BoardTile[][] boardToTest) {
         Pos blackAntHillStart = findAntHillStart(boardToTest, Terrain.BLACKBASE);
         Pos redAntHillStart = findAntHillStart(boardToTest, Terrain.REDBASE);
@@ -44,6 +55,9 @@ public class AntWorldLoader {
         return false;
     }
 
+    /*
+     Returns the first position of the given type of ant hill.
+     */
     private Pos findAntHillStart(BoardTile[][] boardToTestBaseOn, Terrain baseTerrain) {
         boolean found = false;
         int i = 0;
@@ -63,6 +77,9 @@ public class AntWorldLoader {
         return colourBasePosition;
     }
 
+    /*
+     Checks that given anthill type is of the right shape.
+     */
     private boolean validAntHillForm(BoardTile[][] boardToCheck, Pos positionToStartCheck,
             Terrain baseTerrain) {
         int startX = positionToStartCheck.getPosX();
@@ -107,6 +124,10 @@ public class AntWorldLoader {
         return !errorFound;
     }
 
+    /*
+     Checks if a given position is the edge of a food blob or ant hill, and if
+     so then what type of edge.
+     */
     private int isEdgeCase(int currentColumn, int currentRow, int maxColumn, int maxRow) {
         int edgeCaseNo = 0;
         if (currentColumn == 0 && currentRow == 0) {
@@ -129,6 +150,10 @@ public class AntWorldLoader {
         return edgeCaseNo;
     }
 
+    /*
+     Checks if a food or anthill is surrounded by grass with no food on it,
+     returns true if not, false if so.
+     */
     private boolean isAnErrorAtEdge(BoardTile[][] boardToCheck, Pos pos, int edgeNo) {
         boolean edgeError = false;
         int posX = pos.getPosX();
@@ -181,6 +206,10 @@ public class AntWorldLoader {
         return edgeError;
     }
 
+    /*
+     Checks if a position is surrounded by grass, returns true if so false if
+     not.
+     */
     private boolean checkSurroundedByGrass(Pos position, BoardTile[][] board) {
         int positionY = position.getPosY();
         int positionX = position.getPosX();
@@ -195,6 +224,10 @@ public class AntWorldLoader {
         return true;
     }
 
+    /*
+     Checks if a world has valid food blocks on it, returns true if so false if
+     not.
+     */
     private Boolean validFood(BoardTile[][] boardToFindFoodOn) {
         int blobsOfFoodFound = 0;
         boardToFindFoodOn = new Board(boardToFindFoodOn, "").copy().getBoard();
@@ -233,6 +266,9 @@ public class AntWorldLoader {
         return blobsOfFoodFound == 11;
     }
 
+    /*
+     Tests individual blocks of food to check they're valid
+     */
     private boolean testFoodBlock(Pos pos, BoardTile[][] boardToFindFoodOn, int[] offsets) {
         int posX = pos.getPosX();
         int posY = pos.getPosY();
@@ -258,6 +294,9 @@ public class AntWorldLoader {
         return errorFound;
     }
 
+    /*
+     Checks if a world has valid rocks on it.
+     */
     private Boolean validRocks(BoardTile[][] boardToFindRocksOn) {
         int rockCount = 0;
         for (int i = 1; i < 149; i++) {
