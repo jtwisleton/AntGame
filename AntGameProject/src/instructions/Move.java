@@ -31,7 +31,7 @@ public class Move extends DirectionalInstruction implements Instruction {
         this.nextStateIfAheadIsBlocked = nextStateIfAheadIsBlocked;
         restDuration = 14;
     }
-
+    
     @Override
     public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
         Pos antPosition = currentAnt.getBoardPosition();
@@ -49,6 +49,7 @@ public class Move extends DirectionalInstruction implements Instruction {
         }
     }
 
+    // Returns tje number of adjacent enemy ants.
     private int numAdjacentEnemyAnts(Pos position, Colour antColour, Board gameBoard) {
         int numberOfAdjacentEnemies = 0;
         for (int i = 0; i < 6; i++) {
@@ -61,6 +62,7 @@ public class Move extends DirectionalInstruction implements Instruction {
         return numberOfAdjacentEnemies;
     }
 
+    // Checks if an ant at the given position is surrounded.
     private void checkForSurroundedAntAt(Pos antPosition, Board gameBoard) {
         if (gameBoard.antInPosition(antPosition)) {
             Ant currentAnt = gameBoard.antAt(antPosition);
@@ -77,6 +79,7 @@ public class Move extends DirectionalInstruction implements Instruction {
         }
     }
 
+    // Checks if this ant or any adjacent ant is now surrounded.
     private void checkForSurroundedAnts(Pos position, Board gameBoard) {
         checkForSurroundedAntAt(position, gameBoard);
         for (int i = 0; i < 6; i++) {

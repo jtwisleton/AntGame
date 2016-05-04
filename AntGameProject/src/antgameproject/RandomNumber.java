@@ -25,7 +25,7 @@ public class RandomNumber {
      * Generates a random number in a range 0 to the upper value given, not
      * inclusive of upper value.
      *
-     * @param upperValuespecifies the upper value for the random number
+     * @param upperValue the upper value for the random number
      * generated.
      * @return a random number in the given range.
      */

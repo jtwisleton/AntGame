@@ -141,6 +141,10 @@ public class AntGameTournament {
         }
     }
 
+    /**
+     * Generates an ant brain and adds it to the list of worlds.
+     * @throws IOException 
+     */
     public void generateAntWorld() throws IOException {
         if (antWorlds.size() < maxNumberOfAntWorlds) {
             AntWorldGenerator awl = new AntWorldGenerator(30);
@@ -232,6 +236,10 @@ public class AntGameTournament {
         }
     }
 
+    /**
+     * Returns the current round number of a game
+     * @return the current round number
+     */
     public int getTournamentRoundNumber() {
         return boardToPlayIndex;
     }
