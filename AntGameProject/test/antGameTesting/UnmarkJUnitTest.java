@@ -24,6 +24,7 @@ public class UnmarkJUnitTest {
     private Ant testAntBlack;
     private Board testBoard;
 
+    // Set up ants and board for testing
     @Before
     public void setUp() {
         testAnt = new Ant(Colour.RED, 1, new Pos(2, 2));
@@ -43,7 +44,7 @@ public class UnmarkJUnitTest {
         testBoard = new Board(board, "Board 8");
     }
 
-    // test unmark when mark set
+    // Test unmark when mark set
     @Test
     public void testUnmarkWhenMarkSet() {
         int markToSet = 2;
@@ -57,7 +58,7 @@ public class UnmarkJUnitTest {
                 markToClear));
     }
 
-    // test unmark when mark not set in board tile
+    // Test unmark when mark not set in board tile
     @Test
     public void testUnmarkWhenMarkNotSet() {
         int markToClear = 3;
@@ -69,7 +70,7 @@ public class UnmarkJUnitTest {
                 markToClear));
     }
 
-    // test unmark only affects the given colour
+    // Test unmark only affects the given colour
     @Test
     public void testUnmarkAffectsOnlyGivenColour() {
         int redMarkToSet = 3;
@@ -89,7 +90,7 @@ public class UnmarkJUnitTest {
                 blackMarkToSet));
     }
 
-    // check that the ant has the correct next state set
+    // Check that the ant has the correct next state set
     @Test
     public void testAntStateUpdated() {
         int markToClearValue = 2;
