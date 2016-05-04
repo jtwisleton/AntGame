@@ -26,7 +26,7 @@ public class AntGameProject {
                             "1440 x 810",
                             "960 x 540"};
         int resSelection = JOptionPane.showOptionDialog(new JFrame(),
-            "Please select a creen resolution",
+            "Please select a screen resolution",
             "Screen resolution",
             JOptionPane.YES_NO_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE,
