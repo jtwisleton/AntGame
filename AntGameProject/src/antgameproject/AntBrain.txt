@@ -1,7 +1,7 @@
 Sense LeftAhead 44 1 FriendWithFood
 Sense Ahead 3 2 FriendWithFood
 Sense RightAhead 47 4 FriendWithFood
-Flip 44 47
+Flip 44 47 50
 Sense LeftAhead 47 5 Rock
 Sense Ahead 7 6 Rock
 Sense RightAhead 44 8 Rock
@@ -18,7 +18,7 @@ Sense RightAhead 54 17 FoeHome
 Sense LeftAhead 63 18 Food
 Sense Ahead 63 19 Food
 Sense RightAhead 63 20 Food
-Sense Here 21 30 Marker
+Sense Here 21 30 Marker 5
 Sense LeftAhead 55 22 Food
 Sense Ahead 58 23 Food
 Sense RightAhead 60 24 Food
@@ -26,10 +26,10 @@ Turn Left 25
 Turn Left 26
 Turn Left 27
 Sense LeftAhead 55 28 Food
-Sense Ahead 58 29
-Sense RightAhead 60 69
+Sense Ahead 58 29 Food
+Sense RightAhead 60 69 Food
 Move 0 31
-Flip 53 54
+Flip 53 54 55
 Sense LeftAhead 75 33 Rock
 Sense RightAhead 77 34 Rock
 Sense Ahead 35 36 Rock

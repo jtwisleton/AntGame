@@ -107,7 +107,9 @@ public class AntBrainLoader {
          */
         brainString = brainString.replaceAll("\\s", "");
         if (!"".equals(brainString)) {
+            System.out.println("Unable to lex: " + brainString);
             throw new AntBrainLoaderException("Invalid brain!");
+            
         } else {
 
             /*
@@ -148,7 +150,7 @@ public class AntBrainLoader {
                          Check that marker is within limit.
                          */
                         markerNo = Integer.parseInt(splitInstruction[5].trim());
-                        if (markerNo > 5||markerNo<0) {
+                        if (markerNo > 5 || markerNo < 0) {
                             throw new AntBrainLoaderException("Marker must be 0-5, construction contained: " + markerNo);
                         }
                     }
