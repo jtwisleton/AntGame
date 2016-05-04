@@ -167,7 +167,8 @@ public class GUITournamentOptions extends BasicGameState {
                 if (antWorldToLoad != null) {
                     try {
                         // Load ant world file
-                        tournament.loadAntWorld(antWorldToLoad.getAbsolutePath(), antWorldToLoad.getName());
+                        tournament.loadAntWorld(antWorldToLoad.getAbsolutePath(), 
+                                antWorldToLoad.getName(), true);
                         antWorldList = tournament.getListOfAntWorlds();
                     } catch (AntWorldLoader.AntWorldLoaderException ex) {
                         showError(ex.getMessage(), "Ant world error");

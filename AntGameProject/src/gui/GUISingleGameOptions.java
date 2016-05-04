@@ -230,7 +230,8 @@ public class GUISingleGameOptions extends BasicGameState {
                 if (antWorldFile != null) {
                     try {
                         // Load ant world from file
-                        tournament.loadAntWorld(antWorldFile.getAbsolutePath(), antWorldFile.getName());
+                        tournament.loadAntWorld(antWorldFile.getAbsolutePath(), 
+                                antWorldFile.getName(), false);
                         worldTick.setAlpha(1);
                     } catch (AntWorldLoader.AntWorldLoaderException ex) {
                         showError(ex.getMessage(), "Ant world error");

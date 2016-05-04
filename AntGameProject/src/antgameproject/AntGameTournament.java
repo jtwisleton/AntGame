@@ -52,7 +52,6 @@ public class AntGameTournament {
         // Update scores with 2 points for a win and 1 point for a draw
         int playerOneScore = currentGame.getPlayerOneScore();
         int playerTwoScore = currentGame.getPlayerTwoScore();
-        System.out.println(one.toString() + " " + playerOneScore + " " + playerTwoScore + " " + two.toString());
         one.incrementGamesPlayedIn();
         two.incrementGamesPlayedIn();
         one.setTotalFoodInBase(one.getTotalFoodInBase() + playerOneScore);
@@ -130,14 +129,15 @@ public class AntGameTournament {
      *
      * @param antWorldFilePath file path to load ant world from.
      * @param antWorldName name to give the ant world.
+     * @param tournamentCorrect if the world loaded must be tournament correct
      * @throws AntWorldLoaderException
      * @throws IOException
      */
-    public void loadAntWorld(String antWorldFilePath, String antWorldName)
+    public void loadAntWorld(String antWorldFilePath, String antWorldName, boolean tournamentCorrect)
             throws AntWorldLoaderException, IOException {
         if (antWorlds.size() < maxNumberOfAntWorlds) {
             AntWorldLoader awl = new AntWorldLoader();
-            antWorlds.add(awl.loadWorld(antWorldFilePath, antWorldName, false));    // change back to true as some point
+            antWorlds.add(awl.loadWorld(antWorldFilePath, antWorldName, tournamentCorrect));    // change back to true as some point
         }
     }
 
