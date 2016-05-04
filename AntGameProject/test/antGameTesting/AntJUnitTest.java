@@ -41,7 +41,8 @@ public class AntJUnitTest {
         assertTrue(testAnt.getAntColour() == testAntColour);
     }
 
-    /* the rest of the ant methods are getters and setters and hold no program logic 
+    /** 
+     * The rest of the ant methods are getters and setters and hold no program logic 
      * so were not tested. The general behaviour of the ant is tested through the board
      * and game tests
      */
