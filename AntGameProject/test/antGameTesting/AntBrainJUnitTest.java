@@ -25,6 +25,7 @@ public class AntBrainJUnitTest {
     private String name;
     private List<Instruction> brain;
 
+    // Create a new ant brain for testing
     @Before
     public void setUp() {
         brain = new ArrayList<>();
