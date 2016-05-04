@@ -24,6 +24,7 @@ public class PickUpFoodJUnitTest {
     private Board testBoard;
     private RandomNumber randomNumberGen;
 
+    // Create an ant and board for testing
     @Before
     public void setUp() {
         antOnTileWithFood = new Ant(Colour.RED, 1, new Pos(2, 2));
@@ -45,6 +46,7 @@ public class PickUpFoodJUnitTest {
         randomNumberGen = new RandomNumber(1);
     }
 
+    // Test that food can be found on the board correctly
     @Test
     public void testFoodFound() {
         int nextStateIfFoodFound = 12;
@@ -58,6 +60,7 @@ public class PickUpFoodJUnitTest {
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfFoodFound);
     }
 
+    // Test that food is not found where it shouldn't be
     @Test
     public void testFoodNotFound() {
         int nextStateIfFoodFound = 12;
@@ -72,7 +75,7 @@ public class PickUpFoodJUnitTest {
         assertTrue(antOnTileWithoutFood.getCurrentBrainState() == nextStateIfNoFood);
     }
 
-    // test ant already carrying food
+    // Test ant already carrying food
     @Test
     public void testAntAlreadyCarryingFood() {
         int nextStateIfFoodFound = 12;
