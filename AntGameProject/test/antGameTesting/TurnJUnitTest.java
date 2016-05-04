@@ -21,11 +21,13 @@ public class TurnJUnitTest {
     private Ant testAnt;
     private Board gameBoard;
 
+    // Create an ant for testing
     @Before
     public void setUp() {
         testAnt = new Ant(Colour.RED, 1, new Pos(2, 2));
     }
 
+    // Test that the ant can turn left
     @Test
     public void testTurnLeft() {
         Turn testTurn = new Turn(TurnDirection.LEFT, 26);
@@ -36,6 +38,7 @@ public class TurnJUnitTest {
         }
     }
 
+    // Test that the ant can turn right
     @Test
     public void testTurnRight() {
         Turn testTurn = new Turn(TurnDirection.RIGHT, 26);
@@ -46,6 +49,7 @@ public class TurnJUnitTest {
         }
     }
 
+    // Test that the ant stays in the same position after changing direction
     @Test
     public void testPositionStaysTheSame() {
         Pos positionBeforeTurn = testAnt.getBoardPosition();
@@ -54,6 +58,7 @@ public class TurnJUnitTest {
         assertTrue(testAnt.getBoardPosition().getPosY() == positionBeforeTurn.getPosY());
     }
 
+    // Test that an ants state is updated after moving
     @Test
     public void testAntStateUpdated() {
         int nextState = 99;
