@@ -139,9 +139,11 @@ public class GUITournamentDisplay extends BasicGameState {
             if (!finished) {
                 // If game not finished
                 currentSkipToEnd = skipToEndHover;
-                while (!finished) {
-                    // Run rounds until game finished
-                    finished = tournament.runTournamentRound();
+                if (gc.getInput().isMouseButtonDown(0)) {
+                    while (!finished) {
+                        // Run rounds until game finished
+                        finished = tournament.runTournamentRound();
+                    }
                 }
             }
 
