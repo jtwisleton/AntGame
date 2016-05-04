@@ -22,6 +22,7 @@ public class DropFoodJUnitTest {
     private Ant testAnt;
     private Board testBoard;
 
+    // Set up a new board and ant for testing
     @Before
     public void setUp() {
         testAnt = new Ant(Colour.RED, 1, new Pos(2, 2));
@@ -40,7 +41,7 @@ public class DropFoodJUnitTest {
         testBoard = new Board(board, "Board 2");
     }
 
-    // drop food when ant has food
+    // Test that ant dropd food when it has some
     @Test
     public void testDropFoodWhenAntHasfood() {
         int nextState = 22;
@@ -52,7 +53,7 @@ public class DropFoodJUnitTest {
         assertTrue(testAnt.getCurrentBrainState() == nextState);
     }
 
-    // drop food when ant doesn't have food
+    // Test that ant doesn't drop food when it doesn't have any
     @Test
     public void testDropFoodWhenAntNoFood() {
         int nextState = 22;
