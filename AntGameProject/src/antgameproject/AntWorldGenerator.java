@@ -20,10 +20,6 @@ public class AntWorldGenerator {
     private int redAnthillY;
     private final int avgRockSize;
 
-    public static void main(String[] args) {
-        AntWorldGenerator awg = new AntWorldGenerator(10);
-    }
-
     /**
      *
      * @param avgRockSize the average size of generated rocks.
