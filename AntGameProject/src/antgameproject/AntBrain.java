@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The AntBrain class represents an ant brain. It holds the instructions of that 
+ * @author Team18
+ *
+ * The AntBrain class represents an ant brain. It holds the instructions of that
  * ant brain but holds the score for that brain during a tournament.
  */
 public class AntBrain implements Comparable<AntBrain> {
@@ -22,13 +24,14 @@ public class AntBrain implements Comparable<AntBrain> {
 
     /**
      * Constructor for the AntBrain class.
+     *
      * @param instructions list of Instructions representing the brain.
-     * @param name name of the ant brain, used for identification. 
+     * @param name name of the ant brain, used for identification.
      */
     public AntBrain(List<Instruction> instructions, String name) {
         this.instructions = instructions;
         this.name = name;
-        
+
         // initialize all score fields to 0
         gamesPlayedIn = 0;
         gamesWon = 0;
@@ -41,20 +44,22 @@ public class AntBrain implements Comparable<AntBrain> {
 
     /**
      * Returns an instruction for the given state identified by an integer.
+     *
      * @param state the identity of the required sate.
      * @return the instruction for the specified state.
      */
     public Instruction getInstruction(int state) {
         return instructions.get(state);
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 
     /**
      * Returns the number of games this ant brain has played.
+     *
      * @return the number of games this brain has played.
      */
     public int getGamesPlayedIn() {
@@ -63,6 +68,7 @@ public class AntBrain implements Comparable<AntBrain> {
 
     /**
      * Returns the number of games this ant brain has won.
+     *
      * @return the number of games ant brain won.
      */
     public int getGamesWon() {
@@ -71,6 +77,7 @@ public class AntBrain implements Comparable<AntBrain> {
 
     /**
      * Returns the number of games this ant has drawn.
+     *
      * @return the number of games ant brain drew.
      */
     public int getGamesDrawn() {
@@ -79,6 +86,7 @@ public class AntBrain implements Comparable<AntBrain> {
 
     /**
      * Returns the number of games this ant brain lost.
+     *
      * @return the number of games ant brain lost.
      */
     public int getGamesLost() {
@@ -86,18 +94,22 @@ public class AntBrain implements Comparable<AntBrain> {
     }
 
     /**
-     * Returns the cumulative amount of food this ant brain has finished with in its
-     * base in all games.
-     * @return total amount of food this ant brain has finished with in its base.
+     * Returns the cumulative amount of food this ant brain has finished with in
+     * its base in all games.
+     *
+     * @return total amount of food this ant brain has finished with in its
+     * base.
      */
     public int getTotalFoodInBase() {
         return totalFoodInBase;
     }
 
     /**
-     * Returns the cumulative amount of food oppositions of this ant has finished with
-     * in there bases.
-     * @return total amount of food enemy ants have finished with in there bases.
+     * Returns the cumulative amount of food oppositions of this ant has
+     * finished with in there bases.
+     *
+     * @return total amount of food enemy ants have finished with in there
+     * bases.
      */
     public int getTotalFoodInEnemyBase() {
         return totalFoodInEnemyBase;
@@ -134,8 +146,9 @@ public class AntBrain implements Comparable<AntBrain> {
     }
 
     /**
-     * Sets the total cumulative amount of food that this ant has finished with 
+     * Sets the total cumulative amount of food that this ant has finished with
      * in its base over all games.
+     *
      * @param totalFoodInBase
      */
     public void setTotalFoodInBase(int totalFoodInBase) {
@@ -143,8 +156,9 @@ public class AntBrain implements Comparable<AntBrain> {
     }
 
     /**
-     * Sets the total amount of food enemies of this ant have finished with in there
-     * bases in games against this ant.
+     * Sets the total amount of food enemies of this ant have finished with in
+     * there bases in games against this ant.
+     *
      * @param totalFoodInEnemyBase
      */
     public void setTotalFoodInEnemyBase(int totalFoodInEnemyBase) {
@@ -153,20 +167,20 @@ public class AntBrain implements Comparable<AntBrain> {
 
     /**
      * Returns the points that this ant brain currently has.
-     * @return number of points. 
+     *
+     * @return number of points.
      */
     public int getPoints() {
         return points;
     }
 
-
     // comparable method so ant brains can be ordered for tournamanet.
     @Override
     public int compareTo(AntBrain o) {
-        if(o.points == this.points){
+        if (o.points == this.points) {
             return o.totalFoodInBase - this.getTotalFoodInBase();
-        } 
-        return o.points - this.points; 
+        }
+        return o.points - this.points;
     }
-    
+
 }

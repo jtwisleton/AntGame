@@ -1,4 +1,3 @@
-
 package antGameTesting;
 
 import antgameproject.Ant;
@@ -14,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  *
- * @author wilki
+ * @author Team18
  */
 public class BoardJUnitTest {
     

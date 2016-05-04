@@ -28,9 +28,10 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
+ * @author Team18 
+ * 
  * Class to represent a single game display.
  *
- * @author team18
  */
 public class GUISingleGameDisplay extends BasicGameState {
 
@@ -174,7 +175,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
             // Check if the game has finished
             checkIfGameFinished(game);
-            
+
             // Move the camera
             moveCamera(gc);
 
@@ -268,7 +269,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
     /**
      * Check if the game has finished.
-     * 
+     *
      * @param game Current game.
      */
     private void checkIfGameFinished(Game game) {
@@ -295,7 +296,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
     /**
      * Move the game board camera.
-     * 
+     *
      * @param gc Game container holding the GUI.
      */
     private void moveCamera(GameContainer gc) {
@@ -337,7 +338,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
     /**
      * Render the games screen.
-     * 
+     *
      * @param gc Game container holding the GUI.
      * @param sbg Game object.
      * @param grphcs The graphics context.
@@ -353,7 +354,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         grphcs.scale(cam.getZoom(), cam.getZoom());
         grphcs.translate(cam.getXPos(), cam.getYPos());
         tiles.startUse();
-        
+
         // Iterate over each tile and draw
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
@@ -416,7 +417,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
     /**
      * Calculate position of sprite.
-     * 
+     *
      * @param x X-coordinate.
      * @param y Y-coordinate.
      * @return Position of sprite.
@@ -424,7 +425,7 @@ public class GUISingleGameDisplay extends BasicGameState {
     private Pos calculateSpritePosition(int x, int y) {
         String key;
         Pos somePos = new Pos(x, y);
-        
+
         // If ant is in given position
         if (gameBoard.antInPosition(somePos)) {
             key = gameBoard.getTerrainAtPosition(somePos).toString() + gameBoard.antAt(somePos).getAntColour()
@@ -432,7 +433,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         } else {
             key = gameBoard.getTerrainAtPosition(somePos).toString() + (gameBoard.numberOfFoodAt(somePos) > 0);
         }
-        
+
         // Return value in hash map given key
         return spritePositions.get(key);
     }
@@ -447,7 +448,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         // Types of terrain
         Terrain[] terrainVals = {Terrain.GRASS, Terrain.GRASS, Terrain.REDBASE, Terrain.REDBASE,
             Terrain.BLACKBASE, Terrain.BLACKBASE};
-        
+
         // For each terrain, add entry to sprite dictionary
         for (Terrain terrainType : terrainVals) {
             int antDirection = 0;
@@ -490,7 +491,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
     /**
      * Show pop up message.
-     * 
+     *
      * @param message String holding message contents.
      * @param errorType Type of error.
      */
@@ -508,7 +509,7 @@ public class GUISingleGameDisplay extends BasicGameState {
         float zoomControl = 1;
         int tilesWide = gameBoard.length * 16;
         int tilesTall = gameBoard[0].length * 12;
-        
+
         // Check size of board
         if (tilesWide > 1400 || tilesTall > 1080) {
             while (tilesWide * zoomBoard > 1400 && tilesTall * zoomBoard > 1080) {
@@ -534,7 +535,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
     /**
      * Load resources.
-     * 
+     *
      * @throws SlickException if problem loading images.
      */
     private void loadResources() throws SlickException {
@@ -560,7 +561,7 @@ public class GUISingleGameDisplay extends BasicGameState {
 
     /**
      * Create mouse over areas.
-     * 
+     *
      * @param gc Game container holding the GUI.
      */
     private void createMouseOverAreas(GameContainer gc) {

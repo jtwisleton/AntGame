@@ -25,9 +25,9 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
+ * @author Team18
+ *
  * Class to represent a tournament options screen.
- * 
- * @author team18
  */
 public class GUITournamentOptions extends BasicGameState {
 
@@ -75,18 +75,18 @@ public class GUITournamentOptions extends BasicGameState {
     private List antBrainList;
     private List antWorldList;
     private final float screenScale;
-    
+
     /**
      * Construct a new GUITournamentOptions object.
-     * 
+     *
      * @param tournament AntGameTournament being displayed.
      * @param screenScale Scale of the screen.
      */
-    public GUITournamentOptions(AntGameTournament tournament, float screenScale){
+    public GUITournamentOptions(AntGameTournament tournament, float screenScale) {
         this.tournament = tournament;
         this.screenScale = screenScale;
     }
-    
+
     /**
      * Get the ID of this state.
      *
@@ -107,7 +107,7 @@ public class GUITournamentOptions extends BasicGameState {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         loadResources();
-        
+
         // Initialise buttons
         curGenWorld = genAntWorld;
         currentUp1 = up;
@@ -118,16 +118,16 @@ public class GUITournamentOptions extends BasicGameState {
         currentLoadAntWorld = loadAntWorld;
         currentStartTournament = startTournamentUnavailable;
         currentMainMenu = mainMenu;
-        
+
         createMouseOverAreas(gc);
-     
+
         // Initialise lists
         topOfAntBrainList = 0;
         topOfAntWorldList = 0;
         antBrainList = tournament.getListOfAntBrains();
         antWorldList = tournament.getListOfAntWorlds();
     }
-    
+
     /**
      * Update the game logic.
      *
@@ -139,12 +139,12 @@ public class GUITournamentOptions extends BasicGameState {
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         // Mouse over load brain button
-        if(loadAntBrainMO.isMouseOver()){
+        if (loadAntBrainMO.isMouseOver()) {
             currentLoadAntBrain = loadAntBrainHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked load brain button
                 File antBrainToLoad = fileLoader();
-                if(antBrainToLoad != null){
+                if (antBrainToLoad != null) {
                     try {
                         // Load the ant brain file
                         tournament.loadAntBrain(antBrainToLoad.getAbsolutePath(), antBrainToLoad.getName());
@@ -157,14 +157,14 @@ public class GUITournamentOptions extends BasicGameState {
                     bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
                 }
             }
-            
-        // Mouse over load world button
-        } else if(loadAntWorldMO.isMouseOver()){
+
+            // Mouse over load world button
+        } else if (loadAntWorldMO.isMouseOver()) {
             currentLoadAntWorld = loadAntWorldHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked load world button
                 File antWorldToLoad = fileLoader();
-                if(antWorldToLoad != null){
+                if (antWorldToLoad != null) {
                     try {
                         // Load ant world file
                         tournament.loadAntWorld(antWorldToLoad.getAbsolutePath(), antWorldToLoad.getName());
@@ -177,11 +177,11 @@ public class GUITournamentOptions extends BasicGameState {
                     bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
                 }
             }
-            
-        // Mouse over generate world button
-        } else if(genAntWorldMO.isMouseOver()){
+
+            // Mouse over generate world button
+        } else if (genAntWorldMO.isMouseOver()) {
             curGenWorld = genAntWorldHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked generate world button
                 try {
                     try {
@@ -197,11 +197,11 @@ public class GUITournamentOptions extends BasicGameState {
                     Logger.getLogger(GUITournamentOptions.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
-        // Mouse over main menu button
-        } else if(mainMenuMO.isMouseOver()){
+
+            // Mouse over main menu button
+        } else if (mainMenuMO.isMouseOver()) {
             currentMainMenu = mainMenuHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked main menu button
                 try {
                     TimeUnit.MILLISECONDS.sleep(250);
@@ -210,26 +210,26 @@ public class GUITournamentOptions extends BasicGameState {
                 }
                 sbg.enterState(2);
             }
-            
-        // Mouse over start tournament button
-        } else if(startTournMO.isMouseOver()){
-            if(tournament.getListOfAntBrains().size() >= 2 && tournament.getListOfAntWorlds().size() >= 1){
+
+            // Mouse over start tournament button
+        } else if (startTournMO.isMouseOver()) {
+            if (tournament.getListOfAntBrains().size() >= 2 && tournament.getListOfAntWorlds().size() >= 1) {
                 // If enough ant brains and worlds loaded
                 currentStartTournament = startTournamentHover;
-                if(gc.getInput().isMouseButtonDown(0)){
+                if (gc.getInput().isMouseButtonDown(0)) {
                     // Start tournament
                     tournament.createTournament();
                     sbg.getState(6).init(gc, sbg);
                     sbg.enterState(6);
                 }
             }
-            
-        // Mouse over brain list up button
-        } else if(up1MO.isMouseOver()){
+
+            // Mouse over brain list up button
+        } else if (up1MO.isMouseOver()) {
             currentUp1 = upHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked brain list up button
-                if(tournament.getListOfAntBrains().size() > 10 && topOfAntBrainList > 0){
+                if (tournament.getListOfAntBrains().size() > 10 && topOfAntBrainList > 0) {
                     // If enough ant brains, move list up
                     topOfAntBrainList--;
                     try {
@@ -240,13 +240,13 @@ public class GUITournamentOptions extends BasicGameState {
                 }
                 bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
             }
-            
-        // Mouse over brain list down button
-        } else if(down1MO.isMouseOver()){
+
+            // Mouse over brain list down button
+        } else if (down1MO.isMouseOver()) {
             currentDown1 = downHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked brain list down button
-                if(tournament.getListOfAntBrains().size() > 10 && topOfAntBrainList+10 < tournament.getListOfAntBrains().size()){
+                if (tournament.getListOfAntBrains().size() > 10 && topOfAntBrainList + 10 < tournament.getListOfAntBrains().size()) {
                     // If enough ant brains, move down
                     topOfAntBrainList++;
                     try {
@@ -257,13 +257,13 @@ public class GUITournamentOptions extends BasicGameState {
                 }
                 bottomOfAntBrainList = setListBottom(antBrainList, topOfAntBrainList);
             }
-            
-        // Mouse over world list up button
-        } else if(up2MO.isMouseOver()){
+
+            // Mouse over world list up button
+        } else if (up2MO.isMouseOver()) {
             currentUp2 = upHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked world list up button
-                if(tournament.getListOfAntWorlds().size() > 10 && topOfAntWorldList > 0){
+                if (tournament.getListOfAntWorlds().size() > 10 && topOfAntWorldList > 0) {
                     // If enough ant worlds, move up
                     topOfAntWorldList--;
                     try {
@@ -274,13 +274,13 @@ public class GUITournamentOptions extends BasicGameState {
                 }
                 bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
             }
-            
-        // Mouse over world list down button
-        } else if(down2MO.isMouseOver()){
+
+            // Mouse over world list down button
+        } else if (down2MO.isMouseOver()) {
             currentDown2 = downHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked world list down button
-                if(tournament.getListOfAntWorlds().size() > 10 && topOfAntWorldList+10 < tournament.getListOfAntWorlds().size()){
+                if (tournament.getListOfAntWorlds().size() > 10 && topOfAntWorldList + 10 < tournament.getListOfAntWorlds().size()) {
                     // If enough ant worlds, move down
                     topOfAntWorldList++;
                     try {
@@ -291,8 +291,8 @@ public class GUITournamentOptions extends BasicGameState {
                 }
                 bottomOfAntWorldList = setListBottom(antWorldList, topOfAntWorldList);
             }
-            
-        // Mouse not over any specified areas
+
+            // Mouse not over any specified areas
         } else {
             currentUp1 = up;
             currentUp2 = up;
@@ -304,12 +304,12 @@ public class GUITournamentOptions extends BasicGameState {
             currentLoadAntWorld = loadAntWorld;
             currentMainMenu = mainMenu;
         }
-    
+
     }
 
     /**
      * Render the games screen.
-     * 
+     *
      * @param gc Game container holding the GUI.
      * @param sbg Game object.
      * @param grphcs The graphics context.
@@ -320,31 +320,31 @@ public class GUITournamentOptions extends BasicGameState {
         // Setup screen
         grphcs.scale(screenScale, screenScale);
         grphcs.setLineWidth(3);
-        
+
         // Draw buttons
-        grphcs.drawImage(pageTitle, 1920/2 - pageTitle.getWidth()/2, 20);
+        grphcs.drawImage(pageTitle, 1920 / 2 - pageTitle.getWidth() / 2, 20);
         grphcs.drawImage(currentLoadAntBrain, 50, 330);
         grphcs.drawImage(currentLoadAntWorld, 50, 430);
         grphcs.drawImage(curGenWorld, 50, 530);
         grphcs.drawImage(currentMainMenu, 50, 630);
         grphcs.drawImage(currentStartTournament, 50, 730);
-        
+
         // Draw table
-        grphcs.drawRoundRect(genAntWorld.getWidth()+100, 330, 520, 700, 10);
-        grphcs.drawLine(genAntWorld.getWidth()+100, 390, genAntWorld.getWidth()+620, 390);
-        headerFont.drawString(genAntWorld.getWidth()+120, 330, "Ant Brains");
-        grphcs.drawImage(currentUp1, genAntWorld.getWidth()+630, 600);
-        grphcs.drawImage(currentDown1, genAntWorld.getWidth()+630, 680);
-        
+        grphcs.drawRoundRect(genAntWorld.getWidth() + 100, 330, 520, 700, 10);
+        grphcs.drawLine(genAntWorld.getWidth() + 100, 390, genAntWorld.getWidth() + 620, 390);
+        headerFont.drawString(genAntWorld.getWidth() + 120, 330, "Ant Brains");
+        grphcs.drawImage(currentUp1, genAntWorld.getWidth() + 630, 600);
+        grphcs.drawImage(currentDown1, genAntWorld.getWidth() + 630, 680);
+
         grphcs.drawRoundRect(1280, 330, 520, 700, 10);
-        grphcs.drawLine(1280, 390, 1280+520, 390);
-        headerFont.drawString(1280+20, 330, "Ant Worlds");
-        grphcs.drawImage(currentUp2, 1280+530, 600);
-        grphcs.drawImage(currentDown2, 1280+530, 680);
-        
+        grphcs.drawLine(1280, 390, 1280 + 520, 390);
+        headerFont.drawString(1280 + 20, 330, "Ant Worlds");
+        grphcs.drawImage(currentUp2, 1280 + 530, 600);
+        grphcs.drawImage(currentDown2, 1280 + 530, 680);
+
         antBrainList = tournament.getListOfAntBrains();
         antWorldList = tournament.getListOfAntWorlds();
-        
+
         // If no ant brains or worlds, reset lists
         if (antBrainList.isEmpty() && antWorldList.isEmpty()) {
             topOfAntBrainList = 0;
@@ -352,28 +352,28 @@ public class GUITournamentOptions extends BasicGameState {
             bottomOfAntBrainList = 0;
             bottomOfAntWorldList = 0;
         }
-        
+
         // Print all ant brains
-        for(int i = topOfAntBrainList; i < bottomOfAntBrainList; i++){
+        for (int i = topOfAntBrainList; i < bottomOfAntBrainList; i++) {
             String filename = removeExtension(antBrainList.get(i).toString());
-            fileFont.drawString(genAntWorld.getWidth()+120, 400 + (i-topOfAntBrainList) * 60, filename);
+            fileFont.drawString(genAntWorld.getWidth() + 120, 400 + (i - topOfAntBrainList) * 60, filename);
         }
         // Print all ant worlds
-        for(int i = topOfAntWorldList; i < bottomOfAntWorldList; i++){
+        for (int i = topOfAntWorldList; i < bottomOfAntWorldList; i++) {
             String filename = removeExtension(antWorldList.get(i).toString());
-            fileFont.drawString(1300, 400 + (i-topOfAntWorldList) * 60, filename);
+            fileFont.drawString(1300, 400 + (i - topOfAntWorldList) * 60, filename);
         }
     }
-    
+
     /**
      * Load a file.
-     * 
+     *
      * @return Loaded file.
      */
-    private File fileLoader(){
+    private File fileLoader() {
         String osName = System.getProperty("os.name");
         File selectedFile = null;
-        
+
         // If running on Mac
         if (osName.equals("Mac OS X")) {
             // Show file dialog
@@ -386,8 +386,8 @@ public class GUITournamentOptions extends BasicGameState {
             } catch (Exception e) {
                 // Cancelled
             }
-          
-        // Windows
+
+            // Windows
         } else {
             // Show file dialog
             JFileChooser fileChooser = new JFileChooser();
@@ -397,43 +397,43 @@ public class GUITournamentOptions extends BasicGameState {
                 selectedFile = fileChooser.getSelectedFile();
             }
         }
-        
+
         return selectedFile;
     }
-    
+
     /**
      * Set the bottom of the list.
-     * 
+     *
      * @param listToSetBottomOf List to set the bottom of.
      * @param listTopPos Position of top of list.
      * @return Bottom position.
      */
-    private int setListBottom(List listToSetBottomOf, int listTopPos){
+    private int setListBottom(List listToSetBottomOf, int listTopPos) {
         int listBottom = 0;
-        if(listToSetBottomOf.size() > 0){
-            if(listToSetBottomOf.size() < 11){
+        if (listToSetBottomOf.size() > 0) {
+            if (listToSetBottomOf.size() < 11) {
                 listBottom = listToSetBottomOf.size();
             } else {
-                listBottom = listTopPos+10;
+                listBottom = listTopPos + 10;
             }
         }
-       return listBottom;
+        return listBottom;
     }
-    
+
     /**
      * Show error message.
-     * 
+     *
      * @param errorMessage Message contents.
      * @param errorType Type of error.
      */
-    private void showError(String errorMessage, String errorType){
+    private void showError(String errorMessage, String errorType) {
         JOptionPane.showMessageDialog(new JFrame(), errorMessage,
-        errorType, JOptionPane.ERROR_MESSAGE);
+                errorType, JOptionPane.ERROR_MESSAGE);
     }
-    
+
     /**
      * Update start button.
-     * 
+     *
      * @return New start button image.
      */
     private Image updateStart() {
@@ -445,10 +445,10 @@ public class GUITournamentOptions extends BasicGameState {
             return startTournamentUnavailable;
         }
     }
-    
+
     /**
      * Remove file extension.
-     * 
+     *
      * @param filename Filename to remove extension from.
      * @return New filename.
      */
@@ -461,33 +461,33 @@ public class GUITournamentOptions extends BasicGameState {
 
     /**
      * Create mouse over areas.
-     * 
+     *
      * @param gc Game container holding the GUI.
      */
     private void createMouseOverAreas(GameContainer gc) {
-        up1MO = new MouseOverArea(gc, up, (int)((genAntWorld.getWidth()+630)* screenScale), (int)(600*screenScale),
-                (int)(up.getWidth()*screenScale), (int)(up.getHeight()*screenScale));
-        down1MO = new MouseOverArea(gc, down, (int)((genAntWorld.getWidth()+630)* screenScale), (int)(680*screenScale),
-                (int)(down.getWidth()*screenScale), (int)(down.getHeight()*screenScale));
-        up2MO = new MouseOverArea(gc, up, (int)((1280+530)*screenScale), (int)(600*screenScale),
-                (int)(up.getWidth()*screenScale), (int)(up.getHeight()*screenScale));
-        down2MO = new MouseOverArea(gc, down, (int)((1280+530)*screenScale), (int)(680*screenScale),
-                (int)(down.getWidth()*screenScale), (int)(down.getHeight()*screenScale));
-        loadAntBrainMO = new MouseOverArea(gc, loadAntBrain, (int)(50*screenScale), (int)(330*screenScale),
-                (int)(loadAntBrain.getWidth()*screenScale), (int)(loadAntBrain.getHeight()*screenScale));
-        loadAntWorldMO = new MouseOverArea(gc, loadAntWorld, (int)(50*screenScale), (int)(430*screenScale),
-                (int)(loadAntWorld.getWidth()*screenScale), (int)(loadAntWorld.getHeight()*screenScale));       
-        genAntWorldMO = new MouseOverArea(gc, genAntWorld, (int)(50*screenScale), (int)(530*screenScale),
-                (int)(genAntWorld.getWidth()*screenScale), (int)(genAntWorld.getHeight()*screenScale));
-        mainMenuMO = new MouseOverArea(gc, mainMenu, (int)(50*screenScale), (int)(630*screenScale),
-                (int)(mainMenu.getWidth()*screenScale), (int)(mainMenu.getHeight()*screenScale));
-        startTournMO = new MouseOverArea(gc, startTournament, (int)(50*screenScale), (int)(730*screenScale),
-                (int)(startTournament.getWidth()*screenScale), (int)(startTournament.getHeight()*screenScale));
+        up1MO = new MouseOverArea(gc, up, (int) ((genAntWorld.getWidth() + 630) * screenScale), (int) (600 * screenScale),
+                (int) (up.getWidth() * screenScale), (int) (up.getHeight() * screenScale));
+        down1MO = new MouseOverArea(gc, down, (int) ((genAntWorld.getWidth() + 630) * screenScale), (int) (680 * screenScale),
+                (int) (down.getWidth() * screenScale), (int) (down.getHeight() * screenScale));
+        up2MO = new MouseOverArea(gc, up, (int) ((1280 + 530) * screenScale), (int) (600 * screenScale),
+                (int) (up.getWidth() * screenScale), (int) (up.getHeight() * screenScale));
+        down2MO = new MouseOverArea(gc, down, (int) ((1280 + 530) * screenScale), (int) (680 * screenScale),
+                (int) (down.getWidth() * screenScale), (int) (down.getHeight() * screenScale));
+        loadAntBrainMO = new MouseOverArea(gc, loadAntBrain, (int) (50 * screenScale), (int) (330 * screenScale),
+                (int) (loadAntBrain.getWidth() * screenScale), (int) (loadAntBrain.getHeight() * screenScale));
+        loadAntWorldMO = new MouseOverArea(gc, loadAntWorld, (int) (50 * screenScale), (int) (430 * screenScale),
+                (int) (loadAntWorld.getWidth() * screenScale), (int) (loadAntWorld.getHeight() * screenScale));
+        genAntWorldMO = new MouseOverArea(gc, genAntWorld, (int) (50 * screenScale), (int) (530 * screenScale),
+                (int) (genAntWorld.getWidth() * screenScale), (int) (genAntWorld.getHeight() * screenScale));
+        mainMenuMO = new MouseOverArea(gc, mainMenu, (int) (50 * screenScale), (int) (630 * screenScale),
+                (int) (mainMenu.getWidth() * screenScale), (int) (mainMenu.getHeight() * screenScale));
+        startTournMO = new MouseOverArea(gc, startTournament, (int) (50 * screenScale), (int) (730 * screenScale),
+                (int) (startTournament.getWidth() * screenScale), (int) (startTournament.getHeight() * screenScale));
     }
 
     /**
      * Load the resources.
-     * 
+     *
      * @throws SlickException if problem loading Images
      */
     private void loadResources() throws SlickException {

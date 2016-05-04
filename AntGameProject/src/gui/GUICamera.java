@@ -1,9 +1,10 @@
 package gui;
 
 /**
+ * @author Team18
+ *
  * Class to represent a camera on top of the game board.
  *
- * @author team18
  */
 public class GUICamera {
 
@@ -17,7 +18,7 @@ public class GUICamera {
 
     /**
      * Construct a new GUICamera object.
-     * 
+     *
      * @param height Height of the camera's view.
      * @param width Width of the camera's view.
      * @param zoom Amount to zoom in on the board.
@@ -38,7 +39,7 @@ public class GUICamera {
 
     /**
      * Get the x-position of the camera.
-     * 
+     *
      * @return The x-position.
      */
     public int getXPos() {
@@ -47,7 +48,7 @@ public class GUICamera {
 
     /**
      * Get the y-position of the camera.
-     * 
+     *
      * @return The y-position.
      */
     public int getYPos() {
@@ -56,7 +57,7 @@ public class GUICamera {
 
     /**
      * Get the camera's zoom level.
-     * 
+     *
      * @return The camera's zoom.
      */
     public float getZoom() {
@@ -65,7 +66,7 @@ public class GUICamera {
 
     /**
      * Set the x-position of the camera.
-     * 
+     *
      * @param xPos X-position to move the camera to.
      */
     public void setXPos(int xPos) {
@@ -74,7 +75,7 @@ public class GUICamera {
 
     /**
      * Set the y-position of the camera.
-     * 
+     *
      * @param yPos Y-position to move the camera to.
      */
     public void setYPos(int yPos) {

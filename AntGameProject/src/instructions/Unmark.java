@@ -6,6 +6,7 @@ import antgameproject.Pos;
 import antgameproject.RandomNumber;
 
 /**
+ * @author Team18
  * Provides implementation for the unmark instruction, which removes a given mark
  * from the ants position.
  */

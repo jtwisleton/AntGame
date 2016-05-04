@@ -5,12 +5,15 @@ import antgameproject.Board;
 import antgameproject.RandomNumber;
 
 /**
- * The interface that is implemented by the instruction classes. 
+ * @author Team18
+ *
+ * The interface that is implemented by the instruction classes.
  */
 public interface Instruction {
 
     /**
      * Execute is the method that performs the instruction.
+     *
      * @param gameBoard the board to execute the instruction on.
      * @param currentAnt the ant that performs the instruction.
      * @param numberGen the random number generator used by the instruction.

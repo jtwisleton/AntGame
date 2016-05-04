@@ -1,17 +1,15 @@
 package antgameproject;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
 
 /**
  *
- * @author JTwisleton
+ * @author Team18
  */
 public class AntWorldGenerator {
 

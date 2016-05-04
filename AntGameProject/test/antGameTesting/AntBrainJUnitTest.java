@@ -15,6 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * @author Team18
  * Test class for testing the AntBrain class.
  */
 public class AntBrainJUnitTest {

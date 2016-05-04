@@ -1,4 +1,3 @@
-
 package antGameTesting;
 
 import antgameproject.BoardTile;
@@ -10,7 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author wilki
+ * @author Team18
  */
 public class BoardTileJUnitTest {
     

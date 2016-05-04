@@ -1,4 +1,3 @@
-
 package conditions;
 
 import antgameproject.Ant;
@@ -7,12 +6,15 @@ import antgameproject.Colour;
 import antgameproject.Pos;
 
 /**
+ * @author Team18
+ *
  * FoeWithFood is used to sense a enemy carrying food.
  */
 public class FoeWithFood implements Condition {
 
     /**
      * Sense an enemy ant carrying food at the given position.
+     *
      * @param sensePosition the position to sense.
      * @param antColour the ant colour to find enemies of.
      * @param gameBoard the game board to perform sense on.
@@ -21,12 +23,12 @@ public class FoeWithFood implements Condition {
      */
     @Override
     public boolean testCondition(Pos sensePosition, Colour antColour, Board gameBoard) {
-        if(gameBoard.antInPosition(sensePosition)){
+        if (gameBoard.antInPosition(sensePosition)) {
             Ant antInSensePos = gameBoard.antAt(sensePosition);
-            return (antInSensePos.getAntColour() != antColour) &&
-                    (antInSensePos.getCarryingFood());
+            return (antInSensePos.getAntColour() != antColour)
+                    && (antInSensePos.getCarryingFood());
         }
         return false;
     }
-    
+
 }

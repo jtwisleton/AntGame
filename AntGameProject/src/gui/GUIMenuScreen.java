@@ -10,11 +10,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * Class to represent the menu screen of a GUI.
+ * @author Team18 
  * 
- * @author team18
+ * Class to represent the menu screen of a GUI.
  */
-public class GUIMenuScreen extends BasicGameState{
+public class GUIMenuScreen extends BasicGameState {
 
     private AntGameTournament tournament;
     private Image title;
@@ -35,20 +35,20 @@ public class GUIMenuScreen extends BasicGameState{
     private MouseOverArea exitMO;
     private float screenScale;
 
-    /** 
+    /**
      * Construct a new GUIMenuScreen object.
-     * 
+     *
      * @param tournament AntGameTournament being displayed.
      * @param screenScale Scale of the screen.
      */
-    public GUIMenuScreen(AntGameTournament tournament, float screenScale){
+    public GUIMenuScreen(AntGameTournament tournament, float screenScale) {
         this.screenScale = screenScale;
         this.tournament = tournament;
     }
-    
+
     /**
      * Get the ID of this state.
-     * 
+     *
      * @return This state's ID.
      */
     @Override
@@ -58,7 +58,7 @@ public class GUIMenuScreen extends BasicGameState{
 
     /**
      * Initialize the GUIMenuScreen.
-     * 
+     *
      * @param gc Game container holding the GUI.
      * @param sbg Game object.
      * @throws SlickException if problem initialising mouse over areas.
@@ -76,21 +76,21 @@ public class GUIMenuScreen extends BasicGameState{
         currentSP = singlePButton;
         currentTourn = tournamentButton;
         currentExit = exitButton;
-        
+
         // Set position variables
         buttonPosX = 960 - 480;
         buttonStartPosY = 500;
         offset = 190;
 
         // Initilaise mouse over areas
-        singleGameMO = new MouseOverArea(gc, singlePButton, (int)(buttonPosX*screenScale), (int)(buttonStartPosY*screenScale), 
-                (int)(singlePButton.getWidth()*screenScale), (int)(singlePButton.getHeight()*screenScale));
-        tournamentGameMO = new MouseOverArea(gc, tournamentButton, (int)(buttonPosX*screenScale), (int)((buttonStartPosY + offset)*screenScale),
-                (int)(tournamentButton.getWidth()*screenScale), (int)(tournamentButton.getHeight()*screenScale));
-        exitMO = new MouseOverArea(gc, exitButton, (int)(buttonPosX*screenScale), (int)((buttonStartPosY + 2 * offset)*screenScale),
-                (int)(exitButton.getWidth()*screenScale), (int)(exitButton.getHeight()*screenScale));
+        singleGameMO = new MouseOverArea(gc, singlePButton, (int) (buttonPosX * screenScale), (int) (buttonStartPosY * screenScale),
+                (int) (singlePButton.getWidth() * screenScale), (int) (singlePButton.getHeight() * screenScale));
+        tournamentGameMO = new MouseOverArea(gc, tournamentButton, (int) (buttonPosX * screenScale), (int) ((buttonStartPosY + offset) * screenScale),
+                (int) (tournamentButton.getWidth() * screenScale), (int) (tournamentButton.getHeight() * screenScale));
+        exitMO = new MouseOverArea(gc, exitButton, (int) (buttonPosX * screenScale), (int) ((buttonStartPosY + 2 * offset) * screenScale),
+                (int) (exitButton.getWidth() * screenScale), (int) (exitButton.getHeight() * screenScale));
     }
-    
+
     /**
      * Update the game logic.
      *
@@ -102,44 +102,44 @@ public class GUIMenuScreen extends BasicGameState{
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         tournament.reset();
-        
+
         // Check where the mouse is
         if (singleGameMO.isMouseOver()) {
             // Single game option
             currentSP = singleGButtonHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked button
                 sbg.enterState(5);
             }
-            
-        } else if(tournamentGameMO.isMouseOver()) {
+
+        } else if (tournamentGameMO.isMouseOver()) {
             // Tournament option
             currentTourn = tournamentButtonHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked button
                 sbg.enterState(4);
             }
-            
-        } else if(exitMO.isMouseOver()) {
+
+        } else if (exitMO.isMouseOver()) {
             // Exit option
             currentExit = exitButtonHover;
-            if(gc.getInput().isMouseButtonDown(0)){
+            if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked button
                 System.exit(0);
-            } 
-            
+            }
+
         } else {
             // Not inside any mouse over areas.
             currentSP = singlePButton;
             currentTourn = tournamentButton;
             currentExit = exitButton;
         }
-       
+
     }
 
     /**
      * Render the games screen.
-     * 
+     *
      * @param gc Game container holding the GUI.
      * @param sbg Game object.
      * @param grphcs The graphics context.

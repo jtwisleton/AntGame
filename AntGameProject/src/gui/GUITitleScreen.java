@@ -11,22 +11,22 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
+ * @author Team18
+ *
  * Class to represent a title screen for the GUI.
- * 
- * @author team18
  */
 public class GUITitleScreen extends BasicGameState {
-    
+
     private Image titleScreen;
     private boolean firstVisit;
     private float screenScale;
-    
+
     /**
      * Construct a new GUITitleScreen object.
-     * 
+     *
      * @param screenScale Scale of the screen.
      */
-    public GUITitleScreen(float screenScale){
+    public GUITitleScreen(float screenScale) {
         this.screenScale = screenScale;
     }
 
@@ -39,7 +39,7 @@ public class GUITitleScreen extends BasicGameState {
     public int getID() {
         return 1;
     }
-    
+
     /**
      * Initialize the GUITitleScreen.
      *
@@ -62,23 +62,23 @@ public class GUITitleScreen extends BasicGameState {
      * @throws SlickException if problem entering states.
      */
     @Override
-    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {   
+    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         try {
             TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException ex) {
             Logger.getLogger(GUITeamScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if(firstVisit){
+        if (firstVisit) {
             firstVisit = false;
         } else {
-            sbg.enterState(2); 
+            sbg.enterState(2);
         }
     }
-    
+
     /**
      * Render the games screen.
-     * 
+     *
      * @param gc Game container holding the GUI.
      * @param sbg Game object.
      * @param grphcs The graphics context.

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package antGameTesting;
 
 import antgameproject.Ant;
@@ -18,25 +13,24 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author wilki
+ * @author Team18
  */
 public class PickUpFoodJUnitTest {
-    
+
     private Ant antOnTileWithFood;
     private Ant antOnTileWithoutFood;
     private Board testBoard;
     private RandomNumber randomNumberGen;
-    
+
     @Before
-    public void setUp(){
-        antOnTileWithFood = new Ant(Colour.RED, 1, new Pos(2,2));
-        antOnTileWithoutFood = new Ant(Colour.BLACK, 2, new Pos(3,3));
-        BoardTile[][] board = new BoardTile[20][20]; 
-        
-        for(int i = 0; i < 20; i++){
-            for(int j = 0; j < 20; j++){
-                if(i == 0 || i == 19 || j == 0 || j == 19){
+    public void setUp() {
+        antOnTileWithFood = new Ant(Colour.RED, 1, new Pos(2, 2));
+        antOnTileWithoutFood = new Ant(Colour.BLACK, 2, new Pos(3, 3));
+        BoardTile[][] board = new BoardTile[20][20];
+
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                if (i == 0 || i == 19 || j == 0 || j == 19) {
                     board[i][j] = new BoardTile(0, Terrain.ROCK);
                 } else {
                     board[i][j] = new BoardTile(0, Terrain.GRASS);
@@ -48,9 +42,9 @@ public class PickUpFoodJUnitTest {
         testBoard = new Board(board, "Board 6");
         randomNumberGen = new RandomNumber(1);
     }
- 
+
     @Test
-    public void testFoodFound(){
+    public void testFoodFound() {
         int nextStateIfFoodFound = 12;
         int nextStateIfNoFood = 23;
         Pos antPosition = antOnTileWithFood.getBoardPosition();
@@ -61,24 +55,24 @@ public class PickUpFoodJUnitTest {
         assertTrue(antOnTileWithFood.getCarryingFood());
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfFoodFound);
     }
-    
+
     @Test
-    public void testFoodNotFound(){
+    public void testFoodNotFound() {
         int nextStateIfFoodFound = 12;
         int nextStateIfNoFood = 23;
         Pos antPosition = antOnTileWithoutFood.getBoardPosition();
         assertTrue(testBoard.numberOfFoodAt(antPosition) == 0);
         assertFalse(antOnTileWithoutFood.getCarryingFood());
-        new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood).execute(testBoard, 
+        new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood).execute(testBoard,
                 antOnTileWithoutFood, randomNumberGen);
         assertTrue(testBoard.numberOfFoodAt(antPosition) == 0);
         assertFalse(antOnTileWithoutFood.getCarryingFood());
         assertTrue(antOnTileWithoutFood.getCurrentBrainState() == nextStateIfNoFood);
     }
-    
+
     // test ant already carrying food
     @Test
-    public void testAntAlreadyCarryingFood(){
+    public void testAntAlreadyCarryingFood() {
         int nextStateIfFoodFound = 12;
         int nextStateIfNoFood = 23;
         PickUpFood testPickUpFood = new PickUpFood(nextStateIfFoodFound, nextStateIfNoFood);
@@ -92,5 +86,5 @@ public class PickUpFoodJUnitTest {
         assertTrue(antOnTileWithFood.getCarryingFood());
         assertTrue(antOnTileWithFood.getCurrentBrainState() == nextStateIfNoFood);
     }
-    
+
 }

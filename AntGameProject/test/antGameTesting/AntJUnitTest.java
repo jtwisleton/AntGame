@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * @author Team18
  * Test class to test the ant class.
  */
 public class AntJUnitTest {

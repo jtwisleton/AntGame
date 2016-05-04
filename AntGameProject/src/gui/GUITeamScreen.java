@@ -12,24 +12,24 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
+ * @author Team18
+ *
  * Class to represent a team screen.
- * 
- * @author team18
  */
 public class GUITeamScreen extends BasicGameState {
-    
+
     private Image teamLogo;
     private float screenScale;
 
     /**
      * Construct a new GUITeamScreen object
-     * 
+     *
      * @param screenScale Scale of the screen.
      */
-    public GUITeamScreen(float screenScale){
+    public GUITeamScreen(float screenScale) {
         this.screenScale = screenScale;
     }
-    
+
     /**
      * Get the ID of this state.
      *
@@ -69,10 +69,10 @@ public class GUITeamScreen extends BasicGameState {
         }
         sbg.enterState(1);
     }
-    
+
     /**
      * Render the games screen.
-     * 
+     *
      * @param gc Game container holding the GUI.
      * @param sbg Game object.
      * @param grphcs The graphics context.
@@ -82,6 +82,6 @@ public class GUITeamScreen extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
         grphcs.scale(screenScale, screenScale);
         grphcs.setBackground(new Color(33, 252, 172));
-        grphcs.drawImage(teamLogo, 0, 0); 
+        grphcs.drawImage(teamLogo, 0, 0);
     }
 }

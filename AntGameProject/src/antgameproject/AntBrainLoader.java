@@ -33,7 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author James Twisleton
+ * @author Team18
  */
 public class AntBrainLoader {
 
@@ -44,27 +44,13 @@ public class AntBrainLoader {
         }
     }
 
-    public static void main(String args[]) throws FileNotFoundException, IOException, AntBrainLoaderException {
-
-        /*
-         Just a quick test to see that AntBrainLoader's loadBrain method performs
-         as expected.
-         */
-        String fn = "src//antgameproject//testBrain.txt";
-        AntBrain ab = loadBrain(fn, "Test Brain");
-        for (int i = 0; i < 16; i++) {
-            System.out.println(ab.getInstruction(i).toString());
-        }
-
-    }
-
     public static AntBrain loadBrain(String fileName, String name) throws FileNotFoundException, IOException, AntBrainLoaderException {
 
         /*
          Read the brain from a file into a String.
          */
         String brainString = "";
-        int lineCount=0;
+        int lineCount = 0;
         List<String> instructionStrings = new ArrayList<>();
         List<Instruction> instructions = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
@@ -140,14 +126,14 @@ public class AntBrainLoader {
                     int nextStateIfConditionTrue = Integer.parseInt(splitInstruction[2].trim());
                     int nextStateIfConditionFalse = Integer.parseInt(splitInstruction[3].trim());
                     int markerNo = -1;
-                    if(instructionString.matches(senseMarkerPattern.pattern())){
+                    if (instructionString.matches(senseMarkerPattern.pattern())) {
                         markerNo = Integer.parseInt(splitInstruction[5].trim());
                     }
-                    
-                    if(nextStateIfConditionTrue>lineCount||nextStateIfConditionFalse>lineCount||markerNo>5){
+
+                    if (nextStateIfConditionTrue > lineCount || nextStateIfConditionFalse > lineCount || markerNo > 5) {
                         throw new AntBrainLoaderException("State in loaded instruction beyond limits of brain.");
                     }
-                    
+
                     String condition = splitInstruction[4].trim();
                     Condition c = null;
                     SenseDirection d = null;
@@ -198,7 +184,7 @@ public class AntBrainLoader {
                         case "Rock":
                             c = new Rock();
                             break;
-                    } 
+                    }
                     instructions.add(new Sense(d, c, nextStateIfConditionTrue, nextStateIfConditionFalse));
 
                 } /*
