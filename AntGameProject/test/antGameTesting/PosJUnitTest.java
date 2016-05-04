@@ -10,9 +10,7 @@ import static org.junit.Assert.*;
  */
 public class PosJUnitTest {
 
-    /*
-     * Create an instance on the Pos class and test the accessor methods.
-     */
+    // Create an instance on the Pos class and test the accessor methods.
     @Test
     public void testPosCreation() {
         int x = 3;
