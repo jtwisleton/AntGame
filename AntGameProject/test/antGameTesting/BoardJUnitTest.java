@@ -111,86 +111,39 @@ public class BoardJUnitTest {
         assertTrue(testBoard.getNumberOfAntsAlive(Colour.BLACK) == blackBasePositions.length - 1);
         assertFalse(testBoard.antInPosition(blackBasePositions[0]));
     }
-
     
+    // Test that food is correctly set at position
     @Test
-    public void testNumberOfFoodAt() {
-        testBoard.numberOfFoodAt(new Pos(16, 16));
+    public void testSetFoodAt() {
+        Pos pos = new Pos(16, 16);
+        testBoard.setFoodAt(pos, 5);
+        assertTrue(testBoard.numberOfFoodAt(pos) == 5);
+        assertFalse(testBoard.numberOfFoodAt(pos) == 7);
+    }
+   
+    // Test that number of food can be retrieved given base colour
+    @Test
+    public void testNumberOfFoodInBase() {
+        Pos pos = new Pos(3, 2);
+        testBoard.setFoodAt(pos, 2);
+        assertTrue(testBoard.getNumberOfFoodInBase(Colour.RED) == 2);
     }
     
-    /*
-                    
-     public void setFoodAt(Pos foodPosition, int amountOfFood){
-     int oldAmountOfFood = board[foodPosition.getPosY()][foodPosition.getPosX()].getFoodInTile();
-     int difference = oldAmountOfFood - amountOfFood;
-     if(board[foodPosition.getPosY()][foodPosition.getPosX()].getCellTerrain() ==
-     Terrain.BLACKBASE){
-     int totalBlackFood = numberOfFoodInBase.get(Colour.BLACK);
-     int newTotalFood = totalBlackFood + difference;
-     numberOfFoodInBase.put(Colour.BLACK, newTotalFood);
-     } else if(board[foodPosition.getPosY()][foodPosition.getPosX()].getCellTerrain() ==
-     Terrain.REDBASE){
-     int totalRedFood = numberOfFoodInBase.get(Colour.RED);
-     int newTotalFood = totalRedFood + difference;
-     numberOfFoodInBase.put(Colour.RED, newTotalFood);
-     }
-     board[foodPosition.getPosY()][foodPosition.getPosX()].setFoodInTile(amountOfFood);
-     }
+    // Test that anthill is at certain position
+    @Test
+    public void testAnthillAt() {
+        Pos pos = new Pos(3, 2);
+        assertTrue(testBoard.anthillAt(pos, Colour.RED));
+        pos = new Pos(13, 10);
+        assertTrue(testBoard.anthillAt(pos, Colour.BLACK));
+    }
     
-     public int getNumberOfAntsAlive(Colour colourOfTeam){
-     return numberOfAntsAlive.get(colourOfTeam);
-     }
-    
-     public int getNumberOfFoodInBase(Colour colourOfTeam){
-     return numberOfFoodInBase.get(colourOfTeam);
-     }
-    
-     public boolean anthillAt(Pos anthillPos, Colour anthillColour){
-     return board[anthillPos.getPosY()][anthillPos.getPosX()].getCellTerrain()
-     == colourToBaseMatch.get(anthillColour);
-     }
-    
-     public void setMarker(Pos markerPos, Colour markerCol, int mark){
-     board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, mark); 
-     }
-    
-     public void clearMarker(Pos markerPos, Colour markerCol, int mark){
-     if(board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) != null){
-     int markInTile = board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol);
-     if(markInTile == mark){
-     board[markerPos.getPosY()][markerPos.getPosX()].setMarker(markerCol, null);
-     }
-     }    
-     }
-    
-     public boolean checkMarker(Pos markerPos, Colour markerCol, int mark){
-     if(board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) == null){
-     return false;
-     }
-     return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) == mark;
-     }
-    
-     public boolean checkAnyMarker(Pos markerPos, Colour markerCol){
-     return board[markerPos.getPosY()][markerPos.getPosX()].getMarker(markerCol) != null;
-
-     }
-    
-     public int getNumberOfAnts(){
-     return antsOnBoard.size();
-     }
-    
-     public Terrain getTerrainAtPosition(Pos positionOfTerrain){
-     return board[positionOfTerrain.getPosY()][positionOfTerrain.getPosX()].getCellTerrain();
-     }
-    
-     public void printBoardToASCII(){
-     for(int i = 0; i < board.length; i++){            
-     for(int j = 0; j < board[0].length; j++){
-     System.out.print(board[i][j]);
-     }
-     System.out.print("\n");
-     }
-     }
-    
-     */
+    // Test that terrain can be checked at any position
+    @Test
+    public void testGetTerrainAtPosition() {
+        Pos pos = new Pos(0, 0);
+        assertTrue(testBoard.getTerrainAtPosition(pos) == Terrain.ROCK);
+        pos = new Pos(16, 16);
+        assertTrue(testBoard.getTerrainAtPosition(pos) == Terrain.GRASS);
+    }
 }
