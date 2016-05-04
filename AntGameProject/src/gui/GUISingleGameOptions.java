@@ -320,13 +320,16 @@ public class GUISingleGameOptions extends BasicGameState {
     private File fileLoader() {
         String osName = System.getProperty("os.name");
         File selectedFile = null;
+        String filename = null;
 
         // Show different file laoder for Mac users
         if (osName.equals("Mac OS X")) {
             // Open file dialog
             FileDialog fd = new FileDialog(new Frame(), "Choose a file", FileDialog.LOAD);
             fd.setVisible(true);
-            String filename = fd.getDirectory() + fd.getFile();
+            if ((fd.getDirectory() != null) && (fd.getFile() != null)) {
+                filename = fd.getDirectory() + fd.getFile();
+            }
             try {
                 // Return file
                 selectedFile = new File(filename);
