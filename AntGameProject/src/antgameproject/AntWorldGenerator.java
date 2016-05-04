@@ -24,13 +24,18 @@ public class AntWorldGenerator {
         AntWorldGenerator awg = new AntWorldGenerator(10);
     }
 
+    /*
+     avgRockSize is the average size of generated rocks.
+     */
     public AntWorldGenerator(int avgRockSize) {
         this.avgRockSize = avgRockSize;
     }
 
     /*
-    
-    */
+     Runs the placeBordersAndGrass, placeAnthills, placeFood, placeRocks,
+     creareGaps methods - writes generated world to file wit toFile method, and
+     returns new Board.    
+     */
     public Board generateWorld() throws IOException {
         BoardTile[][] b = placeBordersAndGrass();
         b = placeAnthills(b);
@@ -40,7 +45,7 @@ public class AntWorldGenerator {
         int time = (int) System.currentTimeMillis();
         String filename = "generatedWorlds/generatedWorld" + time + ".world";
         toFile(b, filename);
-        return new Board(b, "");
+        return new Board(b, filename);
 
     }
 
@@ -74,7 +79,14 @@ public class AntWorldGenerator {
         return board;
     }
 
+    /**
+     * places Anthills on an empty BoardTile array.
+     * 
+     * @param emptyBoard empty BoardTile array (with grass and borders).
+     * @return BoardTile array with anthills. 
+     */
     public BoardTile[][] placeAnthills(BoardTile[][] emptyBoard) {
+
         /*
          Generate random numbers for the centre of the ant hills, keep generating
          until anthills don't overlap.
@@ -157,6 +169,9 @@ public class AntWorldGenerator {
 
         }
 
+        /*
+         Set anthill location class variables, return Board.
+         */
         redAnthillX = redBaseX;
         redAnthillY = redBaseY;
         blackAnthillX = blackBaseX;
@@ -165,6 +180,11 @@ public class AntWorldGenerator {
         return boardWithAnthills;
     }
 
+    /**
+     * Takes a BoardTile array with anthills, place Food blocks onto it
+     * @param anthills a BoardTile array with borders, grass and anthills.
+     * @return a BoardTile array with borders, grass anthills and food.
+     */
     public BoardTile[][] placeFood(BoardTile[][] anthills) {
 
         /*
