@@ -33,6 +33,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * AntBrainLoader loads in an Ant brain, checks if it's syntactically correct,
+ * and creates an AntBrain object if it is - it throws an
+ * AntBrainLoaderException if it isn't.
+ *
  * @author Team18
  */
 public class AntBrainLoader {
@@ -44,6 +48,18 @@ public class AntBrainLoader {
         }
     }
 
+    /**
+     * Takes a file path and a name, loads in Ant Brain from file path and
+     * creates an AntBrain with the given name
+     *
+     * @param fileName the file path of the Ant Brain to be loaded in.
+     * @param name the name to be given to AntBrain.
+     * @return an AntBrain
+     * @throws FileNotFoundException if file can't be found.
+     * @throws IOException if there's a problem loading in the file.
+     * @throws antgameproject.AntBrainLoader.AntBrainLoaderException if the
+     * brain is invalid
+     */
     public static AntBrain loadBrain(String fileName, String name) throws FileNotFoundException, IOException, AntBrainLoaderException {
 
         /*
@@ -69,8 +85,8 @@ public class AntBrainLoader {
         Matcher brainPatternMatcher = brainPattern.matcher(brainString);
 
         /*
-         Iterate over the brain string, removing brain instruction matches and adding
-         them to an arrayList of Strings. 
+         Iterate over the brain string, removing brain instruction matches and 
+         adding them to an arrayList of Strings. 
          */
         Boolean finished = false;
         while (!finished) {
@@ -91,12 +107,13 @@ public class AntBrainLoader {
          */
         brainString = brainString.replaceAll("\\s", "");
         if (!"".equals(brainString)) {
+            System.out.println("Unable to lex: " + brainString);
             throw new AntBrainLoaderException("Invalid brain!");
         } else {
 
             /*
-             If the brain is valid, parse the instructions and add to an instruction
-             list.
+             If the brain is valid, parse the instructions and add to an 
+             instruction list.
              */
             Pattern sensePattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Rock)");
             Pattern senseMarkerPattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+Marker\\s+\\d+");
@@ -127,10 +144,21 @@ public class AntBrainLoader {
                     int nextStateIfConditionFalse = Integer.parseInt(splitInstruction[3].trim());
                     int markerNo = -1;
                     if (instructionString.matches(senseMarkerPattern.pattern())) {
+
+                        /*
+                         Check that marker is within limit.
+                         */
                         markerNo = Integer.parseInt(splitInstruction[5].trim());
+                        if (markerNo > 5 || markerNo < 0) {
+                            throw new AntBrainLoaderException("Marker must be 0-5, construction contained: " + markerNo);
+                        }
                     }
 
-                    if (nextStateIfConditionTrue > lineCount || nextStateIfConditionFalse > lineCount || markerNo > 5) {
+                    /*
+                     Check that the current instruction doesn't reference an
+                     instruction outside the limits of the brain.
+                     */
+                    if (nextStateIfConditionTrue > lineCount || nextStateIfConditionFalse > lineCount) {
                         throw new AntBrainLoaderException("State in loaded instruction beyond limits of brain.");
                     }
 

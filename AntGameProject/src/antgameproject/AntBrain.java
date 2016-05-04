@@ -182,5 +182,4 @@ public class AntBrain implements Comparable<AntBrain> {
         }
         return o.points - this.points;
     }
-
 }
