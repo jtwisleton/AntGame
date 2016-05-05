@@ -152,7 +152,7 @@ public class GUITournamentDisplay extends BasicGameState {
             currentExit = exitHover;
             if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked exit button
-                tournament.reset();
+                tournament.resetTournament();
                 sbg.enterState(2);
             }
 
@@ -241,8 +241,8 @@ public class GUITournamentDisplay extends BasicGameState {
             gameFont.drawString(exit.getWidth() + 975, topMargin + (60 * i), Integer.toString(currentAntBrain.getGamesWon()));
             gameFont.drawString(exit.getWidth() + 1068, topMargin + (60 * i), Integer.toString(currentAntBrain.getGamesDrawn()));
             gameFont.drawString(exit.getWidth() + 1157, topMargin + (60 * i), Integer.toString(currentAntBrain.getGamesLost()));
-            gameFont.drawString(exit.getWidth() + 1239, topMargin + (60 * i), Integer.toString(currentAntBrain.getTotalFoodInBase()));
-            gameFont.drawString(exit.getWidth() + 1332, topMargin + (60 * i), Integer.toString(currentAntBrain.getTotalFoodInEnemyBase()));
+            gameFont.drawString(exit.getWidth() + 1239, topMargin + (60 * i), Integer.toString(currentAntBrain.getTotalFoodGatheredInAllGames()));
+            gameFont.drawString(exit.getWidth() + 1332, topMargin + (60 * i), Integer.toString(currentAntBrain.getTotalFoodGatheredByEnemies()));
             topMargin -= 60;
         }
 

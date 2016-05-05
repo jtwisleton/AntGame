@@ -101,7 +101,7 @@ public class GUIMenuScreen extends BasicGameState {
      */
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        tournament.reset();
+        tournament.resetTournament();
 
         // Check where the mouse is
         if (singleGameMO.isMouseOver()) {

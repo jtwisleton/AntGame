@@ -162,7 +162,7 @@ public class GUISingleGameOptions extends BasicGameState {
                 // Menu button clicked
                 try {
                     // Reset game
-                    tournament.reset();
+                    tournament.resetTournament();
                     setFilesAndTicksToNull();
                     TimeUnit.MILLISECONDS.sleep(250);
                 } catch (InterruptedException ex) {

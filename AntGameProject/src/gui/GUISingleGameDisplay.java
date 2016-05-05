@@ -198,7 +198,7 @@ public class GUISingleGameDisplay extends BasicGameState {
             currentExitButton = exitButtonHover;
             if (gc.getInput().isMouseButtonDown(0)) {
                 // Clicked exit
-                tournament.reset();
+                tournament.resetTournament();
                 sbg.enterState(2);
                 exiting = true;
             }
