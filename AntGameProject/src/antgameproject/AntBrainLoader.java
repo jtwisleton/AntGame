@@ -41,13 +41,6 @@ import java.util.regex.Pattern;
  */
 public class AntBrainLoader {
 
-    public static class AntBrainLoaderException extends Exception {
-
-        public AntBrainLoaderException(String message) {
-            super(message);
-        }
-    }
-
     /**
      * Takes a file path and a name, loads in Ant Brain from file path and
      * creates an AntBrain with the given name
@@ -60,7 +53,8 @@ public class AntBrainLoader {
      * @throws antgameproject.AntBrainLoader.AntBrainLoaderException if the
      * brain is invalid
      */
-    public static AntBrain loadBrain(String fileName, String name) throws FileNotFoundException, IOException, AntBrainLoaderException {
+    public AntBrain loadAntBrain(String fileName, String name) throws FileNotFoundException, 
+            IOException, AntBrainLoaderException {
 
         /*
          Read the brain from a file into a String.
@@ -77,11 +71,20 @@ public class AntBrainLoader {
                 lineCount++;
             }
         }
+        
+        
+        // checks the brain is not too long
+        if(lineCount > 10000){
+            throw new AntBrainLoaderException("Ant brain being loaded was too long!");
+        }
 
         /*
          Declare pattern that describe the entire brain.
          */
-        Pattern brainPattern = Pattern.compile("(Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Marker\\s+\\d+|Rock))|((Mark|Unmark|PickUp)\\s+\\d+\\s+\\d+)|(Move\\s+\\d+\\s+\\d+)|(Turn\\s+(Left|Right)\\s+\\d+)|(Drop\\s+\\d+)|(Flip\\s+\\d+\\s+\\d+\\s+\\d+)");
+        Pattern brainPattern = Pattern.compile("(Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+"
+                + "\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|"
+                + "Marker\\s+\\d+|Rock))|((Mark|Unmark|PickUp)\\s+\\d+\\s+\\d+)|(Move\\s+\\d+\\s+\\d+)"
+                + "|(Turn\\s+(Left|Right)\\s+\\d+)|(Drop\\s+\\d+)|(Flip\\s+\\d+\\s+\\d+\\s+\\d+)");
         Matcher brainPatternMatcher = brainPattern.matcher(brainString);
 
         /*
@@ -115,8 +118,11 @@ public class AntBrainLoader {
              If the brain is valid, parse the instructions and add to an 
              instruction list.
              */
-            Pattern sensePattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood|Friend|Home|Rock)");
-            Pattern senseMarkerPattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)\\s+\\d+\\s+\\d+\\s+Marker\\s+\\d+");
+            Pattern sensePattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)"
+                    + "\\s+\\d+\\s+\\d+\\s+(FoeMarker|FoeWithFood|FoeHome|Foe|Food|FriendWithFood"
+                    + "|Friend|Home|Rock)");
+            Pattern senseMarkerPattern = Pattern.compile("Sense\\s+(Ahead|Here|LeftAhead|RightAhead)"
+                    + "\\s+\\d+\\s+\\d+\\s+Marker\\s+\\d+");
             Pattern markPattern = Pattern.compile("(Mark|Unmark|PickUp)\\s+\\d+\\s+\\d+");
             Pattern movePattern = Pattern.compile("Move\\s+\\d+\\s+\\d+");
             Pattern turnPattern = Pattern.compile("Turn\\s+(Left|Right)\\s+\\d+");
@@ -137,7 +143,8 @@ public class AntBrainLoader {
                  instruction, create a new Sense instruction with the parsed
                  parameters and add it to instructions.
                  */
-                if (instructionString.matches(sensePattern.pattern()) || instructionString.matches(senseMarkerPattern.pattern())) {
+                if (instructionString.matches(sensePattern.pattern()) || 
+                        instructionString.matches(senseMarkerPattern.pattern())) {
                     splitInstruction = instructionString.split("\\s+");
                     String direction = splitInstruction[1].trim();
                     int nextStateIfConditionTrue = Integer.parseInt(splitInstruction[2].trim());
@@ -150,7 +157,8 @@ public class AntBrainLoader {
                          */
                         markerNo = Integer.parseInt(splitInstruction[5].trim());
                         if (markerNo > 5 || markerNo < 0) {
-                            throw new AntBrainLoaderException("Marker must be 0-5, construction contained: " + markerNo);
+                            throw new AntBrainLoaderException("Marker must be 0-5, "
+                                    + "construction contained: " + markerNo);
                         }
                     }
 
@@ -158,8 +166,10 @@ public class AntBrainLoader {
                      Check that the current instruction doesn't reference an
                      instruction outside the limits of the brain.
                      */
-                    if (nextStateIfConditionTrue > lineCount || nextStateIfConditionFalse > lineCount) {
-                        throw new AntBrainLoaderException("State in loaded instruction beyond limits of brain.");
+                    if (nextStateIfConditionTrue > lineCount || 
+                            nextStateIfConditionFalse > lineCount) {
+                        throw new AntBrainLoaderException("State in loaded instruction "
+                                + "beyond limits of brain.");
                     }
 
                     String condition = splitInstruction[4].trim();
@@ -213,7 +223,8 @@ public class AntBrainLoader {
                             c = new Rock();
                             break;
                     }
-                    instructions.add(new Sense(d, c, nextStateIfConditionTrue, nextStateIfConditionFalse));
+                    instructions.add(new Sense(d, c, nextStateIfConditionTrue, 
+                            nextStateIfConditionFalse));
 
                 } /*
                  if the instructionString selected by the iterator is a Mark
@@ -302,6 +313,12 @@ public class AntBrainLoader {
              return this AntBrain.
              */
             return new AntBrain(instructions, name);
+        }
+    }
+    
+    public class AntBrainLoaderException extends Exception {
+        public AntBrainLoaderException(String message) {
+            super(message);
         }
     }
 }

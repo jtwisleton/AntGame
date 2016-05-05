@@ -36,7 +36,7 @@ public class AntWorldGenerator {
      * @return generated world in Board file.
      * @throws IOException
      */
-    public Board generateWorld() throws IOException {
+    public Board generateAntWorld() throws IOException {
         BoardTile[][] b = placeBordersAndGrass();
         b = placeAnthills(b);
         b = placeFood(b);
@@ -54,7 +54,7 @@ public class AntWorldGenerator {
      *
      * @return board with borders and grass.
      */
-    public BoardTile[][] placeBordersAndGrass() {
+    private BoardTile[][] placeBordersAndGrass() {
         BoardTile[][] board = new BoardTile[150][150];
 
         /*
@@ -85,7 +85,7 @@ public class AntWorldGenerator {
      * @param emptyBoard empty BoardTile array (with grass and borders).
      * @return BoardTile array with anthills.
      */
-    public BoardTile[][] placeAnthills(BoardTile[][] emptyBoard) {
+    private BoardTile[][] placeAnthills(BoardTile[][] emptyBoard) {
 
         /*
          Generate random numbers for the centre of the ant hills, keep generating
@@ -186,7 +186,7 @@ public class AntWorldGenerator {
      * @param anthills a BoardTile array with borders, grass and anthills.
      * @return a BoardTile array with borders, grass anthills and food.
      */
-    public BoardTile[][] placeFood(BoardTile[][] anthills) {
+    private BoardTile[][] placeFood(BoardTile[][] anthills) {
 
         /*
          Create ArrayLists to put x and y coordinates of food piles into.
@@ -297,7 +297,7 @@ public class AntWorldGenerator {
      * @param anthillsFood world with anthills and food.
      * @return a world with anthills food and rocks.
      */
-    public BoardTile[][] placeRocks(BoardTile[][] anthillsFood) {
+    private BoardTile[][] placeRocks(BoardTile[][] anthillsFood) {
 
         ArrayList<Pos> rockPositions = new ArrayList<>();
         Random r = new Random();
@@ -418,7 +418,7 @@ public class AntWorldGenerator {
      * @param anthillsFoodRocks world with anthills food and rocks.
      * @return world with gaps around anthills and food.
      */
-    public BoardTile[][] createGaps(BoardTile[][] anthillsFoodRocks) {
+    private BoardTile[][] createGaps(BoardTile[][] anthillsFoodRocks) {
         for (int i = 1; i < anthillsFoodRocks.length; i++) {
             for (int j = 1; j < anthillsFoodRocks[i].length; j++) {
 
@@ -471,25 +471,25 @@ public class AntWorldGenerator {
      * Takes a BoardTile array and string filename, prints BoardTile world to
      * file.
      *
-     * @param b BoardTile array
+     * @param boardToSave BoardTile array
      * @param filename name of file
      * @throws FileNotFoundException if filename cannot be accessed.
      * @throws IOException if there's a problem writing to file.
      */
-    public void toFile(BoardTile[][] b, String filename) throws FileNotFoundException, IOException {
+    private void toFile(BoardTile[][] boardToSave, String filename) throws FileNotFoundException, IOException {
         FileWriter fw = new FileWriter(filename);
         PrintWriter writer = new PrintWriter(fw);
-        writer.println(b.length);
-        writer.println(b[0].length);
-        for (int i = 0; i < b.length; i++) {
-            for (int j = 0; j < b[i].length; j++) {
-                if (b[i][j].getCellTerrain() == Terrain.ROCK) {
+        writer.println(boardToSave.length);
+        writer.println(boardToSave[0].length);
+        for (int i = 0; i < boardToSave.length; i++) {
+            for (int j = 0; j < boardToSave[i].length; j++) {
+                if (boardToSave[i][j].getCellTerrain() == Terrain.ROCK) {
                     writer.print("#");
-                } else if (b[i][j].getCellTerrain() == Terrain.GRASS) {
+                } else if (boardToSave[i][j].getCellTerrain() == Terrain.GRASS) {
                     writer.print(".");
-                } else if (b[i][j].getCellTerrain() == Terrain.BLACKBASE) {
+                } else if (boardToSave[i][j].getCellTerrain() == Terrain.BLACKBASE) {
                     writer.print("-");
-                } else if (b[i][j].getCellTerrain() == Terrain.REDBASE) {
+                } else if (boardToSave[i][j].getCellTerrain() == Terrain.REDBASE) {
                     writer.print("+");
                 }
             }

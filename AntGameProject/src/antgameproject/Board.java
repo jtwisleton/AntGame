@@ -12,10 +12,10 @@ import java.util.List;
 public class Board {
 
     private final BoardTile[][] board;
-    private List<Ant> antsOnBoard;
-    private HashMap<Colour, Terrain> colourToBaseMatch;
-    private HashMap<Colour, Integer> numberOfAntsAlive;
-    private HashMap<Colour, Integer> numberOfFoodInBase;
+    private final List<Ant> antsOnBoard;
+    private final HashMap<Colour, Terrain> colourToBaseMatch;
+    private final HashMap<Colour, Integer> numberOfAntsAlive;
+    private final HashMap<Colour, Integer> numberOfFoodInBase;
     private final String boardName;
 
     /**
@@ -322,7 +322,7 @@ public class Board {
      * 
      * @return Copy of the game board.
      */
-    public Board copy() {
+    public Board copyBoard() {
         BoardTile[][] copyBoard = new BoardTile[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {

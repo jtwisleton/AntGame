@@ -22,7 +22,7 @@ public class AntGameTournament {
     private int boardToPlayIndex;
     private final int maxNumberOfAntBrains;
     private final int maxNumberOfAntWorlds;
-    private Random seedGenerator;
+    private final Random seedGenerator;
 
     /**
      * Empty constructor for creating an ant game tournament.
@@ -54,10 +54,10 @@ public class AntGameTournament {
         int playerTwoScore = currentGame.getPlayerTwoScore();
         one.incrementGamesPlayedIn();
         two.incrementGamesPlayedIn();
-        one.setTotalFoodInBase(one.getTotalFoodInBase() + playerOneScore);
-        one.setTotalFoodInEnemyBase(one.getTotalFoodInEnemyBase() + playerTwoScore);
-        two.setTotalFoodInBase(two.getTotalFoodInBase() + playerTwoScore);
-        two.setTotalFoodInEnemyBase(two.getTotalFoodInEnemyBase() + playerOneScore);
+        one.setTotalFoodGatheredInAllGames(one.getTotalFoodGatheredInAllGames() + playerOneScore);
+        one.setTotalFoodGatheredByEnemies(one.getTotalFoodGatheredByEnemies() + playerTwoScore);
+        two.setTotalFoodGatheredInAllGames(two.getTotalFoodGatheredInAllGames() + playerTwoScore);
+        two.setTotalFoodGatheredByEnemies(two.getTotalFoodGatheredByEnemies() + playerOneScore);
         if (playerOneScore > playerTwoScore) {
             one.incrementGamesWon();
             two.incrementGamesLost();
@@ -105,8 +105,8 @@ public class AntGameTournament {
             Board boardToPlayRoundOn = antWorlds.get(boardToPlayIndex);
 
             for (Pair pair : pairs) {
-                Board boardToPlayRoundOneOn = boardToPlayRoundOn.copy();
-                Board boardToPlayRoundTwoOn = boardToPlayRoundOn.copy();
+                Board boardToPlayRoundOneOn = boardToPlayRoundOn.copyBoard();
+                Board boardToPlayRoundTwoOn = boardToPlayRoundOn.copyBoard();
                 runGame(pair.one, pair.two, boardToPlayRoundOneOn);
                 runGame(pair.two, pair.one, boardToPlayRoundTwoOn);
             }
@@ -148,7 +148,7 @@ public class AntGameTournament {
     public void generateAntWorld() throws IOException {
         if (antWorlds.size() < maxNumberOfAntWorlds) {
             AntWorldGenerator awl = new AntWorldGenerator(30);
-            antWorlds.add(awl.generateWorld());
+            antWorlds.add(awl.generateAntWorld());
         }
     }
 
@@ -164,7 +164,7 @@ public class AntGameTournament {
     public void loadAntBrain(String antBrainFilePath, String name)
             throws AntBrainLoaderException, IOException {
         if (antBrains.size() < maxNumberOfAntBrains) {
-            antBrains.add(AntBrainLoader.loadBrain(antBrainFilePath, name));
+            antBrains.add(new AntBrainLoader().loadAntBrain(antBrainFilePath, name));
         }
     }
 
@@ -173,7 +173,7 @@ public class AntGameTournament {
      *
      * @return list of all ant worlds in the tournament.
      */
-    public List getListOfAntWorlds() {
+    public List<Board> getListOfAntWorlds() {
         return antWorlds;
     }
 
@@ -182,7 +182,7 @@ public class AntGameTournament {
      *
      * @return list of all ant brains in the tournament.
      */
-    public List getListOfAntBrains() {
+    public List<AntBrain> getListOfAntBrains() {
         return antBrains;
     }
 
@@ -198,12 +198,20 @@ public class AntGameTournament {
     /**
      * Resets the tournament.
      */
-    public void reset() {
+    public void resetTournament() {
         antWorlds = new ArrayList<>();
         antBrains = new ArrayList<>();
         pairs = new ArrayList<>();
         currentGame = null;
         boardToPlayIndex = 0;
+    }
+    
+     /**
+     * Returns the current round number of a game
+     * @return the current round number
+     */
+    public int getTournamentRoundNumber() {
+        return boardToPlayIndex;
     }
 
     /**
@@ -217,12 +225,12 @@ public class AntGameTournament {
         /**
          * The first ant brain in the pair.
          */
-        public final AntBrain one;
+        private final AntBrain one;
 
         /**
          * The second ant brain in the pair.
          */
-        public final AntBrain two;
+        private final AntBrain two;
 
         /**
          * Class constructor for a pair of ant brains.
@@ -234,14 +242,6 @@ public class AntGameTournament {
             this.one = one;
             this.two = two;
         }
-    }
-
-    /**
-     * Returns the current round number of a game
-     * @return the current round number
-     */
-    public int getTournamentRoundNumber() {
-        return boardToPlayIndex;
     }
 
 }

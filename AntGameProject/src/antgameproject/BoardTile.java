@@ -13,7 +13,7 @@ import java.util.List;
 public class BoardTile {
 
     private int foodInTile;
-    private HashMap<Colour, List<Integer>> markers;
+    private final HashMap<Colour, List<Integer>> markers;
     private final Terrain cellTerrain;
     private Ant antOnTile;
 

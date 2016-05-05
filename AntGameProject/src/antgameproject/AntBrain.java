@@ -12,24 +12,24 @@ import java.util.List;
  */
 public class AntBrain implements Comparable<AntBrain> {
 
-    private List<Instruction> instructions = new ArrayList<>();
+    private List<Instruction> brain = new ArrayList<>();
     private final String name;
     private int gamesPlayedIn;
     private int gamesWon;
     private int gamesDrawn;
     private int gamesLost;
-    private int totalFoodInBase;
-    private int totalFoodInEnemyBase;
+    private int totalFoodGatheredInAllGames;
+    private int totalFoodGatheredByEnemies;
     private int points;
 
     /**
      * Constructor for the AntBrain class.
      *
-     * @param instructions list of Instructions representing the brain.
+     * @param brain the brain this ant brain is based on.
      * @param name name of the ant brain, used for identification.
      */
-    public AntBrain(List<Instruction> instructions, String name) {
-        this.instructions = instructions;
+    public AntBrain(List<Instruction> brain, String name) {
+        this.brain = brain;
         this.name = name;
 
         // initialize all score fields to 0
@@ -37,8 +37,8 @@ public class AntBrain implements Comparable<AntBrain> {
         gamesWon = 0;
         gamesDrawn = 0;
         gamesLost = 0;
-        totalFoodInBase = 0;
-        totalFoodInEnemyBase = 0;
+        totalFoodGatheredInAllGames = 0;
+        totalFoodGatheredByEnemies = 0;
         points = 0;
     }
 
@@ -49,7 +49,7 @@ public class AntBrain implements Comparable<AntBrain> {
      * @return the instruction for the specified state.
      */
     public Instruction getInstruction(int state) {
-        return instructions.get(state);
+        return brain.get(state);
     }
 
     @Override
@@ -100,8 +100,8 @@ public class AntBrain implements Comparable<AntBrain> {
      * @return total amount of food this ant brain has finished with in its
      * base.
      */
-    public int getTotalFoodInBase() {
-        return totalFoodInBase;
+    public int getTotalFoodGatheredInAllGames() {
+        return totalFoodGatheredInAllGames;
     }
 
     /**
@@ -111,8 +111,8 @@ public class AntBrain implements Comparable<AntBrain> {
      * @return total amount of food enemy ants have finished with in there
      * bases.
      */
-    public int getTotalFoodInEnemyBase() {
-        return totalFoodInEnemyBase;
+    public int getTotalFoodGatheredByEnemies() {
+        return totalFoodGatheredByEnemies;
     }
 
     /**
@@ -151,8 +151,8 @@ public class AntBrain implements Comparable<AntBrain> {
      *
      * @param totalFoodInBase
      */
-    public void setTotalFoodInBase(int totalFoodInBase) {
-        this.totalFoodInBase = totalFoodInBase;
+    public void setTotalFoodGatheredInAllGames(int totalFoodInBase) {
+        this.totalFoodGatheredInAllGames = totalFoodInBase;
     }
 
     /**
@@ -161,8 +161,8 @@ public class AntBrain implements Comparable<AntBrain> {
      *
      * @param totalFoodInEnemyBase
      */
-    public void setTotalFoodInEnemyBase(int totalFoodInEnemyBase) {
-        this.totalFoodInEnemyBase = totalFoodInEnemyBase;
+    public void setTotalFoodGatheredByEnemies(int totalFoodInEnemyBase) {
+        this.totalFoodGatheredByEnemies = totalFoodInEnemyBase;
     }
 
     /**
@@ -178,7 +178,7 @@ public class AntBrain implements Comparable<AntBrain> {
     @Override
     public int compareTo(AntBrain o) {
         if (o.points == this.points) {
-            return o.totalFoodInBase - this.getTotalFoodInBase();
+            return o.totalFoodGatheredInAllGames - this.getTotalFoodGatheredInAllGames();
         }
         return o.points - this.points;
     }

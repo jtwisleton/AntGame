@@ -20,7 +20,7 @@ public class AntWorldLoader {
      */
     static ArrayList<String> lines;
 
-    public static class AntWorldLoaderException extends Exception {
+    public class AntWorldLoaderException extends Exception {
 
         public AntWorldLoaderException(String message) {
             super(message);
@@ -265,7 +265,7 @@ public class AntWorldLoader {
      */
     private Boolean validFood(BoardTile[][] boardToFindFoodOn) {
         int blobsOfFoodFound = 0;
-        boardToFindFoodOn = new Board(boardToFindFoodOn, "").copy().getBoard();
+        boardToFindFoodOn = new Board(boardToFindFoodOn, "").copyBoard().getBoard();
         for (int i = 1; i < 149; i++) {
             for (int j = 1; j < 149; j++) {
                 if (boardToFindFoodOn[i][j].getFoodInTile() > 0) {
