@@ -38,10 +38,10 @@ public class GameJUnitTest {
     @Before
     public void setUp() {
         try {
-            gameBoard = new AntWorldLoader().loadWorld("src//antgameproject//testWorld.txt",
-                    "Test project", false);
-            antBrainOne = AntBrainLoader.loadBrain("src//antgameproject//sample.htm", "sample");
-            antBrainTwo = AntBrainLoader.loadBrain("src//antgameproject//sample.htm", "sample");
+            gameBoard = new AntWorldLoader().loadWorld("testFiles//testWorld.txt", "Test project", 
+                    false);
+            antBrainOne = new AntBrainLoader().loadAntBrain("testFiles//sample.htm", "");
+            antBrainTwo = new AntBrainLoader().loadAntBrain("testFiles//sample.htm", "");
             testGame = new Game(antBrainOne, antBrainTwo, gameBoard, 12345);
         } catch (IOException ex) {
             Logger.getLogger(GameJUnitTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,7 +85,7 @@ public class GameJUnitTest {
     private List<String> getTestDumps() {
         ArrayList<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(new FileInputStream("src//antgameproject//test.txt")))) {
+                new InputStreamReader(new FileInputStream("testFiles//test.txt")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 lines.add(line);

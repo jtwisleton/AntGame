@@ -49,8 +49,8 @@ public class AntBrainJUnitTest {
         assertTrue(testAntBrain.getGamesWon() == 0);
         assertTrue(testAntBrain.getGamesDrawn() == 0);
         assertTrue(testAntBrain.getGamesLost() == 0);
-        assertTrue(testAntBrain.getTotalFoodInBase() == 0);
-        assertTrue(testAntBrain.getTotalFoodInEnemyBase() == 0);
+        assertTrue(testAntBrain.getTotalFoodGatheredInAllGames() == 0);
+        assertTrue(testAntBrain.getTotalFoodGatheredByEnemies() == 0);
 
     }
 
@@ -64,16 +64,16 @@ public class AntBrainJUnitTest {
         testAntBrain.incrementGamesWon();
         testAntBrain.incrementGamesDrawn();
         testAntBrain.incrementGamesLost();
-        testAntBrain.setTotalFoodInBase(foodInBaseToSet);
-        testAntBrain.setTotalFoodInEnemyBase(foodInEnemyBase);
+        testAntBrain.setTotalFoodGatheredInAllGames(foodInBaseToSet);
+        testAntBrain.setTotalFoodGatheredByEnemies(foodInEnemyBase);
 
         assertTrue(testAntBrain.getPoints() == 3);  // 1 win and a draw
         assertTrue(testAntBrain.getGamesPlayedIn() == 1);
         assertTrue(testAntBrain.getGamesWon() == 1);
         assertTrue(testAntBrain.getGamesDrawn() == 1);
         assertTrue(testAntBrain.getGamesLost() == 1);
-        assertTrue(testAntBrain.getTotalFoodInBase() == foodInBaseToSet);
-        assertTrue(testAntBrain.getTotalFoodInEnemyBase() == foodInEnemyBase);
+        assertTrue(testAntBrain.getTotalFoodGatheredInAllGames() == foodInBaseToSet);
+        assertTrue(testAntBrain.getTotalFoodGatheredByEnemies() == foodInEnemyBase);
 
     }
 
@@ -100,7 +100,7 @@ public class AntBrainJUnitTest {
         assertTrue(brainList.get(1) == testAntBrain);
 
         // testAntBrain now has some food in the bas so should now lead
-        testAntBrain.setTotalFoodInBase(10);
+        testAntBrain.setTotalFoodGatheredInAllGames(10);
         Collections.sort(brainList);
         assertTrue(brainList.get(0) == testAntBrain);
         assertTrue(brainList.get(1) == testAntBrain2);

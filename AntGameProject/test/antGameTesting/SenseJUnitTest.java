@@ -65,7 +65,6 @@ public class SenseJUnitTest {
         testBoard.setAntAt(new Pos(2, 1), blackAnt);
         testBoard.setAntAt(new Pos(2, 2), testAnt);
         testBoard.setAntAt(new Pos(5, 5), secondAnt);
-        testBoard.printBoardToASCII();
         randomNumberGen = new RandomNumber(1);
     }
 

@@ -116,7 +116,6 @@ public class MoveJUnitTest {
         Ant blockedAnt = new Ant(Colour.RED, 3, antPositionBeforeMove);
         blockedAnt.setFacingDirection(3); // set ant to face a rock
         testBoard.setAntAt(antPositionBeforeMove, blockedAnt);
-        testBoard.printBoardToASCII();
         new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard,
                 blockedAnt, randomNumberGen);
         assertTrue(blockedAnt.getFacingDirection() == 3);
@@ -132,7 +131,6 @@ public class MoveJUnitTest {
         Ant blockedAnt = new Ant(Colour.RED, 3, antPositionBeforeMove);
         blockedAnt.setFacingDirection(1); // set ant to face an ant
         testBoard.setAntAt(antPositionBeforeMove, blockedAnt);
-        testBoard.printBoardToASCII();
         new Move(nextStateIfAheadClear, nextStateIfAheadBlocked).execute(testBoard,
                 blockedAnt, randomNumberGen);
         assertTrue(blockedAnt.getFacingDirection() == 1);
