@@ -177,6 +177,7 @@ public class AntWorldLoader {
     /**
      * Checks if an edge given by an edge number has grass with no food in the applicable
      * direction. 
+     * 
      * @param boardToCheck is the board to perform the check on
      * @param pos is the position that the check will take place
      * @param edgeNo indicate what type of edge this position is. Can be found using isEdgeCase method
@@ -238,6 +239,7 @@ public class AntWorldLoader {
     /**
      * Checks if a position is surrounded by grass without food, returns true if so false if
      * not.
+     * 
      * @param position the position to check is surrounded by grass
      * @param board the board to perform the check on
      * @return true if the position is surrounded by grass without food and false otherwise.
@@ -304,6 +306,7 @@ public class AntWorldLoader {
     /**
      * Tests an individual blocks of food to check they're valid i.e. each being
      * a 5 x 5 rectangle all with 5 food on each.
+     * 
      * @param pos is the position of the top left food blob in a block
      * @param boardToFindFoodOn the board to perform the check on
      * @param offsets the offset of the food block
@@ -336,6 +339,7 @@ public class AntWorldLoader {
 
     /**
      * Checks if a world has 14 valid rocks in it.
+     * 
      * @param boardToFindRocksOn the board to check for rocks on
      * @return true if there are 14 valid rocks and false otherwise
      */
@@ -359,12 +363,12 @@ public class AntWorldLoader {
      * create a board from the given world file if checkWorldSyntax returns
      * true.
      *
-     * @param fileName
-     * @param name
-     * @param tournamentReady
-     * @return
-     * @throws antgameproject.AntWorldLoader.AntWorldLoaderException
-     * @throws IOException
+     * @param fileName Name of the ant world file.
+     * @param name Name of the ant world.
+     * @param tournamentReady Boolean stating whether world is tournament ready or not.
+     * @return Loaded world as Board.
+     * @throws AntWorldLoaderException if problem checking world.
+     * @throws IOException if problem reading from file.
      */
     public Board loadWorld(String fileName, String name, boolean tournamentReady) throws AntWorldLoaderException, IOException {
 
@@ -454,11 +458,11 @@ public class AntWorldLoader {
      * Returns true is a world is syntactically correct, or throws an exception.
      * Also loads given world into lines ArrayList.
      *
-     * @param fileName
-     * @return
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws antgameproject.AntWorldLoader.AntWorldLoaderException
+     * @param fileName Name of the ant world file.
+     * @return True if world syntactically correct, false otherwise.
+     * @throws FileNotFoundException if file not found.
+     * @throws IOException if problem loading file.
+     * @throws AntWorldLoaderException if problem checking world.
      */
     public Boolean checkWorldSyntax(String fileName) throws FileNotFoundException, IOException, AntWorldLoaderException {
 
