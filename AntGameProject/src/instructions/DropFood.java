@@ -18,7 +18,7 @@ public class DropFood implements Instruction {
      * Constructor for the drop food class, takes as an argument the next state
      * to set after instruction is completed.
      *
-     * @param nextState
+     * @param nextState State to set after instruction is completed.
      */
     public DropFood(int nextState) {
         this.nextState = nextState;
@@ -28,9 +28,9 @@ public class DropFood implements Instruction {
      * Executes the drop food instruction by placing one extra food in the ants
      * board tile if its carrying food and sets the ants next state.
      *
-     * @param gameBoard the board to perform the drop food on.
-     * @param currentAnt the ant that is carrying the food.
-     * @param randomNumberGen
+     * @param gameBoard The board to perform the drop food on.
+     * @param currentAnt The ant that is carrying the food.
+     * @param randomNumberGen Random number generator.
      */
     @Override
     public void execute(Board gameBoard, Ant currentAnt, RandomNumber randomNumberGen) {
