@@ -22,6 +22,7 @@ public class Game {
      * @param playerOne the AntBrain for player one.
      * @param playerTwo the AntBrain for player two.
      * @param gameBoard the Board to play the game on.
+     * @param randomSeed Random seed to construct random generator.
      */
     public Game(AntBrain playerOne, AntBrain playerTwo, Board gameBoard, int randomSeed) {
         this.playerOne = playerOne;
@@ -123,6 +124,7 @@ public class Game {
      * run in total less than 300000 steps.
      *
      * @param numberOfStepsToRun the number of steps to run the game for.
+     * @return True if game finished, false otherwise.
      */
     public boolean runRounds(int numberOfStepsToRun) {
         for (int j = 0; j < numberOfStepsToRun; j++) {
