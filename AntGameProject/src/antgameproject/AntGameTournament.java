@@ -97,6 +97,8 @@ public class AntGameTournament {
     /**
      * Runs one round of a tournament. A round means all teams play all enemies
      * on a board as both the red and the black colours.
+     * 
+     * @return True if game finished after running round, false otherwise.
      */
     public boolean runTournamentRound() {
         boolean finished = false;
@@ -130,8 +132,8 @@ public class AntGameTournament {
      * @param antWorldFilePath file path to load ant world from.
      * @param antWorldName name to give the ant world.
      * @param tournamentCorrect if the world loaded must be tournament correct
-     * @throws AntWorldLoaderException
-     * @throws IOException
+     * @throws AntWorldLoaderException if problem loading ant.
+     * @throws IOException if problem reading from file.
      */
     public void loadAntWorld(String antWorldFilePath, String antWorldName, boolean tournamentCorrect)
             throws AntWorldLoaderException, IOException {
@@ -143,7 +145,8 @@ public class AntGameTournament {
 
     /**
      * Generates an ant brain and adds it to the list of worlds.
-     * @throws IOException 
+     * 
+     * @throws IOException if problem reading from file.
      */
     public void generateAntWorld() throws IOException {
         if (antWorlds.size() < maxNumberOfAntWorlds) {
@@ -158,8 +161,8 @@ public class AntGameTournament {
      *
      * @param antBrainFilePath file path to load ant brain from.
      * @param name name to give the ant brain.
-     * @throws AntBrainLoaderException
-     * @throws IOException
+     * @throws AntBrainLoaderException if problem loading ant brain.
+     * @throws IOException if problem reading from file.
      */
     public void loadAntBrain(String antBrainFilePath, String name)
             throws AntBrainLoaderException, IOException {
