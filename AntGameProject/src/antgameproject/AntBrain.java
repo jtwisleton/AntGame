@@ -149,7 +149,7 @@ public class AntBrain implements Comparable<AntBrain> {
      * Sets the total cumulative amount of food that this ant has finished with
      * in its base over all games.
      *
-     * @param totalFoodInBase
+     * @param totalFoodInBase Total number of food in base.
      */
     public void setTotalFoodGatheredInAllGames(int totalFoodInBase) {
         this.totalFoodGatheredInAllGames = totalFoodInBase;
@@ -159,7 +159,7 @@ public class AntBrain implements Comparable<AntBrain> {
      * Sets the total amount of food enemies of this ant have finished with in
      * there bases in games against this ant.
      *
-     * @param totalFoodInEnemyBase
+     * @param totalFoodInEnemyBase Total number of food in the enemies base.
      */
     public void setTotalFoodGatheredByEnemies(int totalFoodInEnemyBase) {
         this.totalFoodGatheredByEnemies = totalFoodInEnemyBase;
