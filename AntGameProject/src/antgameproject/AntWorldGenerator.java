@@ -34,7 +34,7 @@ public class AntWorldGenerator {
      * and returns new Board.
      *
      * @return generated world in Board file.
-     * @throws IOException
+     * @throws IOException if problem writing to file.
      */
     public Board generateAntWorld() throws IOException {
         BoardTile[][] b = placeBordersAndGrass();
