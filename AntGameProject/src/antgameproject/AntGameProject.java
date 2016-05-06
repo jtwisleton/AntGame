@@ -18,7 +18,7 @@ public class AntGameProject {
      * Main class for the creation of the project.
      *
      * @param args the command line arguments
-     * @throws org.newdawn.slick.SlickException
+     * @throws org.newdawn.slick.SlickException if problem creating game container.
      */
     public static void main(String[] args) throws SlickException {
         AntGameTournament tournament = new AntGameTournament();
