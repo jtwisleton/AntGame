@@ -15,7 +15,7 @@ public class Food implements Condition {
      * Sense food at the given position on the given board.
      *
      * @param sensePosition position to sense for food.
-     * @param antColour
+     * @param antColour Colour of the ant.
      * @param gameBoard board to sense for food on.
      * @return true if food found in the given position on the board;
      */
